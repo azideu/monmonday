@@ -3,10 +3,14 @@ import Navbar from './components/Navbar.jsx';
 import ScrapbookBoard from './components/ScrapbookBoard.jsx';
 import LetterModal from './components/LetterModal.jsx';
 import AudioWelcomeModal from './components/AudioWelcomeModal.jsx';
+import FluidCursor from './components/FluidCursor.jsx';
 import { birthdayConfig } from './data/content.js';
 
 export default function App() {
   const { celebrant, playlist, letters, polaroids, celebration } = birthdayConfig;
+
+  // Fluid Cursor State (defaults to true)
+  const [isFluidEnabled, setIsFluidEnabled] = useState(true);
 
   // Audio Player State
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
@@ -166,12 +170,26 @@ export default function App() {
   return (
     <div className="min-h-screen bg-scrapbook-pattern relative text-slateAsh selection:bg-buttercup selection:text-slateAsh">
       
+      {/* Interactive WebGL Fluid Cursor (#D4F1FF Sky Mist only) */}
+      <FluidCursor
+        enabled={isFluidEnabled}
+        densityDissipation={3.5}
+        velocityDissipation={2}
+        pressure={0.1}
+        curl={3}
+        splatRadius={0.2}
+        splatForce={6000}
+        transparent={true}
+      />
+
       {/* Top Floating Navbar */}
       <Navbar
         celebrant={celebrant}
         isPlaying={isPlaying}
         onToggleMusic={togglePlay}
         activeTrack={currentTrack}
+        isFluidEnabled={isFluidEnabled}
+        onToggleFluid={() => setIsFluidEnabled((prev) => !prev)}
       />
 
       {/* Main Scrapbook Board */}
@@ -189,6 +207,8 @@ export default function App() {
         letters={letters}
         onOpenLetter={(letter) => setActiveLetter(letter)}
         celebration={celebration}
+        isFluidEnabled={isFluidEnabled}
+        onToggleFluid={() => setIsFluidEnabled((prev) => !prev)}
       />
 
       {/* Letter Unfold Modal */}

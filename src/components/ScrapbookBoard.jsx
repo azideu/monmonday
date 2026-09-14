@@ -3,7 +3,7 @@ import CassettePlayer from './CassettePlayer.jsx';
 import PolaroidCard from './PolaroidCard.jsx';
 import LetterEnvelope from './LetterEnvelope.jsx';
 import BirthdayCake from './BirthdayCake.jsx';
-import { Heart } from 'lucide-react';
+import { Heart, Waves } from 'lucide-react';
 
 export default function ScrapbookBoard({
   celebrant,
@@ -19,6 +19,8 @@ export default function ScrapbookBoard({
   letters,
   onOpenLetter,
   celebration,
+  isFluidEnabled,
+  onToggleFluid,
 }) {
   return (
     <main className="max-w-6xl mx-auto px-4 sm:px-6 pb-24 space-y-16">
@@ -47,6 +49,36 @@ export default function ScrapbookBoard({
           <div className="w-16 h-0.5 bg-skyMist/80 rounded-full" />
           <Heart className="w-4 h-4 fill-skyMist text-slateAsh/60" />
           <div className="w-16 h-0.5 bg-skyMist/80 rounded-full" />
+        </div>
+
+        {/* Fluid Effect Toggle Switch & Hint */}
+        <div className="flex flex-col items-center justify-center gap-1.5 mt-4">
+          <div className="flex items-center gap-3 bg-white/85 backdrop-blur-xs px-3.5 py-1.5 rounded-full border border-skyMist shadow-paper-sm text-xs font-semibold text-slateAsh">
+            <span className="flex items-center gap-1.5">
+              <Waves className="w-3.5 h-3.5 text-slateAsh" />
+              Enable Effect
+            </span>
+            <button
+              type="button"
+              role="switch"
+              aria-checked={isFluidEnabled}
+              onClick={onToggleFluid}
+              className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none cursor-pointer ${
+                isFluidEnabled ? 'bg-skyMist border border-slateAsh/30' : 'bg-slateAsh/20'
+              }`}
+            >
+              <span
+                className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow-xs transition-transform ${
+                  isFluidEnabled ? 'translate-x-4.5 bg-slateAsh' : 'translate-x-0.5'
+                }`}
+              />
+            </button>
+          </div>
+          {isFluidEnabled && (
+            <span className="text-xs font-handwriting text-slateAsh/60 tracking-wide">
+              Hover anywhere
+            </span>
+          )}
         </div>
       </section>
 
