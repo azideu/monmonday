@@ -17,17 +17,10 @@ export const birthdayConfig = {
     },
     {
       id: "track-2",
-      title: "Late Night Heart to Hearts",
-      artist: "Cozy Tape Sessions",
-      duration: "3:12",
-      audioUrl: "https://cdn.freesound.org/previews/416/416632_5121236-lq.mp3",
-    },
-    {
-      id: "track-3",
-      title: "Birthday Ukulele Strum",
-      artist: "The Porch Jam",
-      duration: "1:58",
-      audioUrl: "https://cdn.freesound.org/previews/464/464902_5674468-lq.mp3",
+      title: "Kucing's Birthday Serenade",
+      artist: "Kucing Kelabu",
+      duration: "0:30",
+      audioUrl: "./music/kucingbdayguitar.mp3",
     }
   ],
 
@@ -239,8 +232,6 @@ Opanchu`,
       stampText: "AIR MAIL",
       date: "Sep 18, 2026",
       type: "typed",
-      audioUrl: "https://cdn.freesound.org/previews/416/416632_5121236-lq.mp3",
-      audioTitle: "Late Night Voice Note Memento",
       preview: "Happy birthday Monmonkyu! Genuinely so grateful for our late night chats and endless laughs...",
       content: `Happy birthday Monmonkyu!
 

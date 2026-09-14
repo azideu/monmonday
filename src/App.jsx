@@ -34,21 +34,78 @@ export default function App() {
   // Active modal for letter reading
   const [activeLetter, setActiveLetter] = useState(null);
 
-  // References for Audio
+  // References for Audio & Smooth Transitions
   const audioRef = useRef(null);
   const letterAudioRef = useRef(null);
   const wasBgPlayingBeforeLetter = useRef(false);
+  const bgFadeIntervalRef = useRef(null);
+  const letterFadeIntervalRef = useRef(null);
+  const isTransitioningAudioRef = useRef(false);
   const [isLetterAudioPlaying, setIsLetterAudioPlaying] = useState(false);
   const synthIntervalRef = useRef(null);
   const audioCtxRef = useRef(null);
 
+  // Normalization ceiling: -1.0 dBFS ceiling (10^(-1/20) ≈ 0.89125)
+  // Ensures any loaded audio file automatically stays within -1.0 dB without digital clipping
+  const NORMALIZED_CEILING_GAIN = Math.pow(10, -1 / 20); // ~0.89125
+  const getNormalizedVol = (v) => Math.max(0, Math.min(NORMALIZED_CEILING_GAIN, v * NORMALIZED_CEILING_GAIN));
+
   const currentTrack = playlist[currentTrackIndex] || playlist[0];
+
+  // Helper to smoothly fade audio volume over a specified duration (ms) with -1.0 dB ceiling normalization
+  const fadeAudio = (audioEl, fromVol, toVol, duration = 800, onComplete) => {
+    if (!audioEl) {
+      if (onComplete) onComplete();
+      return null;
+    }
+
+    const startVol = Math.max(0, Math.min(NORMALIZED_CEILING_GAIN, fromVol));
+    const targetVol = Math.max(0, Math.min(NORMALIZED_CEILING_GAIN, toVol));
+    const steps = 24;
+    const intervalTime = Math.max(16, Math.floor(duration / steps));
+    const volStep = (targetVol - startVol) / steps;
+    let currentStep = 0;
+
+    audioEl.volume = startVol;
+
+    const timer = setInterval(() => {
+      currentStep++;
+      const nextVol = Math.max(0, Math.min(NORMALIZED_CEILING_GAIN, startVol + volStep * currentStep));
+      try {
+        audioEl.volume = nextVol;
+      } catch {}
+
+      if (currentStep >= steps) {
+        clearInterval(timer);
+        try {
+          audioEl.volume = targetVol;
+        } catch {}
+        if (onComplete) onComplete();
+      }
+    }, intervalTime);
+
+    return timer;
+  };
+
+  const clearBgFade = () => {
+    if (bgFadeIntervalRef.current) {
+      clearInterval(bgFadeIntervalRef.current);
+      bgFadeIntervalRef.current = null;
+    }
+  };
+
+  const clearLetterFade = () => {
+    if (letterFadeIntervalRef.current) {
+      clearInterval(letterFadeIntervalRef.current);
+      letterFadeIntervalRef.current = null;
+    }
+  };
 
   // Initialize HTML5 Audio element
   useEffect(() => {
     const audio = new Audio();
     audio.src = currentTrack.audioUrl;
-    audio.volume = volume;
+    audio.volume = getNormalizedVol(volume);
     audio.loop = false;
 
     // Track finished -> auto advance
@@ -67,6 +124,8 @@ export default function App() {
     audioRef.current = audio;
 
     return () => {
+      clearBgFade();
+      clearLetterFade();
       audio.pause();
       stopSynthChimes();
       if (letterAudioRef.current) {
@@ -80,6 +139,7 @@ export default function App() {
     if (audioRef.current) {
       audioRef.current.src = currentTrack.audioUrl;
       if (isPlaying && !letterAudioRef.current) {
+        audioRef.current.volume = getNormalizedVol(volume);
         audioRef.current.play().catch(() => {
           startSynthChimes();
         });
@@ -87,70 +147,131 @@ export default function App() {
     }
   }, [currentTrackIndex]);
 
-  // Update volume for background player and any active letter audio
+  // Update volume for background player and any active letter audio when volume slider adjusts
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = volume;
-    }
-    if (letterAudioRef.current) {
-      letterAudioRef.current.volume = volume;
+    if (!isTransitioningAudioRef.current) {
+      const normalizedVol = getNormalizedVol(volume);
+      if (audioRef.current) {
+        audioRef.current.volume = normalizedVol;
+      }
+      if (letterAudioRef.current) {
+        letterAudioRef.current.volume = normalizedVol;
+      }
     }
   }, [volume]);
 
-  // Handle letter dedicated audio playback & background player coordination
+  // Handle letter dedicated audio playback & background player smooth transition
   useEffect(() => {
     const letterAudioSource = activeLetter?.audioUrl || activeLetter?.audio;
 
     if (activeLetter && letterAudioSource) {
-      // 1. If background music is playing, pause it gracefully and remember state
-      if (isPlaying) {
+      isTransitioningAudioRef.current = true;
+      clearBgFade();
+      clearLetterFade();
+
+      // 1. Check if background music is active
+      const bgWasPlaying = isPlaying || Boolean(synthIntervalRef.current);
+      if (bgWasPlaying) {
         wasBgPlayingBeforeLetter.current = true;
-        if (audioRef.current) {
-          audioRef.current.pause();
-        }
-        stopSynthChimes();
-        setIsPlaying(false);
       } else {
         wasBgPlayingBeforeLetter.current = false;
       }
 
-      // 2. Stop any existing letter audio instance
+      // Stop any prior letter audio
       if (letterAudioRef.current) {
         letterAudioRef.current.pause();
         letterAudioRef.current = null;
       }
 
-      // 3. Create and play letter audio
+      // 2. Prepare new letter audio starting from volume 0
       const letterAudio = new Audio(letterAudioSource);
-      letterAudio.volume = volume;
+      letterAudio.volume = 0;
       letterAudioRef.current = letterAudio;
 
       letterAudio.onplay = () => setIsLetterAudioPlaying(true);
-      letterAudio.onpause = () => setIsLetterAudioPlaying(false);
-      letterAudio.onended = () => setIsLetterAudioPlaying(false);
+      letterAudio.onpause = () => {
+        if (!isTransitioningAudioRef.current) {
+          setIsLetterAudioPlaying(false);
+        }
+      };
+      letterAudio.onended = () => {
+        setIsLetterAudioPlaying(false);
+      };
 
-      letterAudio.play().catch((err) => {
-        console.warn("Letter audio autoplay prevented or blocked:", err);
-      });
-    } else if (!activeLetter) {
-      // Letter closed: stop letter audio
-      if (letterAudioRef.current) {
-        letterAudioRef.current.pause();
-        letterAudioRef.current = null;
+      // 3. Smooth Crossfade: Fade out background music while fading in letter audio
+      if (bgWasPlaying && audioRef.current && !audioRef.current.paused) {
+        const currentBgVol = audioRef.current.volume;
+        bgFadeIntervalRef.current = fadeAudio(audioRef.current, currentBgVol, 0, 700, () => {
+          if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current.volume = getNormalizedVol(volume);
+          }
+          stopSynthChimes();
+          setIsPlaying(false);
+        });
+      } else {
+        stopSynthChimes();
+        setIsPlaying(false);
       }
-      setIsLetterAudioPlaying(false);
 
-      // Resume background music if it was playing before opening the letter
-      if (wasBgPlayingBeforeLetter.current) {
-        wasBgPlayingBeforeLetter.current = false;
-        if (audioRef.current) {
-          audioRef.current.play().then(() => {
-            setIsPlaying(true);
-          }).catch(() => {
-            setIsPlaying(true);
-            startSynthChimes();
+      // Play and fade in letter audio with subtle delay for organic crossfade warmth
+      setTimeout(() => {
+        if (letterAudioRef.current === letterAudio) {
+          letterAudio.play().then(() => {
+            setIsLetterAudioPlaying(true);
+            letterFadeIntervalRef.current = fadeAudio(letterAudio, 0, getNormalizedVol(volume), 800, () => {
+              isTransitioningAudioRef.current = false;
+            });
+          }).catch((err) => {
+            console.warn("Letter audio play prevented:", err);
+            isTransitioningAudioRef.current = false;
           });
         }
+      }, 150);
+
+    } else if (!activeLetter) {
+      // Letter modal closed
+      isTransitioningAudioRef.current = true;
+      clearBgFade();
+      clearLetterFade();
+
+      const endingLetterAudio = letterAudioRef.current;
+      const shouldResumeBg = wasBgPlayingBeforeLetter.current;
+      wasBgPlayingBeforeLetter.current = false;
+
+      // 1. Smoothly fade out letter audio
+      if (endingLetterAudio && !endingLetterAudio.paused) {
+        const currentLetterVol = endingLetterAudio.volume;
+        letterFadeIntervalRef.current = fadeAudio(endingLetterAudio, currentLetterVol, 0, 600, () => {
+          endingLetterAudio.pause();
+          if (letterAudioRef.current === endingLetterAudio) {
+            letterAudioRef.current = null;
+          }
+          setIsLetterAudioPlaying(false);
+        });
+      } else {
+        if (endingLetterAudio) {
+          endingLetterAudio.pause();
+          letterAudioRef.current = null;
+        }
+        setIsLetterAudioPlaying(false);
+      }
+
+      // 2. Smoothly resume and fade in background music if it was previously playing
+      if (shouldResumeBg && audioRef.current) {
+        audioRef.current.volume = 0;
+        audioRef.current.play().then(() => {
+          setIsPlaying(true);
+          bgFadeIntervalRef.current = fadeAudio(audioRef.current, 0, getNormalizedVol(volume), 900, () => {
+            isTransitioningAudioRef.current = false;
+          });
+        }).catch(() => {
+          setIsPlaying(true);
+          startSynthChimes();
+          isTransitioningAudioRef.current = false;
+        });
+      } else {
+        isTransitioningAudioRef.current = false;
       }
     }
     // Note: If activeLetter is open but has NO audio, do nothing!
@@ -186,7 +307,7 @@ export default function App() {
         osc.type = 'sine';
         osc.frequency.setValueAtTime(freq, ctx.currentTime);
 
-        const targetVol = volume * 0.15;
+        const targetVol = getNormalizedVol(volume) * 0.15;
         gain.gain.setValueAtTime(0, ctx.currentTime);
         gain.gain.linearRampToValueAtTime(targetVol, ctx.currentTime + 0.1);
         gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 2.5);
@@ -316,10 +437,22 @@ export default function App() {
         isLetterAudioPlaying={isLetterAudioPlaying}
         onToggleLetterAudio={() => {
           if (!letterAudioRef.current) return;
+          clearLetterFade();
           if (isLetterAudioPlaying) {
-            letterAudioRef.current.pause();
+            const curVol = letterAudioRef.current.volume;
+            letterFadeIntervalRef.current = fadeAudio(letterAudioRef.current, curVol, 0, 400, () => {
+              if (letterAudioRef.current) {
+                letterAudioRef.current.pause();
+                letterAudioRef.current.volume = getNormalizedVol(volume);
+              }
+              setIsLetterAudioPlaying(false);
+            });
           } else {
-            letterAudioRef.current.play().catch(console.warn);
+            letterAudioRef.current.volume = 0;
+            letterAudioRef.current.play().then(() => {
+              setIsLetterAudioPlaying(true);
+              letterFadeIntervalRef.current = fadeAudio(letterAudioRef.current, 0, getNormalizedVol(volume), 500);
+            }).catch(console.warn);
           }
         }}
       />
