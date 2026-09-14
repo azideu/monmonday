@@ -1,18 +1,58 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, User, Heart, Sparkles } from 'lucide-react';
+import { X, Calendar, Sparkles } from 'lucide-react';
+import IconRenderer from './IconRenderer.jsx';
 
 export default function LetterModal({ letter, isOpen, onClose }) {
-  // Close on Escape key
+  const modalRef = useRef(null);
+  const closeButtonRef = useRef(null);
+
+  // Trap focus and handle Escape
   useEffect(() => {
+    if (!isOpen) return;
+
+    // Focus close button on mount
+    const timer = setTimeout(() => {
+      if (closeButtonRef.current) {
+        closeButtonRef.current.focus();
+      }
+    }, 100);
+
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') {
+        onClose();
+        return;
+      }
+
+      // Focus trap within modal
+      if (e.key === 'Tab' && modalRef.current) {
+        const focusableElements = modalRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusableElements.length === 0) return;
+
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+          }
+        }
+      }
     };
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      window.addEventListener('keydown', handleKeyDown);
-    }
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
+
     return () => {
+      clearTimeout(timer);
       document.body.style.overflow = 'auto';
       window.removeEventListener('keydown', handleKeyDown);
     };
@@ -22,7 +62,12 @@ export default function LetterModal({ letter, isOpen, onClose }) {
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+      <div 
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="letter-dialog-title"
+      >
         {/* Soft backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
@@ -30,10 +75,12 @@ export default function LetterModal({ letter, isOpen, onClose }) {
           exit={{ opacity: 0 }}
           onClick={onClose}
           className="fixed inset-0 bg-slateAsh/40 backdrop-blur-sm transition-opacity"
+          aria-hidden="true"
         />
 
         {/* Letter Container */}
         <motion.div
+          ref={modalRef}
           initial={{ scale: 0.85, opacity: 0, y: 30 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.85, opacity: 0, y: 30 }}
@@ -46,11 +93,14 @@ export default function LetterModal({ letter, isOpen, onClose }) {
           {/* Header Bar */}
           <div className="bg-skyMist/75 border-b-2 border-skyMist/90 px-6 py-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-xl shadow-paper-sm border border-slateAsh/10">
-                {letter.sealIcon || '💌'}
+              <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-paper-sm border border-slateAsh/10">
+                <IconRenderer name={letter.sealIcon} className="w-5 h-5 text-slateAsh" fallback="heart" strokeWidth={2} />
               </div>
               <div>
-                <h3 className="font-bold text-slateAsh text-base sm:text-lg flex items-center gap-2">
+                <h3 
+                  id="letter-dialog-title"
+                  className="font-bold text-slateAsh text-base sm:text-lg flex items-center gap-2"
+                >
                   {letter.author}
                   <span className="text-xs px-2.5 py-0.5 rounded-full bg-white/80 border border-slateAsh/15 text-slateAsh/80 font-normal">
                     {letter.relationship}
@@ -63,6 +113,7 @@ export default function LetterModal({ letter, isOpen, onClose }) {
             </div>
 
             <button
+              ref={closeButtonRef}
               onClick={onClose}
               className="p-2 rounded-full hover:bg-white text-slateAsh/70 hover:text-slateAsh transition-colors border border-transparent hover:border-slateAsh/15"
               aria-label="Close letter"
@@ -101,14 +152,14 @@ export default function LetterModal({ letter, isOpen, onClose }) {
           </div>
 
           {/* Footer note */}
-          <div className="bg-[#FAF7F2] border-t border-slateAsh/10 px-6 py-3 flex items-center justify-between text-xs text-slateAsh/60">
+          <div className="bg-[#FFFDF9] border-t border-slateAsh/10 px-6 py-3 flex items-center justify-between text-xs text-slateAsh/60">
             <span className="flex items-center gap-1">
               <Sparkles className="w-3.5 h-3.5 text-buttercup" />
               Written for Monmonkyu
             </span>
             <button
               onClick={onClose}
-              className="font-medium text-slateAsh hover:underline"
+              className="font-medium text-slateAsh hover:underline focus:ring-2 focus:ring-skyMist rounded px-1"
             >
               Close
             </button>

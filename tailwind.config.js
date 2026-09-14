@@ -23,7 +23,7 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['Plus Jakarta Sans', 'Inter', 'system-ui', 'sans-serif'],
+        sans: ['Nunito', 'system-ui', 'sans-serif'],
         handwriting: ['Caveat', 'Patrick Hand', 'cursive'],
         serifDisplay: ['Playfair Display', 'serif'],
       },

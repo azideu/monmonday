@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import confetti from 'canvas-confetti';
-import { Sparkles, RefreshCw } from 'lucide-react';
+import { Sparkles, RefreshCw, Cloud } from 'lucide-react';
 
 export default function BirthdayCake({ celebration, celebrantName = "Monmonkyu" }) {
   const [isBlown, setIsBlown] = useState(false);
@@ -67,7 +67,7 @@ export default function BirthdayCake({ celebration, celebrantName = "Monmonkyu" 
       <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-paper border-2 border-slateAsh/15 relative overflow-hidden">
 
         {/* Subtitle / Header */}
-        <h3 className="font-bold text-slateAsh text-lg sm:text-xl font-sans mb-1">
+        <h3 className="font-bold text-slateAsh text-2xl sm:text-3xl font-serifDisplay mb-1">
           Make a wish
         </h3>
         <p className="text-xs text-slateAsh/70 font-sans max-w-xs mx-auto mb-6">
@@ -112,7 +112,7 @@ export default function BirthdayCake({ celebration, celebrantName = "Monmonkyu" 
             ) : (
               /* Smoke Puff when blown */
               <div className="h-8 flex items-center justify-center">
-                <span className="text-sm animate-bounce text-slateAsh/40">☁️</span>
+                <Cloud className="w-5 h-5 animate-smoke-rise text-slateAsh/50 select-none fill-slateAsh/10" strokeWidth={1.75} aria-hidden="true" />
               </div>
             )}
 

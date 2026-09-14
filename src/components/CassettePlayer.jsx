@@ -38,24 +38,44 @@ export default function CassettePlayer({
       {/* Cassette Shell */}
       <div className="relative bg-skyMist border-2 border-slateAsh/20 rounded-2xl p-5 shadow-paper transition-all duration-300 hover:shadow-paper-hover">
         {/* Screw holes in corners */}
-        <div className="absolute top-2 left-2 w-2 h-2 rounded-full border border-slateAsh/40 bg-white/70 flex items-center justify-center text-[7px] text-slateAsh/50">✕</div>
-        <div className="absolute top-2 right-2 w-2 h-2 rounded-full border border-slateAsh/40 bg-white/70 flex items-center justify-center text-[7px] text-slateAsh/50">✕</div>
-        <div className="absolute bottom-2 left-2 w-2 h-2 rounded-full border border-slateAsh/40 bg-white/70 flex items-center justify-center text-[7px] text-slateAsh/50">✕</div>
-        <div className="absolute bottom-2 right-2 w-2 h-2 rounded-full border border-slateAsh/40 bg-white/70 flex items-center justify-center text-[7px] text-slateAsh/50">✕</div>
+        <div className="absolute top-2.5 left-2.5 w-2 h-2 rounded-full border border-slateAsh/40 bg-white/70 flex items-center justify-center pointer-events-none" aria-hidden="true">
+          <svg viewBox="0 0 6 6" className="w-1.5 h-1.5 stroke-slateAsh/50" strokeWidth="1">
+            <line x1="1" y1="1" x2="5" y2="5" />
+            <line x1="5" y1="1" x2="1" y2="5" />
+          </svg>
+        </div>
+        <div className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full border border-slateAsh/40 bg-white/70 flex items-center justify-center pointer-events-none" aria-hidden="true">
+          <svg viewBox="0 0 6 6" className="w-1.5 h-1.5 stroke-slateAsh/50" strokeWidth="1">
+            <line x1="1" y1="1" x2="5" y2="5" />
+            <line x1="5" y1="1" x2="1" y2="5" />
+          </svg>
+        </div>
+        <div className="absolute bottom-2.5 left-2.5 w-2 h-2 rounded-full border border-slateAsh/40 bg-white/70 flex items-center justify-center pointer-events-none" aria-hidden="true">
+          <svg viewBox="0 0 6 6" className="w-1.5 h-1.5 stroke-slateAsh/50" strokeWidth="1">
+            <line x1="1" y1="1" x2="5" y2="5" />
+            <line x1="5" y1="1" x2="1" y2="5" />
+          </svg>
+        </div>
+        <div className="absolute bottom-2.5 right-2.5 w-2 h-2 rounded-full border border-slateAsh/40 bg-white/70 flex items-center justify-center pointer-events-none" aria-hidden="true">
+          <svg viewBox="0 0 6 6" className="w-1.5 h-1.5 stroke-slateAsh/50" strokeWidth="1">
+            <line x1="1" y1="1" x2="5" y2="5" />
+            <line x1="5" y1="1" x2="1" y2="5" />
+          </svg>
+        </div>
 
         {/* Cassette Label Inset */}
         <div className="bg-white rounded-xl p-3.5 border border-slateAsh/15 shadow-inner-paper">
           
           {/* Header on label */}
           <div className="flex items-center justify-between border-b border-dashed border-slateAsh/20 pb-1.5 mb-2.5">
-            <span className="text-[10px] font-bold tracking-widest text-slateAsh/70 uppercase">
+            <span className="text-xs font-bold tracking-widest text-slateAsh/70 uppercase">
               Side A
             </span>
             <div className="flex items-center gap-1">
-              <span className="text-[9px] font-mono bg-cloudWhite px-1.5 py-0.5 rounded border border-slateAsh/15 text-slateAsh font-semibold">
+              <span className="text-xs scale-90 inline-block font-mono bg-cloudWhite px-1.5 py-0.5 rounded border border-slateAsh/15 text-slateAsh font-semibold">
                 {formattedCounter}
               </span>
-              <span className="text-[10px] font-bold text-coralBlush">NR 40</span>
+              <span className="text-xs font-bold text-coralBlush">NR 40</span>
             </div>
           </div>
 
@@ -64,7 +84,7 @@ export default function CassettePlayer({
             <h4 className="font-handwriting text-lg text-slateAsh font-bold truncate leading-tight">
               {currentTrack?.title || "Birthday Mixtape"}
             </h4>
-            <p className="text-[11px] text-slateAsh/70 font-sans truncate">
+            <p className="text-xs text-slateAsh/70 font-sans truncate">
               {currentTrack?.artist || "For Monmonkyu"}
             </p>
           </div>
@@ -94,7 +114,7 @@ export default function CassettePlayer({
             </div>
 
             {/* Center viewing cutouts */}
-            <div className="z-10 bg-[#1E252E] px-2 py-0.5 rounded border border-slateAsh/40 text-[9px] text-amber-200/80 font-mono tracking-wider">
+            <div className="z-10 bg-[#1E252E] px-2 py-0.5 rounded border border-slateAsh/40 text-xs scale-90 origin-center inline-block text-amber-200/80 font-mono tracking-wider">
               {isPlaying ? 'PLAYING' : 'READY'}
             </div>
 

@@ -10,73 +10,79 @@ export default function Navbar({ celebrant, isPlaying, onToggleMusic, activeTrac
   };
 
   return (
-    <header className="sticky top-4 z-40 px-4 max-w-5xl mx-auto w-full mb-6">
-      <nav className="bg-white/90 backdrop-blur-md border-2 border-skyMist shadow-paper rounded-full px-5 py-2.5 flex items-center justify-between gap-3 transition-all duration-300">
+    <header className="sticky top-3 z-40 px-3 sm:px-4 max-w-5xl mx-auto w-full mb-4 sm:mb-6 select-none">
+      {/* Scrapbook Ribbon Navigation */}
+      <nav className="relative bg-white/95 backdrop-blur-md border-2 border-skyMist shadow-paper rounded-2xl px-4 py-2 flex items-center justify-between gap-2 sm:gap-4 transition-all">
         
-        {/* Celebrant brand / title */}
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-full bg-skyMist flex items-center justify-center text-slateAsh shadow-paper-sm border border-skyMist/80">
-            <Heart className="w-4 h-4 fill-coralBlush text-slateAsh" />
+        {/* Subtle washi tape pin accent */}
+        <div className="washi-tape absolute -top-2 left-6 w-16 h-4 bg-skyMist/90 rounded-xs -rotate-2 hidden sm:block border border-skyMist/70" />
+
+        {/* Celebrant brand */}
+        <div className="flex items-center gap-2">
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-skyMist flex items-center justify-center text-slateAsh shadow-paper-sm border border-skyMist/90">
+            <Heart className="w-3.5 h-3.5 fill-coralBlush text-slateAsh" />
           </div>
-          <div>
-            <span className="font-bold text-slateAsh tracking-tight text-sm md:text-base font-sans flex items-center gap-1.5">
-              {celebrant.name}'s Scrapbook
-              <span className="text-xs px-2.5 py-0.5 rounded-full bg-skyMist text-slateAsh font-semibold border border-skyMist/70">
-                {celebrant.birthdayDate}
-              </span>
+          <span className="font-bold text-slateAsh text-xs sm:text-sm font-sans flex items-center gap-1.5">
+            {celebrant.name}
+            <span className="text-xs px-2 py-0.5 rounded-full bg-skyMist/70 text-slateAsh font-semibold border border-skyMist/80">
+              {celebrant.birthdayDate}
             </span>
-          </div>
+          </span>
         </div>
 
-        {/* Navigation Quick Links */}
-        <div className="hidden sm:flex items-center gap-1.5 text-xs font-medium text-slateAsh">
-          <button
-            onClick={() => scrollToSection('mixtape-section')}
-            className="px-3 py-1.5 rounded-full hover:bg-skyMist/70 transition-colors flex items-center gap-1.5"
-          >
-            <Music className="w-3.5 h-3.5" />
-            <span>Mixtape</span>
-          </button>
+        {/* Scrapbook Bookmark Navigation Tabs */}
+        <div className="flex items-center gap-1 text-xs font-semibold text-slateAsh">
           <button
             onClick={() => scrollToSection('photos-section')}
-            className="px-3 py-1.5 rounded-full hover:bg-skyMist/70 transition-colors flex items-center gap-1.5"
+            className="px-2.5 py-1 rounded-lg hover:bg-skyMist/60 transition-colors flex items-center gap-1"
           >
-            <Image className="w-3.5 h-3.5" />
-            <span>Photos</span>
+            <Image className="w-3 h-3 text-slateAsh/80" />
+            <span className="hidden xs:inline sm:inline">Photos</span>
           </button>
+
           <button
             onClick={() => scrollToSection('letters-section')}
-            className="px-3 py-1.5 rounded-full hover:bg-skyMist/70 transition-colors flex items-center gap-1.5"
+            className="px-2.5 py-1 rounded-lg hover:bg-skyMist/60 transition-colors flex items-center gap-1"
           >
-            <Mail className="w-3.5 h-3.5" />
-            <span>Letters</span>
+            <Mail className="w-3 h-3 text-slateAsh/80" />
+            <span className="hidden xs:inline sm:inline">Letters</span>
           </button>
+
+          <button
+            onClick={() => scrollToSection('mixtape-section')}
+            className="px-2.5 py-1 rounded-lg hover:bg-skyMist/60 transition-colors flex items-center gap-1"
+          >
+            <Music className="w-3 h-3 text-slateAsh/80" />
+            <span className="hidden sm:inline">Music</span>
+          </button>
+
           <button
             onClick={() => scrollToSection('cake-section')}
-            className="px-3 py-1.5 rounded-full hover:bg-skyMist/70 transition-colors flex items-center gap-1.5"
+            className="px-2.5 py-1 rounded-lg hover:bg-skyMist/60 transition-colors flex items-center gap-1"
           >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Make a Wish</span>
+            <Sparkles className="w-3 h-3 text-slateAsh/80" />
+            <span className="hidden md:inline">Wish</span>
           </button>
         </div>
 
-        {/* Music Quick Control */}
+        {/* Music Quick Control with Organic Equalizer */}
         <button
           onClick={onToggleMusic}
           aria-label={isPlaying ? "Pause music" : "Play music"}
-          className={`flex items-center gap-2 text-xs font-medium px-3.5 py-1.5 rounded-full transition-all shadow-paper-sm ${
+          className={`flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-xl transition-all shadow-paper-sm ${
             isPlaying 
-              ? 'bg-skyMist text-slateAsh font-bold ring-2 ring-skyMist border border-skyMist/80 shadow-md' 
-              : 'bg-white border-2 border-skyMist text-slateAsh hover:bg-skyMist/40'
+              ? 'bg-skyMist text-slateAsh ring-2 ring-skyMist/80 border border-skyMist/90' 
+              : 'bg-cloudWhite border border-skyMist text-slateAsh hover:bg-skyMist/40'
           }`}
         >
-          <div className="flex items-end gap-0.5 h-3 w-3.5">
-            <span className={`w-1 bg-slateAsh rounded-full transition-all duration-300 ${isPlaying ? 'h-3 animate-pulse' : 'h-1.5'}`} />
-            <span className={`w-1 bg-slateAsh rounded-full transition-all duration-300 ${isPlaying ? 'h-2 animate-bounce' : 'h-2.5'}`} />
-            <span className={`w-1 bg-slateAsh rounded-full transition-all duration-300 ${isPlaying ? 'h-3.5 animate-pulse' : 'h-1'}`} />
+          {/* Smooth rhythmic equalizer bars (no bounce-easing) */}
+          <div className="flex items-end gap-0.5 h-3.5 w-3.5">
+            <span className={`w-1 bg-slateAsh rounded-full ${isPlaying ? 'animate-eq-1' : 'h-1.5'}`} />
+            <span className={`w-1 bg-slateAsh rounded-full ${isPlaying ? 'animate-eq-2' : 'h-2.5'}`} />
+            <span className={`w-1 bg-slateAsh rounded-full ${isPlaying ? 'animate-eq-3' : 'h-1'}`} />
           </div>
-          <span className="hidden md:inline truncate max-w-[110px]">
-            {isPlaying ? (activeTrack?.title || 'Playing') : 'Play Tunes'}
+          <span className="hidden md:inline truncate max-w-[100px]">
+            {isPlaying ? (activeTrack?.title || 'Playing') : 'Music'}
           </span>
         </button>
 
