@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Sparkles } from 'lucide-react';
+import { Mail, Sparkles, Image as ImageIcon } from 'lucide-react';
 import IconRenderer from './IconRenderer.jsx';
 
-export default function LetterEnvelope({ letter, onOpenLetter, index }) {
+export default function LetterEnvelope({ letter, onOpenLetter, index, defaultRecipient = "Monmonkyu" }) {
   const [isHovered, setIsHovered] = useState(false);
+
+  const recipient = letter?.recipientNickname || letter?.recipient || letter?.to || defaultRecipient;
+  const hasImages = Boolean(
+    letter?.scanUrl ||
+    letter?.imageUrl ||
+    letter?.image ||
+    (Array.isArray(letter?.images) && letter.images.length > 0)
+  );
 
   // Organic slight tilts for realism
   const tilts = ['-2deg', '1.5deg', '-1deg', '2deg'];
@@ -35,7 +43,7 @@ export default function LetterEnvelope({ letter, onOpenLetter, index }) {
         }}
         tabIndex={0}
         role="button"
-        aria-label={`Open letter from ${letter.author}`}
+        aria-label={`Open letter from ${letter.author} to ${recipient}`}
         className={`relative w-72 md:w-80 h-52 rounded-xl p-4 cursor-pointer shadow-paper transition-shadow duration-300 hover:shadow-paper-hover border border-slateAsh/15 overflow-hidden ${letter.envelopeColor || 'bg-skyMist'
           }`}
       >
@@ -91,8 +99,8 @@ export default function LetterEnvelope({ letter, onOpenLetter, index }) {
             <span className="text-xs uppercase font-mono tracking-widest text-slateAsh/60 block">
               To:
             </span>
-            <span className="font-handwriting text-2xl text-slateAsh font-bold">
-              Monmonkyu
+            <span className="font-handwriting text-2xl text-slateAsh font-bold truncate block">
+              {recipient}
             </span>
           </div>
 
@@ -100,9 +108,20 @@ export default function LetterEnvelope({ letter, onOpenLetter, index }) {
             <span className="font-sans font-medium flex items-center gap-1 truncate max-w-[170px]">
               From: <strong className="font-bold text-slateAsh">{letter.author}</strong>
             </span>
-            <span className="text-xs font-mono text-slateAsh/60 bg-white/60 px-2 py-0.5 rounded-full border border-slateAsh/10">
-              {letter.date}
-            </span>
+            <div className="flex items-center gap-1.5">
+              {hasImages && (
+                <span 
+                  className="inline-flex items-center gap-0.5 text-[10px] font-mono text-slateAsh/70 bg-white/70 px-1.5 py-0.5 rounded-full border border-slateAsh/15"
+                  title="Contains photo/image attachments"
+                >
+                  <ImageIcon className="w-2.5 h-2.5" />
+                  <span>photo</span>
+                </span>
+              )}
+              <span className="text-xs font-mono text-slateAsh/60 bg-white/60 px-2 py-0.5 rounded-full border border-slateAsh/10">
+                {letter.date}
+              </span>
+            </div>
           </div>
         </div>
 

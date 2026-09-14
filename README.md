@@ -62,30 +62,54 @@ Add or modify entries in `birthdayConfig.letters`:
 ```javascript
 {
   id: "letter-1",
-  author: "Maya",
-  relationship: "Best Friend",
+  author: "Akari",
+  relationship: "Dear Friend",
+  recipientNickname: "Monmonkyu", // Custom nickname written on front of envelope
   envelopeColor: "bg-[#D4F1FF]",
   sealColor: "#FFD6D6",
-  sealIcon: "🌸",
+  sealIcon: "flower",
   date: "Sep 18, 2026",
-  type: "typed", // or "handwritten" with scanUrl
+  type: "typed", // or "handwritten"
   content: "Your letter text goes here...",
+
+  // OPTION 1: Handwritten letter scan
+  // Place your image file in public/photos/ or use a web URL
+  scanUrl: "/photos/akari_letter_scan.jpg",
+  scanCaption: "Handwritten note on stationery",
+
+  // OPTION 2: Attached photos / doodles / memorabilia
+  // You can provide multiple photos with captions:
+  images: [
+    {
+      url: "/photos/beach_trip.jpg",
+      caption: "Our beach day last summer!",
+    },
+    {
+      url: "/photos/doodle.png",
+      caption: "A little doodle I drew for your bday",
+    }
+  ],
+  // OR simply a single image:
+  // imageUrl: "/photos/photo.jpg",
+  // imageCaption: "A fun memory",
 }
 ```
+*Note: Any image or scan can be clicked inside the letter modal to view full-size in a lightbox.*
 
-### Photos
+### Photos (Polaroids)
 Add or modify entries in `birthdayConfig.polaroids`:
 ```javascript
 {
   id: "photo-1",
-  imageUrl: "https://... or /photos/pic.jpg",
+  imageUrl: "/photos/campfire.jpg", // or web URL
   caption: "Campfire night",
   date: "July 2025",
   location: "Pine Lake",
   backNote: "Note written on the back of the photo.",
-  doodle: "⛺",
+  doodle: "tent",
 }
 ```
 
-### Music
-Add your own audio file URLs or paths to `birthdayConfig.playlist`.
+### Adding Images and Music Files
+- Put images or scans in `public/photos/` (e.g. `public/photos/myphoto.jpg`) and reference them in `content.js` as `"/photos/myphoto.jpg"`.
+- Put audio in `public/music/` (e.g. `public/music/song.mp3`) and reference them in `content.js` as `"/music/song.mp3"`.

@@ -9,12 +9,12 @@ const SKY_MIST_COLOR = {
 
 export default function FluidCursor({
   enabled = true,
-  densityDissipation = 3.5,
-  velocityDissipation = 2,
+  densityDissipation = 4.8,
+  velocityDissipation = 2.5,
   pressure = 0.1,
-  curl = 3,
-  splatRadius = 0.2,
-  splatForce = 6000,
+  curl = 2,
+  splatRadius = 0.14,
+  splatForce = 3500,
   transparent = true,
   className = '',
 }) {
@@ -343,11 +343,13 @@ export default function FluidCursor({
           vec3 n = normalize(vec3(dx, dy, length(texelSize)));
           vec3 l = vec3(0.0, 0.0, 1.0);
 
-          float diffuse = clamp(dot(n, l) + 0.7, 0.7, 1.0);
-          c *= diffuse;
+          float diffuse = clamp(dot(n, l) + 0.3, 0.3, 0.75);
+          c *= diffuse * 0.55;
+        #else
+          c *= 0.55;
         #endif
 
-        float a = max(c.r, max(c.g, c.b));
+        float a = max(c.r, max(c.g, c.b)) * 0.65;
         gl_FragColor = vec4(c, a);
       }
     `;
@@ -731,7 +733,7 @@ export default function FluidCursor({
 
     // Strictly generate only #D4F1FF (Sky Mist)
     function generateColor() {
-      const intensity = 0.35;
+      const intensity = 0.2;
       return {
         r: SKY_MIST_COLOR.r * intensity,
         g: SKY_MIST_COLOR.g * intensity,
@@ -900,12 +902,12 @@ export default function FluidCursor({
 
     function clickSplat(pointer) {
       const color = generateColor();
-      // Click burst in #D4F1FF
-      color.r *= 4;
-      color.g *= 4;
-      color.b *= 4;
-      const dx = 10 * (Math.random() - 0.5);
-      const dy = 30 * (Math.random() - 0.5);
+      // Gentle click burst in #D4F1FF
+      color.r *= 1.25;
+      color.g *= 1.25;
+      color.b *= 1.25;
+      const dx = 6 * (Math.random() - 0.5);
+      const dy = 16 * (Math.random() - 0.5);
       splat(pointer.texcoordX, pointer.texcoordY, dx, dy, color);
     }
 
@@ -1095,7 +1097,7 @@ export default function FluidCursor({
 
   return (
     <div
-      className={`pointer-events-none fixed inset-0 z-40 w-full h-full overflow-hidden ${className}`}
+      className={`pointer-events-none fixed inset-0 z-10 w-full h-full overflow-hidden opacity-100 transition-opacity duration-300 ${className}`}
       aria-hidden="true"
     >
       <canvas

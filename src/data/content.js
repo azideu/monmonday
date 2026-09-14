@@ -10,10 +10,10 @@ export const birthdayConfig = {
   playlist: [
     {
       id: "track-1",
-      title: "Sunny Afternoon Memories",
-      artist: "Acoustic Friends",
+      title: "Happy Birthday! (but jazz)",
+      artist: "Akari",
       duration: "2:45",
-      audioUrl: "https://cdn.freesound.org/previews/518/518305_5674468-lq.mp3",
+      audioUrl: "./music/akarihappybday.mp3",
     },
     {
       id: "track-2",
@@ -37,6 +37,7 @@ export const birthdayConfig = {
       id: "letter-akari",
       author: "Akari",
       relationship: "Dear Friend",
+      recipientNickname: "ati <3",
       envelopeColor: "bg-[#D4F1FF]", // Sky Mist
       sealColor: "#FFD6D6", // Soft Coral Blush
       sealIcon: "flower",
@@ -57,6 +58,7 @@ Akari`,
       id: "letter-alin",
       author: "Alin",
       relationship: "Creative Buddy",
+      recipientNickname: "Mon-chan",
       envelopeColor: "bg-[#FFEE8C]", // Buttercup Glow
       sealColor: "#C8F7DC", // Pastel Mint
       sealIcon: "sparkles",
@@ -77,11 +79,12 @@ Alin`,
       id: "letter-fiyoll",
       author: "Fiyoll",
       relationship: "Music & Gaming Pal",
+      recipientNickname: "Mon",
       envelopeColor: "bg-[#C8F7DC]", // Pastel Mint
       sealColor: "#E5DBFF", // Pale Lilac
       sealIcon: "coffee",
       stampText: "PRIORITY",
-      date: "Sep 13, 2026",
+      date: "Sep 17, 2026",
       type: "typed",
       preview: "Yo Monmonkyu! Time to queue up the birthday tracks and take it easy...",
       content: `Yo Monmonkyu!
@@ -99,11 +102,12 @@ Fiyoll`,
       id: "letter-kai",
       author: "Kai",
       relationship: "Adventure Partner",
+      recipientNickname: "Monmon",
       envelopeColor: "bg-[#FFD6D6]", // Soft Coral Blush
       sealColor: "#FFEE8C", // Buttercup Glow
       sealIcon: "tent",
       stampText: "EXPRESS",
-      date: "Sep 13, 2026",
+      date: "Sep 17, 2026",
       type: "typed",
       preview: "Happy birthday buddy! Thinking about our spontaneous weekend getaways and trail walks...",
       content: `Hey Monmonkyu,
@@ -119,11 +123,12 @@ Kai`,
       id: "letter-kiwan",
       author: "Kiwan",
       relationship: "Study & Tea Mate",
+      recipientNickname: "Kyu",
       envelopeColor: "bg-[#E5DBFF]", // Pale Lilac
       sealColor: "#D4F1FF", // Sky Mist
       sealIcon: "leaf",
       stampText: "FIRST CLASS",
-      date: "Sep 13, 2026",
+      date: "Sep 17, 2026",
       type: "typed",
       preview: "Warmest birthday wishes! Remembering all those quiet study hours and boba breaks...",
       content: `Dearest Monmonkyu,
@@ -139,6 +144,7 @@ Kiwan`,
       id: "letter-kucing-kelabu",
       author: "Kucing Kelabu",
       relationship: "The Gray Cat & Confidant",
+      recipientNickname: "Hooman",
       envelopeColor: "bg-[#D4F1FF]", // Sky Mist
       sealColor: "#FFD6D6", // Soft Coral Blush
       sealIcon: "heart",
@@ -159,11 +165,12 @@ Kucing Kelabu`,
       id: "letter-marci",
       author: "Marci",
       relationship: "Karaoke Crew",
+      recipientNickname: "Monkyu",
       envelopeColor: "bg-[#FFEE8C]", // Buttercup Glow
       sealColor: "#C8F7DC", // Pastel Mint
       sealIcon: "cake",
       stampText: "SPECIAL",
-      date: "Sep 12, 2026",
+      date: "Sep 16, 2026",
       type: "typed",
       preview: "HAPPY BIRTHDAY!! Ready for another round of singing early 2000s classics at full blast?...",
       content: `HAPPY BIRTHDAY MONMONKYU!!
@@ -179,11 +186,12 @@ Marci`,
       id: "letter-meguri",
       author: "Meguri",
       relationship: "Sunshine Friend",
+      recipientNickname: "Monmonkyu",
       envelopeColor: "bg-[#C8F7DC]", // Pastel Mint
       sealColor: "#FFD6D6", // Soft Coral Blush
       sealIcon: "gift",
       stampText: "PARCEL",
-      date: "Sep 12, 2026",
+      date: "Sep 16, 2026",
       type: "typed",
       preview: "Happy birthday Monmonkyu! Just wanted to remind you how deeply appreciated you are...",
       content: `Happy birthday Monmonkyu!
@@ -199,6 +207,7 @@ Meguri`,
       id: "letter-opanchu",
       author: "Opanchu",
       relationship: "Cheerleader",
+      recipientNickname: "Monmon~",
       envelopeColor: "bg-[#FFD6D6]", // Soft Coral Blush
       sealColor: "#E5DBFF", // Pale Lilac
       sealIcon: "camera",
@@ -219,6 +228,7 @@ Opanchu`,
       id: "letter-zai",
       author: "Zai",
       relationship: "Late Night Voice Notes",
+      recipientNickname: "Monmon",
       envelopeColor: "bg-[#E5DBFF]", // Pale Lilac
       sealColor: "#FFEE8C", // Buttercup Glow
       sealIcon: "mail",

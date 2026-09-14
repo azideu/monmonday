@@ -126,6 +126,7 @@ export default function ScrapbookBoard({
               letter={letter}
               index={index}
               onOpenLetter={onOpenLetter}
+              defaultRecipient={celebrant?.name || "Monmonkyu"}
             />
           ))}
         </div>

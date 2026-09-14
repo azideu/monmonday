@@ -170,15 +170,15 @@ export default function App() {
   return (
     <div className="min-h-screen bg-scrapbook-pattern relative text-slateAsh selection:bg-buttercup selection:text-slateAsh">
       
-      {/* Interactive WebGL Fluid Cursor (#D4F1FF Sky Mist only) */}
+      {/* Interactive WebGL Fluid Cursor (Soft #D4F1FF Sky Mist) */}
       <FluidCursor
         enabled={isFluidEnabled}
-        densityDissipation={3.5}
-        velocityDissipation={2}
+        densityDissipation={4.8}
+        velocityDissipation={2.5}
         pressure={0.1}
-        curl={3}
-        splatRadius={0.2}
-        splatForce={6000}
+        curl={2}
+        splatRadius={0.14}
+        splatForce={3500}
         transparent={true}
       />
 
@@ -216,6 +216,7 @@ export default function App() {
         letter={activeLetter}
         isOpen={Boolean(activeLetter)}
         onClose={() => setActiveLetter(null)}
+        celebrantName={celebrant.name}
       />
 
       {/* Audio Autoplay primer modal */}
