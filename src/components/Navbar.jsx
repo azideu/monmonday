@@ -21,9 +21,6 @@ export default function Navbar({
       {/* Scrapbook Ribbon Navigation: 3-column balanced layout */}
       <nav className="relative bg-white/95 backdrop-blur-md border-2 border-skyMist shadow-paper rounded-2xl px-3 sm:px-5 py-2 flex items-center justify-between gap-2 transition-all">
         
-        {/* Subtle washi tape pin accent */}
-        <div className="washi-tape absolute -top-2 left-6 w-16 h-4 bg-skyMist/90 rounded-xs -rotate-2 hidden sm:block border border-skyMist/70" />
-
         {/* LEFT COLUMN: Celebrant brand */}
         <div className="flex items-center gap-2 shrink-0 min-w-0">
           <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-skyMist flex items-center justify-center text-slateAsh shadow-paper-sm border border-skyMist/90 shrink-0">

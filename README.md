@@ -62,7 +62,7 @@ Add or modify entries in `birthdayConfig.letters`:
 ```javascript
 {
   id: "letter-1",
-  author: "Akari",
+  author: "akari",
   relationship: "Dear Friend",
   recipientNickname: "Monmonkyu", // Custom nickname written on front of envelope
   envelopeColor: "bg-[#D4F1FF]",
