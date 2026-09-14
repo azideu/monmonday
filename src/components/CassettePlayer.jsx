@@ -152,53 +152,59 @@ export default function CassettePlayer({
             </p>
           </div>
 
-          {/* Cassette Tape Spools Window */}
-          <div className="relative bg-[#2A3442] rounded-lg p-2.5 h-16 flex items-center justify-around border border-slateAsh/40 shadow-inner">
+          {/* Cassette Tape Spools Window with fixed reel anchoring */}
+          <div className="relative bg-[#2A3442] rounded-lg px-6 py-2.5 h-16 grid grid-cols-[44px_1fr_44px] items-center border border-slateAsh/40 shadow-inner">
             {/* Magnetic tape bridge */}
-            <div className="absolute inset-x-8 top-1/2 -translate-y-1/2 h-4 bg-[#1E252E] rounded flex items-center justify-center overflow-hidden">
+            <div className="absolute inset-x-8 top-1/2 -translate-y-1/2 h-4 bg-[#1E252E] rounded flex items-center justify-center overflow-hidden pointer-events-none">
               <div className="w-full h-1 bg-amber-900/60" />
             </div>
 
-            {/* Left Reel */}
-            <div 
-              className={`relative z-10 w-11 h-11 rounded-full bg-white border-2 border-slateAsh flex items-center justify-center shadow-md overflow-hidden transition-transform duration-700 ease-linear ${
-                isPlaying ? 'animate-spin' : ''
-              }`}
-              style={{ animationDuration: '3s' }}
-            >
-              {/* Spool Cross Teeth */}
-              <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                <span className="absolute w-full h-0.5 bg-slateAsh/30" />
-                <span className="absolute w-0.5 h-full bg-slateAsh/30" />
-                <span className="absolute w-full h-0.5 bg-slateAsh/30 rotate-45" />
-                <span className="absolute w-full h-0.5 bg-slateAsh/30 -rotate-45" />
-              </div>
-              <div className="relative z-10 w-5 h-5 rounded-full bg-slateAsh/25 flex items-center justify-center border border-slateAsh/20">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#2A3442]" />
+            {/* Left Reel (Fixed position) */}
+            <div className="relative z-10 w-11 h-11 justify-self-center">
+              <div 
+                className={`w-full h-full rounded-full bg-white border-2 border-slateAsh flex items-center justify-center shadow-md overflow-hidden ${
+                  isPlaying ? 'animate-spin' : ''
+                }`}
+                style={{ animationDuration: '3s' }}
+              >
+                {/* Spool Cross Teeth */}
+                <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+                  <span className="absolute w-full h-0.5 bg-slateAsh/30" />
+                  <span className="absolute w-0.5 h-full bg-slateAsh/30" />
+                  <span className="absolute w-full h-0.5 bg-slateAsh/30 rotate-45" />
+                  <span className="absolute w-full h-0.5 bg-slateAsh/30 -rotate-45" />
+                </div>
+                <div className="relative z-10 w-5 h-5 rounded-full bg-slateAsh/25 flex items-center justify-center border border-slateAsh/20">
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#2A3442]" />
+                </div>
               </div>
             </div>
 
-            {/* Center viewing cutouts */}
-            <div className="z-10 bg-[#1E252E] px-2 py-0.5 rounded border border-slateAsh/40 text-xs scale-90 origin-center inline-block text-amber-200/80 font-mono tracking-wider">
-              {isPlaying ? 'PLAYING' : 'READY'}
+            {/* Center viewing cutouts (Fixed width to avoid any spacing shift) */}
+            <div className="z-10 justify-self-center flex items-center justify-center">
+              <div className="w-20 text-center bg-[#1E252E] py-0.5 rounded border border-slateAsh/40 text-xs font-mono tracking-wider text-amber-200/80">
+                {isPlaying ? 'PLAYING' : 'READY'}
+              </div>
             </div>
 
-            {/* Right Reel */}
-            <div 
-              className={`relative z-10 w-11 h-11 rounded-full bg-white border-2 border-slateAsh flex items-center justify-center shadow-md overflow-hidden transition-transform duration-700 ease-linear ${
-                isPlaying ? 'animate-spin' : ''
-              }`}
-              style={{ animationDuration: '3s' }}
-            >
-              {/* Spool Cross Teeth */}
-              <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-                <span className="absolute w-full h-0.5 bg-slateAsh/30" />
-                <span className="absolute w-0.5 h-full bg-slateAsh/30" />
-                <span className="absolute w-full h-0.5 bg-slateAsh/30 rotate-45" />
-                <span className="absolute w-full h-0.5 bg-slateAsh/30 -rotate-45" />
-              </div>
-              <div className="relative z-10 w-5 h-5 rounded-full bg-slateAsh/25 flex items-center justify-center border border-slateAsh/20">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#2A3442]" />
+            {/* Right Reel (Fixed position) */}
+            <div className="relative z-10 w-11 h-11 justify-self-center">
+              <div 
+                className={`w-full h-full rounded-full bg-white border-2 border-slateAsh flex items-center justify-center shadow-md overflow-hidden ${
+                  isPlaying ? 'animate-spin' : ''
+                }`}
+                style={{ animationDuration: '3s' }}
+              >
+                {/* Spool Cross Teeth */}
+                <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+                  <span className="absolute w-full h-0.5 bg-slateAsh/30" />
+                  <span className="absolute w-0.5 h-full bg-slateAsh/30" />
+                  <span className="absolute w-full h-0.5 bg-slateAsh/30 rotate-45" />
+                  <span className="absolute w-full h-0.5 bg-slateAsh/30 -rotate-45" />
+                </div>
+                <div className="relative z-10 w-5 h-5 rounded-full bg-slateAsh/25 flex items-center justify-center border border-slateAsh/20">
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#2A3442]" />
+                </div>
               </div>
             </div>
           </div>
