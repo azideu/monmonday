@@ -7,8 +7,8 @@
 web
 
 ## Users
-- Primary recipient: Monmonkyu (celebrating birthday on September 14).
-- Contributing creators: Close friends and family (e.g., Maya, Jordan & Sam, Grandma Elena) contributing letters, memories, photos, and music.
+- Primary recipient: Monmonkyu (celebrating birthday on September 18).
+- Contributing creators: Close friends and loved ones (Akari, Alin, Fiyoll, Kai, Kiwan, Kucing Kelabu, Marci, Meguri, Opanchu, Zai) contributing letters, memories, photos, and music.
 
 ## Product Purpose
 A personal digital scrapbook and interactive birthday keepsake created to celebrate Monmonkyu. It brings together heartfelt letters, nostalgic photos, a curated playlist, and tactile celebratory moments into an intimate, enduring web experience.

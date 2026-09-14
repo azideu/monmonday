@@ -1,7 +1,7 @@
 export const birthdayConfig = {
   celebrant: {
     name: "Monmonkyu",
-    birthdayDate: "September 14",
+    birthdayDate: "September 18",
     title: "Happy Birthday Monmonkyu!",
     subtitle: "We pulled together some favorite photos, letters from everyone, and a playlist for your birthday.",
   },
@@ -34,94 +34,207 @@ export const birthdayConfig = {
   // Letters from friends
   letters: [
     {
-      id: "letter-1",
-      author: "Maya",
-      relationship: "Best Friend",
+      id: "letter-akari",
+      author: "Akari",
+      relationship: "Dear Friend",
       envelopeColor: "bg-[#D4F1FF]", // Sky Mist
       sealColor: "#FFD6D6", // Soft Coral Blush
       sealIcon: "flower",
       stampText: "AIR MAIL",
-      date: "Sep 14, 2026",
+      date: "Sep 18, 2026",
       type: "typed",
-      preview: "Looking back at photos from this past year, almost half of them involve our 2 AM voice notes...",
+      preview: "Wishing you the brightest, most peaceful birthday! Thank you for always bringing sunshine...",
       content: `Happy birthday Monmonkyu!
 
-I was looking back at photos from this past year and realized almost half of them involve our 2 AM voice notes, ridiculous inside jokes, and those last-minute boba runs when neither of us felt like doing actual work.
+Wishing you the brightest, most peaceful birthday! Thank you for always bringing sunshine, warmth, and steady encouragement wherever you go.
 
-You are genuinely the first person I message when weird things happen during my day, mostly because I know you will laugh before asking if I am okay. Thank you for always being in my corner, even when my ideas make zero sense.
+I hope today is filled with delicious treats, sweet music, and time to unwind. May this coming year bring you closer to all your dreams and passions.
 
-I hope today is quiet and relaxing, you get food you actually enjoy, and we make time for another terrible karaoke session soon.
-
-Love you lots,
-Maya`,
+With all my love and warmest wishes,
+Akari`,
     },
     {
-      id: "letter-2",
-      author: "Jordan & Sam",
-      relationship: "The Hiking Trio",
+      id: "letter-alin",
+      author: "Alin",
+      relationship: "Creative Buddy",
       envelopeColor: "bg-[#FFEE8C]", // Buttercup Glow
       sealColor: "#C8F7DC", // Pastel Mint
-      sealIcon: "leaf",
+      sealIcon: "sparkles",
+      stampText: "SPECIAL",
+      date: "Sep 18, 2026",
+      type: "typed",
+      preview: "Happy birthday to my favorite collaborator and sounding board! Another year of making cool things...",
+      content: `Happy birthday Monmonkyu!
+
+Happy birthday to my favorite creative partner in crime and best sounding board! Another year of making cool things, bouncing wild ideas back and forth, and celebrating the little creative wins.
+
+Your imagination and attention to detail inspire everyone around you. Take a breather today, eat an extra slice of cake, and let us make this next chapter even more fun.
+
+Cheers to you,
+Alin`,
+    },
+    {
+      id: "letter-fiyoll",
+      author: "Fiyoll",
+      relationship: "Music & Gaming Pal",
+      envelopeColor: "bg-[#C8F7DC]", // Pastel Mint
+      sealColor: "#E5DBFF", // Pale Lilac
+      sealIcon: "coffee",
       stampText: "PRIORITY",
       date: "Sep 13, 2026",
       type: "typed",
-      preview: "We were just talking about that hike where it started downpouring two miles from the car...",
-      content: `Hey buddy,
+      preview: "Yo Monmonkyu! Time to queue up the birthday tracks and take it easy...",
+      content: `Yo Monmonkyu!
 
-Happy birthday!
+Happy birthday! Time to queue up the birthday tracks, kick back, and take it totally easy today.
 
-We were just talking about that hike where it started pouring two miles from the car and we sheltered under that half-broken tarp eating squished peanut butter sandwiches. You somehow stayed in a great mood the entire time, singing early 2000s pop songs completely off-key.
+Always appreciate our gaming sessions and all the random tunes you share that end up on repeat for weeks. Never stop having great taste and being such an awesome person to hang out with.
 
-Seriously, you are always the first person we text when planning any trip. Everything is just way more fun when you are there.
+Catch you online soon for our next round!
 
-Have a great birthday. The next camp food run is on us.
-
-Jordan & Sam`,
+Best,
+Fiyoll`,
     },
     {
-      id: "letter-3",
-      author: "Grandma Elena",
-      relationship: "Grandmother",
+      id: "letter-kai",
+      author: "Kai",
+      relationship: "Adventure Partner",
       envelopeColor: "bg-[#FFD6D6]", // Soft Coral Blush
-      sealColor: "#E5DBFF", // Pale Lilac
-      sealIcon: "heart",
+      sealColor: "#FFEE8C", // Buttercup Glow
+      sealIcon: "tent",
+      stampText: "EXPRESS",
+      date: "Sep 13, 2026",
+      type: "typed",
+      preview: "Happy birthday buddy! Thinking about our spontaneous weekend getaways and trail walks...",
+      content: `Hey Monmonkyu,
+
+Happy birthday buddy! Thinking back on our spontaneous road trips, hiking trails, and the random food stops we made along the way. Every outing is ten times better when you are part of the crew.
+
+Hope your special day gives you all the joy and good vibes you deserve. The next trip and camp snack run are definitely on me.
+
+Have a blast,
+Kai`,
+    },
+    {
+      id: "letter-kiwan",
+      author: "Kiwan",
+      relationship: "Study & Tea Mate",
+      envelopeColor: "bg-[#E5DBFF]", // Pale Lilac
+      sealColor: "#D4F1FF", // Sky Mist
+      sealIcon: "leaf",
       stampText: "FIRST CLASS",
+      date: "Sep 13, 2026",
+      type: "typed",
+      preview: "Warmest birthday wishes! Remembering all those quiet study hours and boba breaks...",
+      content: `Dearest Monmonkyu,
+
+Warmest birthday wishes to you! Remembering all those quiet café hours, long study marathons, and refreshing tea breaks we shared this past year.
+
+You bring such a calming, grounding presence into any room you enter, and I am so grateful to have you in my life. May this new year grant you clarity, happiness, and good health.
+
+Warm regards,
+Kiwan`,
+    },
+    {
+      id: "letter-kucing-kelabu",
+      author: "Kucing Kelabu",
+      relationship: "The Gray Cat & Confidant",
+      envelopeColor: "bg-[#D4F1FF]", // Sky Mist
+      sealColor: "#FFD6D6", // Soft Coral Blush
+      sealIcon: "heart",
+      stampText: "MEOW MAIL",
+      date: "Sep 18, 2026",
+      type: "typed",
+      preview: "Purr purr... Happy birthday human! Sending you soft paws, warm lap naps, and quiet purrs...",
+      content: `Purr purr... Happy birthday Monmonkyu!
+
+Sending you soft paws, warm lap naps, and the gentlest purrs on your special day. Thank you for the head scratches, the quiet company, and always making room for me on your chair.
+
+Remember that taking long naps, enjoying good food, and relaxing in sunny spots is essential life wisdom. You are doing wonderfully.
+
+Soft headbonks,
+Kucing Kelabu`,
+    },
+    {
+      id: "letter-marci",
+      author: "Marci",
+      relationship: "Karaoke Crew",
+      envelopeColor: "bg-[#FFEE8C]", // Buttercup Glow
+      sealColor: "#C8F7DC", // Pastel Mint
+      sealIcon: "cake",
+      stampText: "SPECIAL",
       date: "Sep 12, 2026",
       type: "typed",
-      preview: "I was thinking about you this morning and remembering when you were little...",
-      content: `My dearest Monmonkyu,
+      preview: "HAPPY BIRTHDAY!! Ready for another round of singing early 2000s classics at full blast?...",
+      content: `HAPPY BIRTHDAY MONMONKYU!!
 
-Happy birthday!
+Ready for another round of singing early 2000s classics completely off-key at full blast? Because you know that celebration is mandatory!
 
-I was thinking about you this morning and remembering when you were small, sitting on the kitchen counter asking a hundred questions while I tried to bake cookies. You still have that same curious, thoughtful nature today.
+You bring so much laughter and genuine energy to everyone around you. I hope you get spoiled with gifts, great food, and endless birthday dessert today.
 
-I am so proud of the person you have grown into, and how kindly you treat the people around you.
-
-Make sure you eat a very big slice of cake today. Sending you my love and a big hug.
-
-Grandma Elena`,
+Let us celebrate soon!
+Marci`,
     },
     {
-      id: "letter-4",
-      author: "Chris",
-      relationship: "College Roommate",
+      id: "letter-meguri",
+      author: "Meguri",
+      relationship: "Sunshine Friend",
+      envelopeColor: "bg-[#C8F7DC]", // Pastel Mint
+      sealColor: "#FFD6D6", // Soft Coral Blush
+      sealIcon: "gift",
+      stampText: "PARCEL",
+      date: "Sep 12, 2026",
+      type: "typed",
+      preview: "Happy birthday Monmonkyu! Just wanted to remind you how deeply appreciated you are...",
+      content: `Happy birthday Monmonkyu!
+
+I just wanted to take a moment today to remind you how deeply appreciated and cherished you are. Your kindness, patience, and thoughtful check-ins never go unnoticed.
+
+I hope you take some time to celebrate yourself and everything you have accomplished this year. May your birthday be as sweet and lovely as you are!
+
+Big hugs,
+Meguri`,
+    },
+    {
+      id: "letter-opanchu",
+      author: "Opanchu",
+      relationship: "Cheerleader",
+      envelopeColor: "bg-[#FFD6D6]", // Soft Coral Blush
+      sealColor: "#E5DBFF", // Pale Lilac
+      sealIcon: "camera",
+      stampText: "LOVE",
+      date: "Sep 18, 2026",
+      type: "typed",
+      preview: "HAPPY BIRTHDAY MONMONKYU!! Wishing you the happiest day full of smiles and treats!...",
+      content: `HAPPY BIRTHDAY MONMONKYU!!
+
+Wishing you the happiest, most delightful day ever! Let us snap a million more silly photos and make even more hilarious memories this year.
+
+Always rooting for you in everything you do! Don't forget to make a big wish when you blow out the candle!
+
+Lots of cheers and love,
+Opanchu`,
+    },
+    {
+      id: "letter-zai",
+      author: "Zai",
+      relationship: "Late Night Voice Notes",
       envelopeColor: "bg-[#E5DBFF]", // Pale Lilac
       sealColor: "#FFEE8C", // Buttercup Glow
-      sealIcon: "coffee",
-      stampText: "SPECIAL",
-      date: "Sep 14, 2026",
+      sealIcon: "mail",
+      stampText: "AIR MAIL",
+      date: "Sep 18, 2026",
       type: "typed",
-      preview: "Still wild thinking about our dorm days living off instant noodles and barely surviving finals week...",
-      content: `Monmonkyu!
+      preview: "Happy birthday Monmonkyu! Genuinely so grateful for our late night chats and endless laughs...",
+      content: `Happy birthday Monmonkyu!
 
-Happy birthday man! Still wild thinking about our dorm days living off instant noodles and barely surviving finals week.
+Genuinely so grateful for our late-night voice notes, sharing random life updates, and always knowing we have got each other's back no matter what.
 
-You have had a huge year and it has been great watching you pull everything off without losing your mind in the process.
+You are one of the realest, most supportive friends anyone could ask for. Here is to another year of great conversations, big wins, and peace of mind.
 
-Let us get dinner together this weekend. First round of coffee is on you though.
-
-Chris`,
-    }
+Always in your corner,
+Zai`,
+    },
   ],
 
   // Polaroid memories with secret notes on reverse side

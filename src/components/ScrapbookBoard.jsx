@@ -52,10 +52,10 @@ export default function ScrapbookBoard({
         </div>
 
         {/* Fluid Effect Toggle Switch & Hint */}
-        <div className="flex flex-col items-center justify-center gap-1.5 mt-4">
-          <div className="flex items-center gap-3 bg-white/85 backdrop-blur-xs px-3.5 py-1.5 rounded-full border border-skyMist shadow-paper-sm text-xs font-semibold text-slateAsh">
-            <span className="flex items-center gap-1.5">
-              <Waves className="w-3.5 h-3.5 text-slateAsh" />
+        <div className="flex flex-col items-center justify-center gap-2 mt-5">
+          <div className="flex items-center gap-3 bg-white/90 backdrop-blur-xs px-4 py-2 rounded-full border border-skyMist shadow-paper-sm text-xs sm:text-sm font-semibold text-slateAsh">
+            <span className="flex items-center gap-2">
+              <Waves className="w-4 h-4 text-slateAsh" />
               Enable Effect
             </span>
             <button
@@ -63,19 +63,21 @@ export default function ScrapbookBoard({
               role="switch"
               aria-checked={isFluidEnabled}
               onClick={onToggleFluid}
-              className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none cursor-pointer ${
-                isFluidEnabled ? 'bg-skyMist border border-slateAsh/30' : 'bg-slateAsh/20'
+              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                isFluidEnabled ? 'bg-skyMist border-skyMist/80' : 'bg-slateAsh/25'
               }`}
             >
+              <span className="sr-only">Enable effect</span>
               <span
-                className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow-xs transition-transform ${
-                  isFluidEnabled ? 'translate-x-4.5 bg-slateAsh' : 'translate-x-0.5'
+                aria-hidden="true"
+                className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-paper-sm border border-slateAsh/15 transition-transform duration-200 ease-in-out ${
+                  isFluidEnabled ? 'translate-x-5' : 'translate-x-0'
                 }`}
               />
             </button>
           </div>
           {isFluidEnabled && (
-            <span className="text-xs font-handwriting text-slateAsh/60 tracking-wide">
+            <span className="text-xs sm:text-sm font-handwriting text-slateAsh/70 tracking-wide transition-opacity duration-300">
               Hover anywhere
             </span>
           )}

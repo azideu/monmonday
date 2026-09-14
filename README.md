@@ -51,7 +51,7 @@ Edit the name, date, and headings in `birthdayConfig.celebrant`:
 ```javascript
 celebrant: {
   name: "Monmonkyu",
-  birthdayDate: "September 14",
+  birthdayDate: "September 18",
   title: "Happy Birthday Monmonkyu!",
   subtitle: "A collection of photos, letters, and tunes for your birthday.",
 }
@@ -67,7 +67,7 @@ Add or modify entries in `birthdayConfig.letters`:
   envelopeColor: "bg-[#D4F1FF]",
   sealColor: "#FFD6D6",
   sealIcon: "🌸",
-  date: "Sep 14, 2026",
+  date: "Sep 18, 2026",
   type: "typed", // or "handwritten" with scanUrl
   content: "Your letter text goes here...",
 }
