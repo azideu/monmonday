@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Disc, Activity } from 'lucide-react';
+import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Disc, Activity, Download, Check, Loader2, Music } from 'lucide-react';
+import JSZip from 'jszip';
 import { playDeckClick } from '../utils/soundEffects.js';
 
 export default function CassettePlayer({
@@ -17,6 +18,8 @@ export default function CassettePlayer({
   const [localTime, setLocalTime] = useState(0);
   const [vuLeft, setVuLeft] = useState(15);
   const [vuRight, setVuRight] = useState(20);
+  const [downloadStatus, setDownloadStatus] = useState('idle'); // 'idle' | 'loading' | 'success' | 'error'
+  const [downloadProgress, setDownloadProgress] = useState('');
 
   // Counter simulation & Audio-reactive VU meter animation
   useEffect(() => {
@@ -64,10 +67,128 @@ export default function CassettePlayer({
     onPrevTrack();
   };
 
+  const handleDownloadZip = async () => {
+    if (downloadStatus === 'loading') return;
+    playDeckClick();
+    setDownloadStatus('loading');
+    setDownloadProgress('Preparing...');
+
+    try {
+      const zip = new JSZip();
+
+      // Resolve URL relative to the current page base (works with Vite base './')
+      const resolveUrl = (url) => {
+        if (!url) return '';
+        if (url.startsWith('http://') || url.startsWith('https://')) return url;
+        return new URL(url, document.baseURI || window.location.href).href;
+      };
+
+      // Prepare track list to download
+      const tracksToZip = [];
+
+      if (Array.isArray(playlist) && playlist.length > 0) {
+        playlist.forEach((track, index) => {
+          const num = String(index + 1).padStart(2, '0');
+          const safeTitle = (track.title || `Track ${index + 1}`).replace(/[/\\?%*:|"<>]/g, '-');
+          const safeArtist = (track.artist || 'Artist').replace(/[/\\?%*:|"<>]/g, '-');
+          tracksToZip.push({
+            filename: `${num} - ${safeArtist} - ${safeTitle}.mp3`,
+            url: track.audioUrl,
+            title: track.title,
+            artist: track.artist,
+          });
+        });
+      }
+
+      // Also include bonus guitar track (take 2) if present in /music/
+      const bonusUrl = './music/akaribdayguitar2.mp3';
+      tracksToZip.push({
+        filename: `${String(tracksToZip.length + 1).padStart(2, '0')} - akari - Happy Birthday! (Guitar Acoustic - Take 2).mp3`,
+        url: bonusUrl,
+        title: 'Happy Birthday! (Guitar Acoustic - Take 2)',
+        artist: 'akari',
+        isBonus: true,
+      });
+
+      let fetchedSuccess = 0;
+      for (let i = 0; i < tracksToZip.length; i++) {
+        const item = tracksToZip[i];
+        setDownloadProgress(`Zipping track ${i + 1}/${tracksToZip.length}...`);
+        try {
+          const res = await fetch(resolveUrl(item.url));
+          if (res.ok) {
+            const blob = await res.blob();
+            zip.file(item.filename, blob);
+            fetchedSuccess++;
+          } else if (!item.isBonus) {
+            console.warn(`Could not load audio track: ${item.url}`);
+          }
+        } catch (err) {
+          if (!item.isBonus) {
+            console.warn(`Error fetching ${item.filename}:`, err);
+          }
+        }
+      }
+
+      if (fetchedSuccess === 0) {
+        throw new Error('No audio tracks could be retrieved.');
+      }
+
+      // Add a sweet tracklist / birthday message note
+      const tracklistNote = [
+        "=========================================",
+        "   MON'S BDAY PLAYLIST - ACOUSTIC TAPES  ",
+        "=========================================",
+        "",
+        "Happy 22nd Birthday, Mon! 🎂✨",
+        "From all your favorite people and furry friends.",
+        "",
+        "TRACKLIST:",
+        ...tracksToZip.slice(0, fetchedSuccess).map((t, idx) => `  ${String(idx + 1).padStart(2, '0')}. ${t.artist} - ${t.title}`),
+        "",
+        "Enjoy the tunes and have the wonderful birthday you deserve! 💖"
+      ].join('\n');
+
+      zip.file('liner-notes.txt', tracklistNote);
+
+      setDownloadProgress('Packaging zip...');
+      const zipContent = await zip.generateAsync({
+        type: 'blob',
+        compression: 'DEFLATE',
+        compressionOptions: { level: 6 }
+      });
+
+      // Trigger automatic browser download
+      const downloadUrl = URL.createObjectURL(zipContent);
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.download = "mon's bday playlist.zip";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(downloadUrl);
+
+      setDownloadStatus('success');
+      setDownloadProgress('Downloaded!');
+      setTimeout(() => {
+        setDownloadStatus('idle');
+        setDownloadProgress('');
+      }, 3500);
+    } catch (error) {
+      console.error('Failed to download zip:', error);
+      setDownloadStatus('error');
+      setDownloadProgress('Failed. Tap to retry');
+      setTimeout(() => {
+        setDownloadStatus('idle');
+        setDownloadProgress('');
+      }, 4000);
+    }
+  };
+
   return (
-    <div id="mixtape-section" className="relative group w-full max-w-md mx-auto">
+    <div className="relative group w-full max-w-md mx-auto">
       {/* Decorative washi tape pinning cassette to board */}
-      <div 
+      <div
         className="washi-tape absolute -top-3 left-1/2 -translate-x-1/2 w-28 h-6 bg-buttercup/80 z-20 rounded-sm -rotate-1 border border-amber-200/50"
       />
 
@@ -101,7 +222,7 @@ export default function CassettePlayer({
 
         {/* Cassette Label Inset */}
         <div className="bg-white rounded-xl p-3.5 border border-slateAsh/15 shadow-inner-paper">
-          
+
           {/* Header on label with Analog Dual VU Meter */}
           <div className="flex items-center justify-between border-b border-dashed border-slateAsh/20 pb-2 mb-2.5">
             <div className="flex items-center gap-2">
@@ -115,7 +236,7 @@ export default function CassettePlayer({
                 <div className="flex items-center gap-1">
                   <span className="text-[10px] font-mono font-bold text-slateAsh/60">L</span>
                   <div className="w-9 h-2.5 bg-slateAsh/15 rounded-xs relative overflow-hidden flex items-center">
-                    <div 
+                    <div
                       className="h-full bg-linear-to-r from-pastelMint via-buttercup to-coralBlush transition-all duration-100 ease-out rounded-xs"
                       style={{ width: `${vuLeft}%` }}
                     />
@@ -125,7 +246,7 @@ export default function CassettePlayer({
                 <div className="flex items-center gap-1">
                   <span className="text-[10px] font-mono font-bold text-slateAsh/60">R</span>
                   <div className="w-9 h-2.5 bg-slateAsh/15 rounded-xs relative overflow-hidden flex items-center">
-                    <div 
+                    <div
                       className="h-full bg-linear-to-r from-pastelMint via-buttercup to-coralBlush transition-all duration-100 ease-out rounded-xs"
                       style={{ width: `${vuRight}%` }}
                     />
@@ -161,10 +282,9 @@ export default function CassettePlayer({
 
             {/* Left Reel (Fixed position) */}
             <div className="relative z-10 w-11 h-11 justify-self-center">
-              <div 
-                className={`w-full h-full rounded-full bg-white border-2 border-slateAsh flex items-center justify-center shadow-md overflow-hidden ${
-                  isPlaying ? 'animate-spin' : ''
-                }`}
+              <div
+                className={`w-full h-full rounded-full bg-white border-2 border-slateAsh flex items-center justify-center shadow-md overflow-hidden ${isPlaying ? 'animate-spin' : ''
+                  }`}
                 style={{ animationDuration: '3s' }}
               >
                 {/* Spool Cross Teeth */}
@@ -189,10 +309,9 @@ export default function CassettePlayer({
 
             {/* Right Reel (Fixed position) */}
             <div className="relative z-10 w-11 h-11 justify-self-center">
-              <div 
-                className={`w-full h-full rounded-full bg-white border-2 border-slateAsh flex items-center justify-center shadow-md overflow-hidden ${
-                  isPlaying ? 'animate-spin' : ''
-                }`}
+              <div
+                className={`w-full h-full rounded-full bg-white border-2 border-slateAsh flex items-center justify-center shadow-md overflow-hidden ${isPlaying ? 'animate-spin' : ''
+                  }`}
                 style={{ animationDuration: '3s' }}
               >
                 {/* Spool Cross Teeth */}
@@ -225,11 +344,10 @@ export default function CassettePlayer({
             <button
               onClick={handlePlayToggle}
               title={isPlaying ? "Pause" : "Play"}
-              className={`px-4 py-2 rounded-lg font-bold flex items-center gap-1.5 transition-all shadow-paper-sm active:scale-95 border border-slateAsh/15 cursor-pointer ${
-                isPlaying 
-                  ? 'bg-coralBlush text-slateAsh hover:brightness-105' 
-                  : 'bg-pastelMint text-slateAsh hover:brightness-105'
-              }`}
+              className={`px-4 py-2 rounded-lg font-bold flex items-center gap-1.5 transition-all shadow-paper-sm active:scale-95 border border-slateAsh/15 cursor-pointer ${isPlaying
+                ? 'bg-coralBlush text-slateAsh hover:brightness-105'
+                : 'bg-pastelMint text-slateAsh hover:brightness-105'
+                }`}
             >
               {isPlaying ? <Pause className="w-4 h-4 fill-slateAsh" /> : <Play className="w-4 h-4 fill-slateAsh" />}
               <span className="text-xs">{isPlaying ? "Pause" : "Play"}</span>
@@ -273,6 +391,49 @@ export default function CassettePlayer({
           </div>
         </div>
 
+      </div>
+
+      {/* Button below the cassette tape to download all music */}
+      <div className="mt-4 flex flex-col items-center justify-center">
+        <button
+          onClick={handleDownloadZip}
+          disabled={downloadStatus === 'loading'}
+          title='Download all music in a zip file named "mon&#39;s bday playlist"'
+          aria-label='Download all music in a zip file named "mon&#39;s bday playlist"'
+          className={`group/dl relative inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all duration-200 cursor-pointer shadow-paper active:scale-95 border ${downloadStatus === 'success'
+            ? 'bg-pastelMint text-slateAsh border-emerald-300'
+            : downloadStatus === 'error'
+              ? 'bg-coralBlush text-slateAsh border-red-300'
+              : 'bg-white/95 hover:bg-white text-slateAsh border-slateAsh/15 hover:border-slateAsh/30 hover:shadow-paper-hover'
+            }`}
+        >
+          {downloadStatus === 'loading' ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin text-slateAsh/70" />
+              <span>{downloadProgress || 'Zipping playlist...'}</span>
+            </>
+          ) : downloadStatus === 'success' ? (
+            <>
+              <Check className="w-4 h-4 text-emerald-700 stroke-[2.5]" />
+              <span>Downloaded mon's bday playlist! 🎉</span>
+            </>
+          ) : downloadStatus === 'error' ? (
+            <>
+              <Download className="w-4 h-4 text-rose-600" />
+              <span>{downloadProgress || 'Download failed • Retry'}</span>
+            </>
+          ) : (
+            <>
+              <Download className="w-4 h-4 text-slateAsh/70 group-hover/dl:translate-y-0.5 transition-transform" />
+              <span>Download "mon's bday playlist" (.zip)</span>
+            </>
+          )}
+        </button>
+
+        <p className="mt-1.5 text-[11px] text-slateAsh/60 flex items-center gap-1.5 font-sans">
+          <Music className="w-3 h-3 text-slateAsh/45 inline" />
+          <span>All birthday tunes in one zip file</span>
+        </p>
       </div>
     </div>
   );
