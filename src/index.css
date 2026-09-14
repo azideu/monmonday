@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  body {
+    background-color: #EBF7FD;
+    color: #3E4A5B;
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* Custom subtle scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #EBF7FD;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #D4F1FF;
+    border-radius: 4px;
+    border: 2px solid #EBF7FD;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #B6E6FD;
+  }
+}
+
+/* 3D Transform Utilities for Polaroid Flip & Envelope */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* Washi Tape styling */
+.washi-tape {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(1px);
+  box-shadow: 0 1px 3px rgba(62, 74, 91, 0.08);
+  position: relative;
+}
+
+.washi-tape::before,
+.washi-tape::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(62, 74, 91, 0.1) 2px,
+    rgba(62, 74, 91, 0.1) 4px
+  );
+}
+.washi-tape::before {
+  left: -2px;
+}
+.washi-tape::after {
+  right: -2px;
+}
+
+/* Paper Grain background pattern */
+.bg-scrapbook-pattern {
+  background-color: #EBF7FD;
+  background-image: radial-gradient(#BEE7FD 1px, transparent 1px), radial-gradient(#D4F1FF 1px, #EBF7FD 1px);
+  background-size: 28px 28px;
+  background-position: 0 0, 14px 14px;
+}
+
+/* Stationery ruled lines for typed letters */
+.lined-paper {
+  background-color: #FFFDF9;
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 31px,
+    rgba(212, 241, 255, 0.7) 31px,
+    rgba(212, 241, 255, 0.7) 32px
+  );
+  line-height: 32px;
+}
