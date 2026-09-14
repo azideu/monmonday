@@ -104,13 +104,13 @@ export default function LetterModal({ letter, isOpen, onClose }) {
           <div className="bg-[#FAF7F2] border-t border-slateAsh/10 px-6 py-3 flex items-center justify-between text-xs text-slateAsh/60">
             <span className="flex items-center gap-1">
               <Sparkles className="w-3.5 h-3.5 text-buttercup" />
-              Written with love for Monmonkyu's Birthday
+              Written for Monmonkyu
             </span>
             <button
               onClick={onClose}
               className="font-medium text-slateAsh hover:underline"
             >
-              Fold Letter
+              Close
             </button>
           </div>
 

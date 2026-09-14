@@ -3,18 +3,16 @@ export const birthdayConfig = {
     name: "Monmonkyu",
     birthdayDate: "September 14",
     title: "Happy Birthday Monmonkyu!",
-    subtitle: "A digital scrapbook woven with memories, letters, and wishes from all of us.",
+    subtitle: "We pulled together some favorite photos, letters from everyone, and a playlist for your birthday.",
   },
 
   // Background audio playlist
-  // Note: Supports direct audio URLs (.mp3, .ogg, etc.) or synthesized melodic chimes
   playlist: [
     {
       id: "track-1",
       title: "Sunny Afternoon Memories",
       artist: "Acoustic Friends",
       duration: "2:45",
-      // Reliable public domain / free acoustic lofi audio sample
       audioUrl: "https://cdn.freesound.org/previews/518/518305_5674468-lq.mp3",
     },
     {
@@ -38,24 +36,24 @@ export const birthdayConfig = {
     {
       id: "letter-1",
       author: "Maya",
-      relationship: "Best Friend since High School",
+      relationship: "Best Friend",
       envelopeColor: "bg-[#D4F1FF]", // Sky Mist
       sealColor: "#FFD6D6", // Soft Coral Blush
       sealIcon: "🌸",
       stampText: "AIR MAIL",
       date: "Sep 14, 2026",
-      type: "typed", // 'typed' or 'handwritten'
-      preview: "To the person who makes every boring Tuesday feel like an adventure...",
-      content: `Dear Monmonkyu,
+      type: "typed",
+      preview: "Looking back at photos from this past year, almost half of them involve our 2 AM voice notes...",
+      content: `Happy birthday Monmonkyu!
 
-Happy, happy birthday! Looking back at this past year, I honestly don't know what I would have done without our 2 AM voice notes and spontaneous boba runs.
+I was looking back at photos from this past year and realized almost half of them involve our 2 AM voice notes, ridiculous inside jokes, and those last-minute boba runs when neither of us felt like doing actual work.
 
-You have this rare gift of making everyone in the room feel heard and valued. Never lose that spark of curiosity and infectious laughter that pulls everyone in.
+You are genuinely the first person I message when weird things happen during my day, mostly because I know you will laugh before asking if I am okay. Thank you for always being in my corner, even when my ideas make zero sense.
 
-May this year bring you all the quiet peace you deserve and all the wild adventures your heart is craving. Here's to another year of shared jokes, bad karaoke, and memories we'll still be laughing about when we're 80.
+I hope today is quiet and relaxing, you get food you actually enjoy, and we make time for another terrible karaoke session soon.
 
-With so much love,
-Maya ❤️`,
+Love you lots,
+Maya`,
     },
     {
       id: "letter-2",
@@ -67,19 +65,18 @@ Maya ❤️`,
       stampText: "PRIORITY",
       date: "Sep 13, 2026",
       type: "typed",
-      preview: "Remember that time we got completely lost in the fog on Mt. Tam...",
+      preview: "We were just talking about that hike where it started downpouring two miles from the car...",
       content: `Hey buddy,
 
-Happy Birthday! 
+Happy birthday!
 
-Remember that time we got completely soaked on the trail and ended up eating squished PB&J sandwiches under a tarp? That's still hands down one of our favorite days ever. You were the only one who kept our spirits high by making up ridiculous songs.
+We were just talking about that hike where it started pouring two miles from the car and we sheltered under that half-broken tarp eating squished peanut butter sandwiches. You somehow stayed in a great mood the entire time, singing early 2000s pop songs completely off-key.
 
-You are the most dependable, kind-hearted friend anyone could ask for on any trail—literal or metaphorical. 
+Seriously, you are always the first person we text when planning any trip. Everything is just way more fun when you are there.
 
-Have the happiest celebration today! Next summit trip is on us.
+Have a great birthday. The next camp food run is on us.
 
-Cheers,
-Jordan & Sam 🥾`,
+Jordan & Sam`,
     },
     {
       id: "letter-3",
@@ -91,17 +88,18 @@ Jordan & Sam 🥾`,
       stampText: "FIRST CLASS",
       date: "Sep 12, 2026",
       type: "typed",
-      preview: "My sweetest grandchild, watching you grow into such a kind soul...",
+      preview: "I was thinking about you this morning and remembering when you were little...",
       content: `My dearest Monmonkyu,
 
-Watching you grow into such a gracious, caring, and radiant human being has been the greatest joy of my life.
+Happy birthday!
 
-I still remember when you were small enough to fit on my lap, asking endless questions about how birds fly and why the ocean is blue. You still carry that same bright wonder in your eyes today.
+I was thinking about you this morning and remembering when you were small, sitting on the kitchen counter asking a hundred questions while I tried to bake cookies. You still have that same curious, thoughtful nature today.
 
-Always remember that you are deeply loved, no matter how far apart we might be. Eat an extra slice of cake for me today!
+I am so proud of the person you have grown into, and how kindly you treat the people around you.
 
-All my love and blessings,
-Grandma Elena ✨`,
+Make sure you eat a very big slice of cake today. Sending you my love and a big hug.
+
+Grandma Elena`,
     },
     {
       id: "letter-4",
@@ -113,17 +111,16 @@ Grandma Elena ✨`,
       stampText: "SPECIAL",
       date: "Sep 14, 2026",
       type: "typed",
-      preview: "Another year wiser, though we still argue about how to make coffee...",
+      preview: "Still wild thinking about our dorm days living off instant noodles and barely surviving finals week...",
       content: `Monmonkyu!
 
-Happy birthday man! Still can't believe another year has flown by. Thinking back to our dorm days studying until sunrise with bad instant ramen—we've come a long way.
+Happy birthday man! Still wild thinking about our dorm days living off instant noodles and barely surviving finals week.
 
-I'm so proud of everything you've accomplished this year. You've worked tirelessly, stayed humble, and always made time for the people around you.
+You have had a huge year and it has been great watching you pull everything off without losing your mind in the process.
 
-Let's catch up properly this weekend. First round of coffee is definitely on you though 😉
+Let us get dinner together this weekend. First round of coffee is on you though.
 
-Your bro,
-Chris ☕`,
+Chris`,
     }
   ],
 
@@ -132,50 +129,50 @@ Chris ☕`,
     {
       id: "photo-1",
       imageUrl: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=700&q=80",
-      caption: "Summer bonfire night by the lake 🔥",
+      caption: "Campfire by the lake",
       date: "July 2025",
       location: "Pine Lake",
       tapeColor: "bg-[#D4F1FF]/80", // Sky Mist
       tapeRotation: "-2deg",
       cardTilt: "-3deg",
-      backNote: "We burned half the marshmallows and sang along to 2000s throwbacks until 3 AM. One of the best nights of our lives.",
-      doodle: "✨ ⛺ ✨",
+      backNote: "We burned half the marshmallows, dropped the graham crackers in the dirt, and talked until 3 AM.",
+      doodle: "⛺",
     },
     {
       id: "photo-2",
       imageUrl: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=700&q=80",
-      caption: "Spontaneous roadtrip to the coast 🌊",
+      caption: "Road trip stop along the coast",
       date: "October 2025",
       location: "Big Sur",
       tapeColor: "bg-[#FFEE8C]/80", // Buttercup
       tapeRotation: "3deg",
       cardTilt: "2deg",
-      backNote: "Our tire almost gave up on Highway 1, but this sunset stop made every bit of stress melt away instantly.",
-      doodle: "🚗 💨 🌅",
+      backNote: "The car made a terrifying rattling noise right before this turn, but this view made everyone forget about it.",
+      doodle: "🚗",
     },
     {
       id: "photo-3",
       imageUrl: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=700&q=80",
-      caption: "Surprise picnic that almost got rained out 🧺",
+      caption: "Picnic in the park",
       date: "April 2026",
       location: "Golden Park",
       tapeColor: "bg-[#D4F1FF]/90", // Sky Mist
       tapeRotation: "-1.5deg",
       cardTilt: "-1.5deg",
-      backNote: "Five minutes after this picture was taken, the heavens opened up and we had to sprint under the gazebo holding the pizza box like a shield.",
-      doodle: "🍕 ☔ 🏃",
+      backNote: "About five minutes after this picture, it started pouring and we had to sprint for the gazebo with the pizza boxes.",
+      doodle: "🍕",
     },
     {
       id: "photo-4",
       imageUrl: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=700&q=80",
-      caption: "Last year's birthday blowout 🎉",
+      caption: "Birthday party last year",
       date: "September 2025",
       location: "Rooftop Studio",
       tapeColor: "bg-[#D4F1FF]/80", // Sky Mist
       tapeRotation: "2.5deg",
       cardTilt: "3.5deg",
-      backNote: "Look at that genuine smile! Hope this year brings twice as many laughs and memories.",
-      doodle: "🎂 🎈 🥳",
+      backNote: "Still laughing at how the candles on that cake managed to set off the smoke alarm almost immediately.",
+      doodle: "🎂",
     }
   ],
 
@@ -191,7 +188,7 @@ Chris ☕`,
       '#FFD6D6', // Soft Coral Blush
       '#E5DBFF', // Pale Lilac
     ],
-    wishPrompt: "Make a wish and click to blow out the candle!",
-    blownMessage: "✨ Wish granted! May this year be your brightest chapter yet. ✨",
+    wishPrompt: "Make a wish, then click the candle to blow it out.",
+    blownMessage: "Candle blown! Hope this year treats you well.",
   }
 };

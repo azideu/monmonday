@@ -68,12 +68,12 @@ export default function BirthdayCake({ celebration, celebrantName = "Monmonkyu" 
 
         {/* Subtitle / Header */}
         <h3 className="font-bold text-slateAsh text-lg sm:text-xl font-sans mb-1">
-          Make a Birthday Wish!
+          Make a wish
         </h3>
         <p className="text-xs text-slateAsh/70 font-sans max-w-xs mx-auto mb-6">
-          {!isBlown
-            ? "Close your eyes, think of something wonderful, and click the candle to blow it out."
-            : "Your wish has been cast into the universe!"}
+          {!isBlown 
+            ? "Think of a wish and click the candle to blow it out." 
+            : "Candle blown!"}
         </p>
 
         {/* Interactive Cake Illustration */}
@@ -167,13 +167,13 @@ export default function BirthdayCake({ celebration, celebrantName = "Monmonkyu" 
               className="px-5 py-2.5 rounded-full bg-skyMist text-slateAsh font-bold text-xs shadow-paper-sm hover:shadow-paper hover:brightness-105 active:scale-95 transition-all flex items-center gap-2 border-2 border-skyMist/80"
             >
               <Sparkles className="w-4 h-4 text-slateAsh" />
-              Blow Out the Candle
+              Blow out the candle
             </button>
           ) : (
             <div className="space-y-3 animate-fade-in">
               <div className="p-3 bg-skyMist/60 rounded-xl border-2 border-skyMist/80 text-slateAsh">
                 <p className="font-handwriting text-xl font-bold">
-                  {celebration?.blownMessage || "✨ Wish granted! ✨"}
+                  {celebration?.blownMessage || "Candle blown!"}
                 </p>
               </div>
               <button
@@ -181,7 +181,7 @@ export default function BirthdayCake({ celebration, celebrantName = "Monmonkyu" 
                 className="inline-flex items-center gap-1.5 text-xs text-slateAsh/70 hover:text-slateAsh font-medium transition-colors"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
-                Relight candle & make another wish ({wishCount})
+                Relight candle ({wishCount})
               </button>
             </div>
           )}

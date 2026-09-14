@@ -88,7 +88,7 @@ export default function LetterEnvelope({ letter, onOpenLetter, index }) {
         <div className="absolute bottom-3 left-4 right-4 z-10">
           <div className="border-b border-dashed border-slateAsh/25 pb-1 mb-1">
             <span className="text-[10px] uppercase font-mono tracking-widest text-slateAsh/60 block">
-              Special Delivery For:
+              To:
             </span>
             <span className="font-handwriting text-2xl text-slateAsh font-bold">
               Monmonkyu
@@ -112,7 +112,7 @@ export default function LetterEnvelope({ letter, onOpenLetter, index }) {
         >
           <div className="bg-white/90 text-slateAsh text-xs font-semibold px-3 py-1.5 rounded-full shadow-paper-sm border border-slateAsh/15 flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-coralBlush" />
-            Click to unfold letter
+            Click to open
           </div>
         </div>
 

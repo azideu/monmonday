@@ -49,7 +49,7 @@ export default function CassettePlayer({
           {/* Header on label */}
           <div className="flex items-center justify-between border-b border-dashed border-slateAsh/20 pb-1.5 mb-2.5">
             <span className="text-[10px] font-bold tracking-widest text-slateAsh/70 uppercase">
-              Side A • Hi-Fi Stereo
+              Side A
             </span>
             <div className="flex items-center gap-1">
               <span className="text-[9px] font-mono bg-cloudWhite px-1.5 py-0.5 rounded border border-slateAsh/15 text-slateAsh font-semibold">
@@ -65,7 +65,7 @@ export default function CassettePlayer({
               {currentTrack?.title || "Birthday Mixtape"}
             </h4>
             <p className="text-[11px] text-slateAsh/70 font-sans truncate">
-              {currentTrack?.artist || "Friends & Memories"}
+              {currentTrack?.artist || "For Monmonkyu"}
             </p>
           </div>
 

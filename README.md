@@ -1,111 +1,91 @@
-# 🎂 MonMonday - Birthday Scrapbook Website
+# Monmonkyu: Birthday Scrapbook
 
-An interactive, tactile digital scrapbook memory board crafted for a friend's birthday celebration.
+A digital scrapbook website for a friend's birthday, with photos, letters from friends, background music, and an interactive birthday candle.
 
-Built with **React + Vite + Tailwind CSS + Framer Motion + Lucide Icons + Canvas Confetti**.
+Built with React, Vite, Tailwind CSS, Framer Motion, and Canvas Confetti.
 
----
+## Color palette
 
-## 🎨 Color Palette ([colors.md](colors.md))
+The colors come from [colors.md](colors.md), with Sky Mist as the primary color across the background and UI elements.
 
-| Role | Color Name | Hex Code | Purpose in App |
+| Role | Color name | Hex code | Where it is used |
 | --- | --- | --- | --- |
-| **Primary Base** | Sky Mist | `#D4F1FF` | Cassette player body, washi tapes, scrollbar |
-| **Accent Primary** | Buttercup Glow | `#FFEE8C` | Candle flame, cassette labels, selection highlight |
-| **Accent Secondary** | Pastel Mint | `#C8F7DC` | Postage stamps, badges, success banners |
-| **Warm Accent** | Soft Coral Blush | `#FFD6D6` | Wax seals, cake icing, hearts |
-| **Lavender Accent** | Pale Lilac | `#E5DBFF` | Decorative badges, special envelopes |
-| **Neutral Background** | Cloud White | `#F8FBFE` | Paper texture ground, card bases |
-| **Neutral Deep** | Slate Ash | `#3E4A5B` | Readable vintage ink typography & borders |
+| Primary base (main) | Sky Mist | `#D4F1FF` | Page background, tape strips, cassette player body, nav accents, buttons |
+| Accent primary | Buttercup Glow | `#FFEE8C` | Candle flame, cassette labels |
+| Accent secondary | Pastel Mint | `#C8F7DC` | Postage cancellation stamps, photo tape strips |
+| Warm accent | Soft Coral Blush | `#FFD6D6` | Wax seals, cake icing, hearts |
+| Lavender accent | Pale Lilac | `#E5DBFF` | Decorative badges, envelopes |
+| Neutral background | Cloud White | `#F8FBFE` | Cards, polaroid borders, stationery paper |
+| Neutral deep | Slate Ash | `#3E4A5B` | Text, borders, and icons |
 
----
+## What is in the site
 
-## ✨ Features
+- Cassette player: Plays background music with animated spinning tape reels. If audio files cannot be loaded, it falls back to synthesized chimes through the Web Audio API.
+- Polaroids: Photos displayed with tape accents. Clicking a photo flips it over to show a handwritten note on the back.
+- Envelopes: Envelopes sealed with wax stamps. Clicking one opens a lined stationery reader with the letter.
+- Birthday candle: An interactive candle on a cake. Clicking blows out the flame and triggers confetti in the palette colors.
 
-1. **Retro Cassette Tape Player**
-   * Spinning reel spools synchronized with playback.
-   * Play/pause, next/prev tracks, and volume slider.
-   * Web Audio chime fallback if external audio files are unreachable.
-   * Graceful "Turn On Music" welcome card to comply with browser autoplay policies.
+## Running the project
 
-2. **Scattered Polaroids with 3D Flip**
-   * Authentic instant photo styling with washi tape accents and subtle natural tilts.
-   * Clicking flips the photo 180° in 3D to reveal handwritten notes and doodles on the back.
-
-3. **Sealed Letter Envelopes**
-   * Pastel envelopes addressed to the celebrant with customized wax seals and airmail stamps.
-   * Clicking unfolds the flap and opens a realistic lined stationery modal reader.
-   * Supports both typed letters (with handwriting typography) and scanned handwritten letter images.
-
-4. **Birthday Cake & Confetti Surprise**
-   * Interactive candle with flickering flame.
-   * Click to blow out the candle with smoke animation and multi-stage confetti cannons dyed in the project's pastel colors.
-   * Relight button to make multiple wishes!
-
----
-
-## 🚀 Getting Started
-
-### 1. Install Dependencies
+1. Install dependencies:
 ```bash
 npm install
 ```
 
-### 2. Run the Development Server
+2. Start the development server:
 ```bash
 npm run dev
 ```
 
-### 3. Build for Production
+3. Build for production:
 ```bash
 npm run build
 ```
 
----
+## Changing the content
 
-## ✍️ Customizing Content for Your Friend
+All the letters, photos, and songs live in `src/data/content.js`.
 
-All content is managed in a single file: `src/data/content.js`.
-
-### Change the Celebrant's Info
+### Celebrant details
+Edit the name, date, and headings in `birthdayConfig.celebrant`:
 ```javascript
 celebrant: {
-  name: "",
-  birthdayDate: "September 18",
+  name: "Monmonkyu",
+  birthdayDate: "September 14",
   title: "Happy Birthday Monmonkyu!",
-  subtitle: "A digital scrapbook woven with memories, letters, and wishes from all of us.",
+  subtitle: "A collection of photos, letters, and tunes for your birthday.",
 }
 ```
 
-### Add/Edit Letters
-Add entries to `birthdayConfig.letters` in `src/data/content.js`:
+### Letters
+Add or modify entries in `birthdayConfig.letters`:
 ```javascript
 {
-  id: "letter-unique-id",
-  author: "Friend's Name",
-  relationship: "Childhood Friend",
-  envelopeColor: "bg-[#D4F1FF]", // or #FFEE8C, #FFD6D6, #E5DBFF
+  id: "letter-1",
+  author: "Maya",
+  relationship: "Best Friend",
+  envelopeColor: "bg-[#D4F1FF]",
   sealColor: "#FFD6D6",
   sealIcon: "🌸",
   date: "Sep 14, 2026",
-  type: "typed", // or 'handwritten' with scanUrl: "/path/to/scan.jpg"
-  content: "Your heartfelt letter here...",
+  type: "typed", // or "handwritten" with scanUrl
+  content: "Your letter text goes here...",
 }
 ```
 
-### Add/Edit Photos
-Add entries to `birthdayConfig.polaroids` in `src/data/content.js`:
+### Photos
+Add or modify entries in `birthdayConfig.polaroids`:
 ```javascript
 {
-  id: "photo-unique-id",
+  id: "photo-1",
   imageUrl: "https://... or /photos/pic.jpg",
-  caption: "Beach trip sunset 🌅",
-  date: "August 2025",
-  location: "Malibu Beach",
-  backNote: "The memory note that shows up when the polaroid is flipped!",
-  doodle: "✨ 🌊 ☀️",
+  caption: "Campfire night",
+  date: "July 2025",
+  location: "Pine Lake",
+  backNote: "Note written on the back of the photo.",
+  doodle: "⛺",
 }
 ```
 
-### Add Songs
-Add MP3 tracks or URLs to `birthdayConfig.playlist` in `src/data/content.js`.
+### Music
+Add your own audio file URLs or paths to `birthdayConfig.playlist`.
