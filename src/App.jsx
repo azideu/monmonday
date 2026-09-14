@@ -7,7 +7,7 @@ import FluidCursor from './components/FluidCursor.jsx';
 import { birthdayConfig } from './data/content.js';
 
 export default function App() {
-  const { celebrant, playlist, letters, polaroids, celebration } = birthdayConfig;
+  const { celebrant, playlist, letters, polaroids, celebration, sideMargins } = birthdayConfig;
 
   // Fluid Cursor State (defaults to true)
   const [isFluidEnabled, setIsFluidEnabled] = useState(true);
@@ -207,6 +207,7 @@ export default function App() {
         letters={letters}
         onOpenLetter={(letter) => setActiveLetter(letter)}
         celebration={celebration}
+        sideMargins={sideMargins}
         isFluidEnabled={isFluidEnabled}
         onToggleFluid={() => setIsFluidEnabled((prev) => !prev)}
       />

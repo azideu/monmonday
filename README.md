@@ -110,6 +110,48 @@ Add or modify entries in `birthdayConfig.polaroids`:
 }
 ```
 
+### Desktop Side Margins Decoration
+On wider desktop screens (`xl` and `2xl`), the margins are filled with playful scrapbook decorations (photo slots, admission tickets, vintage airmail stamps, and sticky notes). You can configure or add your own photos to these slots in `birthdayConfig.sideMargins` in `src/data/content.js`:
+
+```javascript
+sideMargins: {
+  left: [
+    {
+      type: "photo",
+      imageUrl: "/photos/side-memory.jpg", // or leave empty for a slot placeholder
+      caption: "A favorite snapshot",
+      placeholder: "Photo slot",
+      tapeColor: "bg-[#D4F1FF]/90",
+      rotation: "-3deg",
+    },
+    {
+      type: "ticket",
+      category: "BIRTHDAY PASS",
+      number: "№ 0918-26",
+      title: "All-Day Celebration Pass",
+      subtitle: "Good for endless snacks, hugs, and peaceful moments.",
+    },
+    {
+      type: "note",
+      text: "Don't forget to eat an extra slice of cake today!",
+      author: "The Crew",
+    }
+  ],
+  right: [
+    {
+      type: "stamp-cluster",
+      icon: "flower",
+      label: "Airmail to Monmonkyu",
+    },
+    {
+      type: "photo",
+      imageUrl: "/photos/smile.jpg",
+      caption: "Smile of the year",
+    }
+  ]
+}
+```
+
 ### Adding Images and Music Files
 - Put images or scans in `public/photos/` (e.g. `public/photos/myphoto.jpg`) and reference them in `content.js` as `"/photos/myphoto.jpg"`.
 - Put audio in `public/music/` (e.g. `public/music/song.mp3`) and reference them in `content.js` as `"/music/song.mp3"`.

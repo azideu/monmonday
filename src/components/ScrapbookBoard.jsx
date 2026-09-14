@@ -3,6 +3,7 @@ import CassettePlayer from './CassettePlayer.jsx';
 import PolaroidCard from './PolaroidCard.jsx';
 import LetterEnvelope from './LetterEnvelope.jsx';
 import BirthdayCake from './BirthdayCake.jsx';
+import ScrapbookDecoMargin from './ScrapbookDecoMargin.jsx';
 import { Heart, Waves } from 'lucide-react';
 
 export default function ScrapbookBoard({
@@ -19,11 +20,17 @@ export default function ScrapbookBoard({
   letters,
   onOpenLetter,
   celebration,
+  sideMargins,
   isFluidEnabled,
   onToggleFluid,
 }) {
   return (
-    <main className="max-w-6xl mx-auto px-4 sm:px-6 pb-24 space-y-16">
+    <div className="relative w-full overflow-x-clip">
+      {/* Decorative desktop side margins with photos & playful ephemera */}
+      <ScrapbookDecoMargin side="left" items={sideMargins?.left} />
+      <ScrapbookDecoMargin side="right" items={sideMargins?.right} />
+
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 pb-24 space-y-16 relative z-10">
 
       {/* Scrapbook Hero Banner */}
       <section className="relative text-center pt-8 pb-6 select-none">
@@ -166,5 +173,6 @@ export default function ScrapbookBoard({
       </footer>
 
     </main>
+    </div>
   );
 }

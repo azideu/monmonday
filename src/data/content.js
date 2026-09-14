@@ -313,5 +313,74 @@ Zai`,
     ],
     wishPrompt: "Make a wish, then click the candle to blow it out.",
     blownMessage: "Candle blown! Hope this year treats you well.",
+  },
+
+  // Desktop side margins decoration (fills wide screen negative space with playful scrapbook ephemera & photo slots)
+  sideMargins: {
+    left: [
+      {
+        type: "photo",
+        imageUrl: "", // Place a photo URL or file in /photos/ (e.g. "/photos/side-1.jpg")
+        caption: "A favorite snapshot",
+        placeholder: "Photo slot",
+        note: "Add your picture here",
+        tapeColor: "bg-[#D4F1FF]/90",
+        rotation: "-3deg",
+      },
+      {
+        type: "ticket",
+        category: "BIRTHDAY PASS",
+        number: "№ 0918-26",
+        title: "All-Day Celebration Pass",
+        subtitle: "Good for endless snacks, hugs, and peaceful moments.",
+        rotation: "2deg",
+      },
+      {
+        type: "note",
+        text: "Don't forget to eat an extra slice of cake today!",
+        author: "The Crew",
+        rotation: "-2deg",
+      },
+      {
+        type: "photo",
+        imageUrl: "", // Place another photo URL or file
+        caption: "Little memory fragment",
+        placeholder: "Photo slot",
+        note: "Place a doodle or photo",
+        tapeColor: "bg-[#FFEE8C]/90",
+        rotation: "3deg",
+      }
+    ],
+    right: [
+      {
+        type: "stamp-cluster",
+        icon: "flower",
+        label: "Airmail to Monmonkyu",
+        rotation: "3deg",
+      },
+      {
+        type: "photo",
+        imageUrl: "", // Place a photo URL or file
+        caption: "Smile of the year",
+        placeholder: "Photo slot",
+        note: "Add your picture here",
+        tapeColor: "bg-[#C8F7DC]/90",
+        rotation: "2deg",
+      },
+      {
+        type: "note",
+        text: "Life is sweeter with good tunes and warm friends.",
+        author: "Cozy Corner",
+        rotation: "-3deg",
+      },
+      {
+        type: "ticket",
+        category: "ADMIT ONE",
+        number: "№ 2026-BDAY",
+        title: "Golden Year Ticket",
+        subtitle: "Valid for all 365 days of good vibes.",
+        rotation: "1.5deg",
+      }
+    ]
   }
 };
