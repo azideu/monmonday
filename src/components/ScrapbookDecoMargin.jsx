@@ -14,9 +14,9 @@ export default function ScrapbookDecoMargin({ side = "left", items = [] }) {
     <>
       <aside
         aria-label={`${side} decorative scrapbook margins`}
-        className={`hidden xl:flex flex-col gap-8 absolute top-32 ${
-          side === 'left' ? 'left-3 2xl:left-8' : 'right-3 2xl:right-8'
-        } w-44 2xl:w-52 pointer-events-auto select-none z-10`}
+        className={`hidden xl:flex flex-col gap-8 2xl:gap-10 absolute top-28 ${
+          side === 'left' ? 'left-3 2xl:left-6 3xl:left-12' : 'right-3 2xl:right-6 3xl:right-12'
+        } w-44 2xl:w-52 3xl:w-60 pointer-events-auto select-none z-10`}
       >
         {items.map((item, idx) => {
           if (item.type === 'photo') {
@@ -85,8 +85,8 @@ export default function ScrapbookDecoMargin({ side = "left", items = [] }) {
                 className={`relative bg-cloudWhite p-3 rounded shadow-paper border border-dashed border-slateAsh/30 ${item.rotation || '-rotate-3'} transition-transform hover:rotate-0`}
               >
                 {/* Vintage ticket notched edges */}
-                <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-scrapbook-pattern border-r border-slateAsh/30" />
-                <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-scrapbook-pattern border-l border-slateAsh/30" />
+                <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-[#EBF7FD] border-r border-slateAsh/30" />
+                <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-[#EBF7FD] border-l border-slateAsh/30" />
 
                 <div className="flex items-center justify-between border-b border-dashed border-slateAsh/25 pb-1 mb-1.5">
                   <span className="text-[9px] 2xl:text-[10px] font-mono uppercase tracking-wider text-slateAsh/60">
@@ -102,6 +102,51 @@ export default function ScrapbookDecoMargin({ side = "left", items = [] }) {
                 <p className="text-[10px] 2xl:text-[11px] font-sans text-slateAsh/70 mt-0.5">
                   {item.subtitle}
                 </p>
+              </div>
+            );
+          }
+
+          if (item.type === 'sticker') {
+            return (
+              <div
+                key={idx}
+                className={`relative self-center p-3 rounded-2xl ${item.bgColor || 'bg-buttercup'} shadow-paper-sm border-2 border-dashed border-slateAsh/30 ${item.rotation || 'rotate-2'} transition-transform hover:scale-110`}
+              >
+                <div className="flex flex-col items-center justify-center text-center gap-1">
+                  <IconRenderer name={item.icon || 'sparkles'} className="w-5 h-5 text-slateAsh" />
+                  <span className="font-handwriting font-bold text-sm text-slateAsh uppercase tracking-wide">
+                    {item.title}
+                  </span>
+                  {item.subtitle && (
+                    <span className="text-[9px] font-mono text-slateAsh/70">
+                      {item.subtitle}
+                    </span>
+                  )}
+                </div>
+              </div>
+            );
+          }
+
+          if (item.type === 'music-badge') {
+            return (
+              <div
+                key={idx}
+                className={`relative bg-white/95 p-3 rounded-xl shadow-paper border border-slateAsh/15 ${item.rotation || '-rotate-3'} transition-transform hover:scale-105`}
+              >
+                <div className="washi-tape absolute -top-1.5 left-1/2 -translate-x-1/2 w-10 h-3 bg-paleLilac/80 rounded-xs border border-slateAsh/10" />
+                <div className="flex items-center gap-2 mt-1">
+                  <div className="w-7 h-7 rounded-full bg-[#2A3442] flex items-center justify-center text-amber-200">
+                    <Music className="w-3.5 h-3.5" />
+                  </div>
+                  <div className="overflow-hidden">
+                    <p className="font-mono text-[10px] font-bold text-slateAsh truncate">
+                      {item.track}
+                    </p>
+                    <p className="font-sans text-[9px] text-slateAsh/60 truncate">
+                      {item.artist}
+                    </p>
+                  </div>
+                </div>
               </div>
             );
           }

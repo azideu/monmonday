@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Sparkles, Image as ImageIcon } from 'lucide-react';
+import confetti from 'canvas-confetti';
 import IconRenderer from './IconRenderer.jsx';
+import { playTapePeel } from '../utils/soundEffects.js';
 
 export default function LetterEnvelope({ letter, onOpenLetter, index, defaultRecipient = "Monmonkyu" }) {
   const [isHovered, setIsHovered] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
   const recipient = letter?.recipientNickname || letter?.recipient || letter?.to || defaultRecipient;
   const hasImages = Boolean(
@@ -14,39 +17,75 @@ export default function LetterEnvelope({ letter, onOpenLetter, index, defaultRec
     (Array.isArray(letter?.images) && letter.images.length > 0)
   );
 
+  const handleOpen = (e) => {
+    if (isDragging) return;
+
+    // Gentle pastel confetti sparkle on unsealing the wax stamp
+    try {
+      const rect = e?.currentTarget?.getBoundingClientRect?.();
+      const originX = rect ? (rect.left + rect.width / 2) / window.innerWidth : 0.5;
+      const originY = rect ? (rect.top + rect.height / 2) / window.innerHeight : 0.5;
+
+      confetti({
+        particleCount: 22,
+        spread: 45,
+        startVelocity: 18,
+        origin: { x: originX, y: originY },
+        colors: [letter.sealColor || '#FFD6D6', '#D4F1FF', '#FFEE8C', '#C8F7DC'],
+        disableForReducedMotion: true,
+        scalar: 0.75,
+      });
+    } catch {
+      // safe fallback
+    }
+
+    onOpenLetter(letter);
+  };
+
   // Organic slight tilts for realism
   const tilts = ['-2deg', '1.5deg', '-1deg', '2deg'];
   const tilt = tilts[index % tilts.length];
 
   return (
-    <div
-      className="relative select-none py-3"
+    <motion.div
+      drag
+      dragConstraints={{ left: -60, right: 60, top: -40, bottom: 40 }}
+      dragElastic={0.15}
+      dragTransition={{ bounceStiffness: 400, bounceDamping: 25 }}
+      whileDrag={{ scale: 1.06, zIndex: 40, cursor: 'grabbing', rotate: 0 }}
+      onDragStart={() => {
+        setIsDragging(true);
+        playTapePeel();
+      }}
+      onDragEnd={() => {
+        setTimeout(() => setIsDragging(false), 50);
+      }}
+      className="relative select-none py-3 touch-pan-y cursor-grab"
       style={{ transform: `rotate(${tilt})` }}
     >
-      {/* Pinned washi tape in corner */}
-      <div
-        className="washi-tape absolute -top-1 right-6 w-20 h-5 bg-white/75 z-20 rounded-xs rotate-3 border border-slateAsh/10"
-      />
-
       {/* Envelope Card Body */}
       <motion.div
         whileHover={{ scale: 1.03, y: -4 }}
         whileTap={{ scale: 0.98 }}
         onHoverStart={() => setIsHovered(true)}
         onHoverEnd={() => setIsHovered(false)}
-        onClick={() => onOpenLetter(letter)}
+        onClick={(e) => handleOpen(e)}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            onOpenLetter(letter);
+            handleOpen(e);
           }
         }}
         tabIndex={0}
         role="button"
         aria-label={`Open letter from ${letter.author} to ${recipient}`}
-        className={`relative w-72 md:w-80 h-52 rounded-xl p-4 cursor-pointer shadow-paper transition-shadow duration-300 hover:shadow-paper-hover border border-slateAsh/15 overflow-hidden ${letter.envelopeColor || 'bg-skyMist'
+        className={`relative w-[280px] xs:w-72 md:w-80 max-w-[calc(100vw-2.5rem)] h-52 rounded-xl p-4 cursor-pointer shadow-paper transition-shadow duration-300 hover:shadow-paper-hover border border-slateAsh/15 overflow-hidden ${letter.envelopeColor || 'bg-skyMist'
           }`}
       >
+        {/* Pinned washi tape in corner */}
+        <div
+          className="washi-tape absolute -top-1.5 right-6 w-20 h-5 bg-white/80 z-20 rounded-xs rotate-3 border border-slateAsh/10"
+        />
         {/* Envelope Flap Lines Geometry */}
         <div className="absolute inset-0 pointer-events-none">
           {/* Top Flap Triangle */}
@@ -137,6 +176,6 @@ export default function LetterEnvelope({ letter, onOpenLetter, index, defaultRec
         </div>
 
       </motion.div>
-    </div>
+    </motion.div>
   );
 }

@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Disc } from 'lucide-react';
+import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Disc, Activity } from 'lucide-react';
+import { playDeckClick } from '../utils/soundEffects.js';
 
 export default function CassettePlayer({
   playlist = [],
@@ -14,19 +15,54 @@ export default function CassettePlayer({
   const currentTrack = playlist[currentTrackIndex] || playlist[0];
   const [isMuted, setIsMuted] = useState(false);
   const [localTime, setLocalTime] = useState(0);
+  const [vuLeft, setVuLeft] = useState(15);
+  const [vuRight, setVuRight] = useState(20);
 
-  // Counter simulation
+  // Counter simulation & Audio-reactive VU meter animation
   useEffect(() => {
     let interval;
+    let vuInterval;
+
     if (isPlaying) {
       interval = setInterval(() => {
         setLocalTime((prev) => (prev + 1) % 999);
       }, 1000);
+
+      // Analog VU needle bounce physics
+      vuInterval = setInterval(() => {
+        const base = volume * 55;
+        const jitterL = Math.sin(Date.now() / 140) * 18 + Math.random() * 15;
+        const jitterR = Math.cos(Date.now() / 160) * 18 + Math.random() * 15;
+        setVuLeft(Math.min(85, Math.max(10, base + jitterL)));
+        setVuRight(Math.min(85, Math.max(10, base + jitterR)));
+      }, 90);
+    } else {
+      setVuLeft(5);
+      setVuRight(5);
     }
-    return () => clearInterval(interval);
-  }, [isPlaying]);
+
+    return () => {
+      clearInterval(interval);
+      clearInterval(vuInterval);
+    };
+  }, [isPlaying, volume]);
 
   const formattedCounter = String(localTime).padStart(3, '0');
+
+  const handlePlayToggle = () => {
+    playDeckClick();
+    onTogglePlay();
+  };
+
+  const handleNext = () => {
+    playDeckClick();
+    onNextTrack();
+  };
+
+  const handlePrev = () => {
+    playDeckClick();
+    onPrevTrack();
+  };
 
   return (
     <div id="mixtape-section" className="relative group w-full max-w-md mx-auto">
@@ -66,11 +102,38 @@ export default function CassettePlayer({
         {/* Cassette Label Inset */}
         <div className="bg-white rounded-xl p-3.5 border border-slateAsh/15 shadow-inner-paper">
           
-          {/* Header on label */}
-          <div className="flex items-center justify-between border-b border-dashed border-slateAsh/20 pb-1.5 mb-2.5">
-            <span className="text-xs font-bold tracking-widest text-slateAsh/70 uppercase">
-              Side A
-            </span>
+          {/* Header on label with Analog Dual VU Meter */}
+          <div className="flex items-center justify-between border-b border-dashed border-slateAsh/20 pb-2 mb-2.5">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold tracking-widest text-slateAsh/70 uppercase">
+                Side A
+              </span>
+
+              {/* Vintage Analog Dual VU Meter Displays */}
+              <div className="flex items-center gap-1.5 bg-cloudWhite px-2 py-0.5 rounded border border-slateAsh/20 shadow-inner">
+                {/* VU Left */}
+                <div className="flex items-center gap-1">
+                  <span className="text-[9px] font-mono font-bold text-slateAsh/60">L</span>
+                  <div className="w-9 h-2.5 bg-slateAsh/15 rounded-xs relative overflow-hidden flex items-center">
+                    <div 
+                      className="h-full bg-linear-to-r from-pastelMint via-buttercup to-coralBlush transition-all duration-100 ease-out rounded-xs"
+                      style={{ width: `${vuLeft}%` }}
+                    />
+                  </div>
+                </div>
+                {/* VU Right */}
+                <div className="flex items-center gap-1">
+                  <span className="text-[9px] font-mono font-bold text-slateAsh/60">R</span>
+                  <div className="w-9 h-2.5 bg-slateAsh/15 rounded-xs relative overflow-hidden flex items-center">
+                    <div 
+                      className="h-full bg-linear-to-r from-pastelMint via-buttercup to-coralBlush transition-all duration-100 ease-out rounded-xs"
+                      style={{ width: `${vuRight}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div className="flex items-center gap-1">
               <span className="text-xs scale-90 inline-block font-mono bg-cloudWhite px-1.5 py-0.5 rounded border border-slateAsh/15 text-slateAsh font-semibold">
                 {formattedCounter}
@@ -98,18 +161,20 @@ export default function CassettePlayer({
 
             {/* Left Reel */}
             <div 
-              className={`relative z-10 w-11 h-11 rounded-full bg-white border-2 border-slateAsh flex items-center justify-center shadow-md transition-transform duration-700 ease-linear ${
+              className={`relative z-10 w-11 h-11 rounded-full bg-white border-2 border-slateAsh flex items-center justify-center shadow-md overflow-hidden transition-transform duration-700 ease-linear ${
                 isPlaying ? 'animate-spin' : ''
               }`}
               style={{ animationDuration: '3s' }}
             >
-              <div className="w-4 h-4 rounded-full bg-slateAsh/30 flex items-center justify-center">
-                <div className="w-2 h-2 rounded-full bg-[#2A3442]" />
+              {/* Spool Cross Teeth */}
+              <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+                <span className="absolute w-full h-0.5 bg-slateAsh/30" />
+                <span className="absolute w-0.5 h-full bg-slateAsh/30" />
+                <span className="absolute w-full h-0.5 bg-slateAsh/30 rotate-45" />
+                <span className="absolute w-full h-0.5 bg-slateAsh/30 -rotate-45" />
               </div>
-              {/* Spool Teeth */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="w-full h-0.5 bg-slateAsh/40" />
-                <span className="w-0.5 h-full bg-slateAsh/40" />
+              <div className="relative z-10 w-5 h-5 rounded-full bg-slateAsh/25 flex items-center justify-center border border-slateAsh/20">
+                <div className="w-2.5 h-2.5 rounded-full bg-[#2A3442]" />
               </div>
             </div>
 
@@ -120,18 +185,20 @@ export default function CassettePlayer({
 
             {/* Right Reel */}
             <div 
-              className={`relative z-10 w-11 h-11 rounded-full bg-white border-2 border-slateAsh flex items-center justify-center shadow-md transition-transform duration-700 ease-linear ${
+              className={`relative z-10 w-11 h-11 rounded-full bg-white border-2 border-slateAsh flex items-center justify-center shadow-md overflow-hidden transition-transform duration-700 ease-linear ${
                 isPlaying ? 'animate-spin' : ''
               }`}
               style={{ animationDuration: '3s' }}
             >
-              <div className="w-4 h-4 rounded-full bg-slateAsh/30 flex items-center justify-center">
-                <div className="w-2 h-2 rounded-full bg-[#2A3442]" />
+              {/* Spool Cross Teeth */}
+              <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
+                <span className="absolute w-full h-0.5 bg-slateAsh/30" />
+                <span className="absolute w-0.5 h-full bg-slateAsh/30" />
+                <span className="absolute w-full h-0.5 bg-slateAsh/30 rotate-45" />
+                <span className="absolute w-full h-0.5 bg-slateAsh/30 -rotate-45" />
               </div>
-              {/* Spool Teeth */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="w-full h-0.5 bg-slateAsh/40" />
-                <span className="w-0.5 h-full bg-slateAsh/40" />
+              <div className="relative z-10 w-5 h-5 rounded-full bg-slateAsh/25 flex items-center justify-center border border-slateAsh/20">
+                <div className="w-2.5 h-2.5 rounded-full bg-[#2A3442]" />
               </div>
             </div>
           </div>
@@ -142,17 +209,17 @@ export default function CassettePlayer({
           {/* Track changer buttons */}
           <div className="flex items-center gap-1.5">
             <button
-              onClick={onPrevTrack}
+              onClick={handlePrev}
               title="Previous Track"
-              className="p-2 rounded-lg bg-white/90 text-slateAsh hover:bg-white hover:text-slateAsh active:scale-95 transition-all shadow-paper-sm border border-slateAsh/10"
+              className="p-2 rounded-lg bg-white/90 text-slateAsh hover:bg-white hover:text-slateAsh active:scale-95 transition-all shadow-paper-sm border border-slateAsh/10 cursor-pointer"
             >
               <SkipBack className="w-4 h-4" />
             </button>
 
             <button
-              onClick={onTogglePlay}
+              onClick={handlePlayToggle}
               title={isPlaying ? "Pause" : "Play"}
-              className={`px-4 py-2 rounded-lg font-bold flex items-center gap-1.5 transition-all shadow-paper-sm active:scale-95 border border-slateAsh/15 ${
+              className={`px-4 py-2 rounded-lg font-bold flex items-center gap-1.5 transition-all shadow-paper-sm active:scale-95 border border-slateAsh/15 cursor-pointer ${
                 isPlaying 
                   ? 'bg-coralBlush text-slateAsh hover:brightness-105' 
                   : 'bg-pastelMint text-slateAsh hover:brightness-105'
@@ -163,9 +230,9 @@ export default function CassettePlayer({
             </button>
 
             <button
-              onClick={onNextTrack}
+              onClick={handleNext}
               title="Next Track"
-              className="p-2 rounded-lg bg-white/90 text-slateAsh hover:bg-white hover:text-slateAsh active:scale-95 transition-all shadow-paper-sm border border-slateAsh/10"
+              className="p-2 rounded-lg bg-white/90 text-slateAsh hover:bg-white hover:text-slateAsh active:scale-95 transition-all shadow-paper-sm border border-slateAsh/10 cursor-pointer"
             >
               <SkipForward className="w-4 h-4" />
             </button>

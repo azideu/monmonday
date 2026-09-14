@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, Sparkles, Image as ImageIcon, ZoomIn, FileText } from 'lucide-react';
 import IconRenderer from './IconRenderer.jsx';
+import { playPaperRustle } from '../utils/soundEffects.js';
 
 /**
  * Normalizes images specified in a letter:
@@ -55,9 +56,12 @@ export default function LetterModal({ letter, isOpen, onClose, celebrantName = "
   const closeButtonRef = useRef(null);
   const [selectedImage, setSelectedImage] = useState(null);
 
-  // Trap focus and handle Escape
+  // Trap focus, play paper rustle, and handle Escape
   useEffect(() => {
     if (!isOpen) return;
+
+    // Play subtle stationery paper rustle
+    playPaperRustle();
 
     // Focus close button on mount
     const timer = setTimeout(() => {
@@ -110,66 +114,86 @@ export default function LetterModal({ letter, isOpen, onClose, celebrantName = "
     };
   }, [isOpen, onClose, selectedImage]);
 
-  if (!isOpen || !letter) return null;
-
-  const letterImages = getLetterImages(letter);
+  const letterImages = letter ? getLetterImages(letter) : [];
   const scanImages = letterImages.filter((img) => img.isScan);
   const attachedPhotos = letterImages.filter((img) => !img.isScan);
-  const hasOnlyScans = scanImages.length > 0 && attachedPhotos.length === 0 && letter.type === 'handwritten';
+  const hasOnlyScans = scanImages.length > 0 && attachedPhotos.length === 0 && letter?.type === 'handwritten';
 
   return (
     <AnimatePresence>
-      <div 
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="letter-dialog-title"
-      >
-        {/* Soft backdrop */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={onClose}
-          className="fixed inset-0 bg-slateAsh/40 backdrop-blur-sm transition-opacity"
-          aria-hidden="true"
-        />
-
-        {/* Letter Container */}
-        <motion.div
-          ref={modalRef}
-          initial={{ scale: 0.85, opacity: 0, y: 30 }}
-          animate={{ scale: 1, opacity: 1, y: 0 }}
-          exit={{ scale: 0.85, opacity: 0, y: 30 }}
-          transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="relative z-10 w-full max-w-2xl bg-[#FFFDF9] rounded-2xl shadow-paper-elevated border-2 border-slateAsh/15 overflow-hidden my-8"
+      {isOpen && letter && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="letter-dialog-title"
         >
+          {/* Hardware-accelerated soft backdrop without blur to prevent WebGL canvas composite flicker */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={onClose}
+            className="fixed inset-0 bg-slateAsh/50 will-change-[opacity]"
+            aria-hidden="true"
+          />
+
+          {/* 3D Origami Unfolding Letter Container with isolated perspective */}
+          <div className="relative z-10 w-full max-w-2xl my-8 perspective-1000 flex justify-center">
+            <motion.div
+              ref={modalRef}
+              initial={{ scale: 0.7, opacity: 0, y: 40, rotateX: -24, rotateY: 6 }}
+              animate={{ 
+                scale: 1, 
+                opacity: 1, 
+                y: 0, 
+                rotateX: 0, 
+                rotateY: 0,
+                transition: { 
+                  type: 'spring', 
+                  damping: 24, 
+                  stiffness: 260, 
+                  duration: 0.6 
+                } 
+              }}
+              exit={{ 
+                scale: 0.8, 
+                opacity: 0, 
+                y: 30, 
+                rotateX: 16,
+                transition: { duration: 0.2 } 
+              }}
+              className="relative w-full bg-[#FFFDF9] rounded-2xl shadow-paper-elevated border-2 border-slateAsh/15 overflow-hidden origin-top transform-style-3d will-change-transform"
+            >
+          {/* Subtle paper fold crease highlight overlay */}
+          <div className="absolute inset-0 pointer-events-none bg-linear-to-b from-black/[0.02] via-transparent to-black/[0.03] z-20" />
           {/* Decorative Washi Tape on top */}
           <div className="washi-tape absolute -top-1 left-1/2 -translate-x-1/2 w-32 h-6 bg-skyMist z-20 rounded-xs -rotate-1 border border-skyMist/80" />
 
           {/* Header Bar */}
-          <div className="bg-skyMist/75 border-b-2 border-skyMist/90 px-6 py-4 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-paper-sm border border-slateAsh/10">
-                <IconRenderer name={letter.sealIcon} className="w-5 h-5 text-slateAsh" fallback="heart" strokeWidth={2} />
+          <div className="bg-skyMist/75 border-b-2 border-skyMist/90 px-4 sm:px-6 py-3.5 sm:py-4 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-full bg-white flex items-center justify-center shadow-paper-sm border border-slateAsh/10">
+                <IconRenderer name={letter.sealIcon} className="w-4 h-4 sm:w-5 sm:h-5 text-slateAsh" fallback="heart" strokeWidth={2} />
               </div>
-              <div>
+              <div className="min-w-0">
                 <h3 
                   id="letter-dialog-title"
-                  className="font-bold text-slateAsh text-base sm:text-lg flex items-center gap-2"
+                  className="font-bold text-slateAsh text-sm sm:text-lg flex flex-wrap items-center gap-1.5 sm:gap-2 leading-tight"
                 >
-                  {letter.author}
-                  <span className="text-xs px-2.5 py-0.5 rounded-full bg-white/80 border border-slateAsh/15 text-slateAsh/80 font-normal">
+                  <span className="truncate">{letter.author}</span>
+                  <span className="text-[11px] sm:text-xs px-2 sm:px-2.5 py-0.5 rounded-full bg-white/80 border border-slateAsh/15 text-slateAsh/80 font-normal">
                     {letter.relationship}
                   </span>
                   {letterImages.length > 0 && (
-                    <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-white/90 border border-slateAsh/15 text-slateAsh/70 font-mono">
+                    <span className="inline-flex items-center gap-1 text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-full bg-white/90 border border-slateAsh/15 text-slateAsh/70 font-mono">
                       <ImageIcon className="w-3 h-3" />
-                      {letterImages.length} {letterImages.length === 1 ? 'image' : 'images'}
+                      {letterImages.length}
                     </span>
                   )}
                 </h3>
-                <p className="text-xs text-slateAsh/60 flex items-center gap-1 font-sans">
+                <p className="text-[11px] sm:text-xs text-slateAsh/60 flex items-center gap-1 font-sans mt-0.5">
                   <Calendar className="w-3 h-3" /> {letter.date}
                 </p>
               </div>
@@ -178,7 +202,7 @@ export default function LetterModal({ letter, isOpen, onClose, celebrantName = "
             <button
               ref={closeButtonRef}
               onClick={onClose}
-              className="p-2 rounded-full hover:bg-white text-slateAsh/70 hover:text-slateAsh transition-colors border border-transparent hover:border-slateAsh/15"
+              className="p-2 sm:p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full hover:bg-white text-slateAsh/70 hover:text-slateAsh active:scale-95 transition-all border border-transparent hover:border-slateAsh/15 shrink-0 cursor-pointer"
               aria-label="Close letter"
             >
               <X className="w-5 h-5" />
@@ -315,45 +339,46 @@ export default function LetterModal({ letter, isOpen, onClose, celebrantName = "
               Close
             </button>
           </div>
-
         </motion.div>
-
-        {/* Lightbox Modal for enlarged image preview */}
-        {selectedImage && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-60 bg-slateAsh/80 backdrop-blur-md flex items-center justify-center p-4"
-            onClick={() => setSelectedImage(null)}
-          >
-            <div 
-              className="relative max-w-4xl max-h-[90vh] bg-white p-3 sm:p-4 rounded-xl shadow-2xl border-2 border-slateAsh/20 flex flex-col items-center"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                onClick={() => setSelectedImage(null)}
-                className="absolute top-2 right-2 p-1.5 rounded-full bg-white/90 hover:bg-white text-slateAsh shadow-paper-sm z-10"
-                aria-label="Close enlarged image"
-              >
-                <X className="w-5 h-5" />
-              </button>
-
-              <img
-                src={selectedImage.url}
-                alt={selectedImage.caption || "Enlarged view"}
-                className="max-h-[80vh] w-auto max-w-full object-contain rounded"
-              />
-
-              {selectedImage.caption && (
-                <p className="font-handwriting text-lg text-slateAsh mt-2 text-center">
-                  {selectedImage.caption}
-                </p>
-              )}
-            </div>
-          </motion.div>
-        )}
       </div>
-    </AnimatePresence>
+
+      {/* Lightbox Modal for enlarged image preview */}
+      {selectedImage && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-60 bg-slateAsh/80 backdrop-blur-md flex items-center justify-center p-4"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div 
+            className="relative max-w-4xl max-h-[90vh] bg-white p-3 sm:p-4 rounded-xl shadow-2xl border-2 border-slateAsh/20 flex flex-col items-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-2 right-2 p-1.5 rounded-full bg-white/90 hover:bg-white text-slateAsh shadow-paper-sm z-10"
+              aria-label="Close enlarged image"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <img
+              src={selectedImage.url}
+              alt={selectedImage.caption || "Enlarged view"}
+              className="max-h-[80vh] w-auto max-w-full object-contain rounded"
+            />
+
+            {selectedImage.caption && (
+              <p className="font-handwriting text-lg text-slateAsh mt-2 text-center">
+                {selectedImage.caption}
+              </p>
+            )}
+          </div>
+        </motion.div>
+      )}
+    </div>
+  )}
+</AnimatePresence>
   );
 }

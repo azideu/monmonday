@@ -56,24 +56,32 @@ export default function AudioWelcomeModal({
     };
   }, [isOpen]);
 
-  if (!isOpen) return null;
-
   return (
     <AnimatePresence>
-      <div
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slateAsh/40 backdrop-blur-md"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="welcome-dialog-title"
-      >
-        <motion.div
-          ref={modalRef}
-          initial={{ scale: 0.9, opacity: 0, y: 20 }}
-          animate={{ scale: 1, opacity: 1, y: 0 }}
-          exit={{ scale: 0.9, opacity: 0, y: 20 }}
-          transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="relative w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 shadow-paper-elevated border-2 border-slateAsh/15 text-center overflow-hidden"
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="welcome-dialog-title"
         >
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slateAsh/50 will-change-[opacity]"
+            aria-hidden="true"
+          />
+
+          <motion.div
+            ref={modalRef}
+            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.9, opacity: 0, y: 20 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            className="relative z-10 w-full max-w-md bg-white rounded-3xl p-6 sm:p-8 shadow-paper-elevated border-2 border-slateAsh/15 text-center overflow-hidden will-change-transform"
+          >
           {/* Decorative Washi Tape */}
           <div className="washi-tape absolute -top-2 left-1/2 -translate-x-1/2 w-28 h-6 bg-skyMist z-20 rounded-xs -rotate-2 border border-skyMist/80" />
 
@@ -115,10 +123,9 @@ export default function AudioWelcomeModal({
             <Heart className="w-3 h-3 fill-coralBlush text-coralBlush" />
             <span>From your monlings</span>
           </div>
-
         </motion.div>
-
       </div>
-    </AnimatePresence>
+    )}
+  </AnimatePresence>
   );
 }

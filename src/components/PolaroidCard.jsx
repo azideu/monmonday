@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { RotateCw, Calendar, MapPin, Camera } from 'lucide-react';
 import IconRenderer from './IconRenderer.jsx';
+import { playTapePeel } from '../utils/soundEffects.js';
 
 export default function PolaroidCard({
   photo,
@@ -8,14 +10,29 @@ export default function PolaroidCard({
 }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [imgError, setImgError] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
   const toggleFlip = () => {
-    setIsFlipped(!isFlipped);
+    if (!isDragging) {
+      setIsFlipped(!isFlipped);
+    }
   };
 
   return (
-    <div 
-      className="relative group perspective-1000 select-none cursor-pointer py-4 focus:outline-none"
+    <motion.div 
+      drag
+      dragConstraints={{ left: -60, right: 60, top: -40, bottom: 40 }}
+      dragElastic={0.15}
+      dragTransition={{ bounceStiffness: 400, bounceDamping: 25 }}
+      whileDrag={{ scale: 1.08, zIndex: 40, cursor: 'grabbing', rotate: 0 }}
+      onDragStart={() => {
+        setIsDragging(true);
+        playTapePeel();
+      }}
+      onDragEnd={() => {
+        setTimeout(() => setIsDragging(false), 50);
+      }}
+      className="relative group perspective-1000 select-none cursor-grab py-4 focus:outline-none touch-pan-y"
       onClick={toggleFlip}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -35,20 +52,19 @@ export default function PolaroidCard({
         transform: `rotate(${photo.cardTilt || '0deg'})`,
       }}
     >
-      {/* Washi Tape Strip at top */}
-      <div 
-        className={`washi-tape absolute -top-1 left-1/2 -translate-x-1/2 w-24 h-5.5 z-30 rounded-xs transition-transform duration-300 ${photo.tapeColor || 'bg-skyMist/80'}`}
-        style={{
-          transform: `translateX(-50%) rotate(${photo.tapeRotation || '0deg'})`,
-        }}
-      />
-
       {/* 3D Card Container */}
       <div 
-        className={`relative w-64 md:w-72 h-[340px] md:h-[360px] rounded-lg transition-transform duration-700 transform-style-3d shadow-paper group-hover:shadow-paper-elevated group-hover:scale-[1.02] group-focus:ring-2 group-focus:ring-skyMist ${
+        className={`relative w-[280px] xs:w-72 sm:w-72 h-[350px] sm:h-[360px] max-w-[calc(100vw-2.5rem)] rounded-lg transition-transform duration-700 transform-style-3d shadow-paper group-hover:shadow-paper-elevated group-hover:scale-[1.02] group-focus:ring-2 group-focus:ring-skyMist ${
           isFlipped ? 'rotate-y-180' : ''
         }`}
       >
+        {/* Washi Tape Strip pinned to card top edge */}
+        <div 
+          className={`washi-tape absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-5.5 z-30 rounded-xs transition-transform duration-300 ${photo.tapeColor || 'bg-skyMist/80'}`}
+          style={{
+            transform: `translateX(-50%) rotate(${photo.tapeRotation || '0deg'})`,
+          }}
+        />
         {/* FRONT SIDE */}
         <div className="absolute inset-0 w-full h-full bg-white rounded-lg p-3.5 pb-5 flex flex-col justify-between backface-hidden border border-slateAsh/10">
           
@@ -128,6 +144,6 @@ export default function PolaroidCard({
         </div>
 
       </div>
-    </div>
+    </motion.div>
   );
 }

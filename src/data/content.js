@@ -12,7 +12,7 @@ export const birthdayConfig = {
       id: "track-1",
       title: "Happy Birthday! (but jazz)",
       artist: "Akari",
-      duration: "2:45",
+      duration: "2:33",
       audioUrl: "./music/akarihappybday.mp3",
     },
     {
@@ -336,6 +336,14 @@ Zai`,
         rotation: "2deg",
       },
       {
+        type: "sticker",
+        icon: "heart",
+        bgColor: "bg-coralBlush",
+        title: "sweet 22",
+        subtitle: "made with love",
+        rotation: "-5deg",
+      },
+      {
         type: "note",
         text: "Don't forget to eat an extra slice of cake today!",
         author: "The Crew",
@@ -349,6 +357,20 @@ Zai`,
         note: "Place a doodle or photo",
         tapeColor: "bg-[#FFEE8C]/90",
         rotation: "3deg",
+      },
+      {
+        type: "music-badge",
+        track: "Now Playing: Birthday Jam",
+        artist: "Cozy Tape Sessions",
+        rotation: "-3.5deg",
+      },
+      {
+        type: "ticket",
+        category: "WISH VOUCHER",
+        number: "№ WISH-2026",
+        title: "Unlimited Birthday Wishes",
+        subtitle: "No expiration date. Valid forever.",
+        rotation: "2.5deg",
       }
     ],
     right: [
@@ -368,6 +390,14 @@ Zai`,
         rotation: "2deg",
       },
       {
+        type: "sticker",
+        icon: "sparkles",
+        bgColor: "bg-buttercup",
+        title: "shine bright",
+        subtitle: "sep 18 • 2026",
+        rotation: "4deg",
+      },
+      {
         type: "note",
         text: "Life is sweeter with good tunes and warm friends.",
         author: "Cozy Corner",
@@ -380,6 +410,21 @@ Zai`,
         title: "Golden Year Ticket",
         subtitle: "Valid for all 365 days of good vibes.",
         rotation: "1.5deg",
+      },
+      {
+        type: "photo",
+        imageUrl: "", // Place another photo URL or file
+        caption: "A quiet happy moment",
+        placeholder: "Photo slot",
+        note: "Snap & save here",
+        tapeColor: "bg-[#E5DBFF]/90",
+        rotation: "-2.5deg",
+      },
+      {
+        type: "note",
+        text: "Another year bolder, kinder, and cooler than ever.",
+        author: "Always cheering",
+        rotation: "3deg",
       }
     ]
   }

@@ -29,45 +29,49 @@ export default function Navbar({
           <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-skyMist flex items-center justify-center text-slateAsh shadow-paper-sm border border-skyMist/90">
             <Heart className="w-3.5 h-3.5 fill-coralBlush text-slateAsh" />
           </div>
-          <span className="font-bold text-slateAsh text-xs sm:text-sm font-sans flex items-center gap-1.5">
+          <span className="font-bold text-slateAsh text-xs sm:text-sm font-sans flex items-center gap-1.5 shrink-0">
             {celebrant.name}
-            <span className="text-xs px-2 py-0.5 rounded-full bg-skyMist/70 text-slateAsh font-semibold border border-skyMist/80">
+            <span className="hidden sm:inline-block text-xs px-2 py-0.5 rounded-full bg-skyMist/70 text-slateAsh font-semibold border border-skyMist/80 whitespace-nowrap">
               {celebrant.birthdayDate}
             </span>
           </span>
         </div>
 
         {/* Scrapbook Bookmark Navigation Tabs */}
-        <div className="flex items-center gap-1 text-xs font-semibold text-slateAsh">
+        <div className="flex items-center gap-0.5 sm:gap-1 text-xs font-semibold text-slateAsh">
           <button
             onClick={() => scrollToSection('photos-section')}
-            className="px-2.5 py-1 rounded-lg hover:bg-skyMist/60 transition-colors flex items-center gap-1"
+            className="p-2 sm:px-2.5 sm:py-1.5 rounded-lg hover:bg-skyMist/60 active:bg-skyMist/80 transition-colors flex items-center gap-1 min-h-[38px] sm:min-h-[auto] cursor-pointer"
+            aria-label="Scroll to photos"
           >
-            <Image className="w-3 h-3 text-slateAsh/80" />
-            <span className="hidden xs:inline sm:inline">Photos</span>
+            <Image className="w-3.5 h-3.5 text-slateAsh/80" />
+            <span className="hidden sm:inline">Photos</span>
           </button>
 
           <button
             onClick={() => scrollToSection('letters-section')}
-            className="px-2.5 py-1 rounded-lg hover:bg-skyMist/60 transition-colors flex items-center gap-1"
+            className="p-2 sm:px-2.5 sm:py-1.5 rounded-lg hover:bg-skyMist/60 active:bg-skyMist/80 transition-colors flex items-center gap-1 min-h-[38px] sm:min-h-[auto] cursor-pointer"
+            aria-label="Scroll to letters"
           >
-            <Mail className="w-3 h-3 text-slateAsh/80" />
-            <span className="hidden xs:inline sm:inline">Letters</span>
+            <Mail className="w-3.5 h-3.5 text-slateAsh/80" />
+            <span className="hidden sm:inline">Letters</span>
           </button>
 
           <button
             onClick={() => scrollToSection('mixtape-section')}
-            className="px-2.5 py-1 rounded-lg hover:bg-skyMist/60 transition-colors flex items-center gap-1"
+            className="p-2 sm:px-2.5 sm:py-1.5 rounded-lg hover:bg-skyMist/60 active:bg-skyMist/80 transition-colors flex items-center gap-1 min-h-[38px] sm:min-h-[auto] cursor-pointer"
+            aria-label="Scroll to music"
           >
-            <Music className="w-3 h-3 text-slateAsh/80" />
+            <Music className="w-3.5 h-3.5 text-slateAsh/80" />
             <span className="hidden sm:inline">Music</span>
           </button>
 
           <button
             onClick={() => scrollToSection('cake-section')}
-            className="px-2.5 py-1 rounded-lg hover:bg-skyMist/60 transition-colors flex items-center gap-1"
+            className="p-2 sm:px-2.5 sm:py-1.5 rounded-lg hover:bg-skyMist/60 active:bg-skyMist/80 transition-colors flex items-center gap-1 min-h-[38px] sm:min-h-[auto] cursor-pointer"
+            aria-label="Scroll to birthday cake and wish"
           >
-            <Sparkles className="w-3 h-3 text-slateAsh/80" />
+            <Sparkles className="w-3.5 h-3.5 text-slateAsh/80" />
             <span className="hidden md:inline">Wish</span>
           </button>
         </div>
@@ -78,7 +82,7 @@ export default function Navbar({
             onClick={onToggleFluid}
             title={isFluidEnabled ? "Disable Sky Mist fluid cursor" : "Enable Sky Mist fluid cursor"}
             aria-label="Toggle Sky Mist fluid cursor effect"
-            className={`flex items-center gap-1.5 text-xs font-semibold px-2.5 sm:px-3 py-1.5 rounded-xl transition-all shadow-paper-sm ${
+            className={`flex items-center gap-1.5 text-xs font-semibold px-2.5 sm:px-3 py-2 sm:py-1.5 min-h-[38px] sm:min-h-[auto] rounded-xl transition-all shadow-paper-sm cursor-pointer ${
               isFluidEnabled
                 ? 'bg-skyMist text-slateAsh ring-1 ring-skyMist/80 border border-skyMist/90'
                 : 'bg-cloudWhite border border-slateAsh/15 text-slateAsh/60 hover:bg-skyMist/30'
@@ -92,7 +96,7 @@ export default function Navbar({
           <button
             onClick={onToggleMusic}
             aria-label={isPlaying ? "Pause music" : "Play music"}
-            className={`flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-xl transition-all shadow-paper-sm ${
+            className={`flex items-center gap-2 text-xs font-semibold px-3 py-2 sm:py-1.5 min-h-[38px] sm:min-h-[auto] rounded-xl transition-all shadow-paper-sm cursor-pointer ${
               isPlaying 
                 ? 'bg-skyMist text-slateAsh ring-2 ring-skyMist/80 border border-skyMist/90' 
                 : 'bg-cloudWhite border border-skyMist text-slateAsh hover:bg-skyMist/40'
