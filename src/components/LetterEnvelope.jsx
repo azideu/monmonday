@@ -3,11 +3,9 @@ import { motion } from 'framer-motion';
 import { Mail, Sparkles, Image as ImageIcon, Volume2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import IconRenderer from './IconRenderer.jsx';
-import { playTapePeel } from '../utils/soundEffects.js';
 
 export default function LetterEnvelope({ letter, onOpenLetter, index, defaultRecipient = "Monmonkyu" }) {
   const [isHovered, setIsHovered] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
 
   const recipient = letter?.recipientNickname || letter?.recipient || letter?.to || defaultRecipient;
   const hasImages = Boolean(
@@ -18,7 +16,7 @@ export default function LetterEnvelope({ letter, onOpenLetter, index, defaultRec
   );
 
   const handleOpen = (e) => {
-    if (isDragging) return;
+    e?.stopPropagation?.();
 
     // Gentle pastel confetti sparkle on unsealing the wax stamp
     try {
@@ -47,20 +45,8 @@ export default function LetterEnvelope({ letter, onOpenLetter, index, defaultRec
   const tilt = tilts[index % tilts.length];
 
   return (
-    <motion.div
-      drag
-      dragConstraints={{ left: -60, right: 60, top: -40, bottom: 40 }}
-      dragElastic={0.15}
-      dragTransition={{ bounceStiffness: 400, bounceDamping: 25 }}
-      whileDrag={{ scale: 1.06, zIndex: 40, cursor: 'grabbing', rotate: 0 }}
-      onDragStart={() => {
-        setIsDragging(true);
-        playTapePeel();
-      }}
-      onDragEnd={() => {
-        setTimeout(() => setIsDragging(false), 50);
-      }}
-      className="relative select-none py-3 touch-pan-y cursor-grab"
+    <div
+      className="relative select-none py-3"
       style={{ transform: `rotate(${tilt})` }}
     >
       {/* Envelope Card Body */}
@@ -185,6 +171,6 @@ export default function LetterEnvelope({ letter, onOpenLetter, index, defaultRec
         </div>
 
       </motion.div>
-    </motion.div>
+    </div>
   );
 }

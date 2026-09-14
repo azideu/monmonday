@@ -10,13 +10,20 @@ export const birthdayConfig = {
   playlist: [
     {
       id: "track-1",
-      title: "Happy Birthday! (but jazz)",
+      title: "Happy Birthday! (But Jazz)",
       artist: "Akari",
       duration: "2:33",
       audioUrl: "./music/akarihappybday.mp3",
     },
     {
       id: "track-2",
+      title: "Happy Birthday! (But Guitar)",
+      artist: "Akari",
+      duration: "1:02",
+      audioUrl: "./music/akaribdayguitar2.mp3",
+    },
+    {
+      id: "track-3",
       title: "Kucing's Birthday Serenade",
       artist: "Kucing Kelabu",
       duration: "0:30",
@@ -37,7 +44,7 @@ export const birthdayConfig = {
       stampText: "AIR MAIL",
       date: "Sep 18, 2026",
       type: "typed",
-      audioUrl: "./music/akarihappybday.mp3",
+      audioUrl: "./music/akaribdayguitar.mp3",
       audioTitle: "Akari's Birthday Song",
       preview: "Wishing you the brightest, most peaceful birthday! Thank you for always bringing sunshine...",
       content: `Happy birthday Monmonkyu!

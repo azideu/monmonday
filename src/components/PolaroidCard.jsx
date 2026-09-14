@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { RotateCw, Calendar, MapPin, Camera } from 'lucide-react';
 import IconRenderer from './IconRenderer.jsx';
-import { playTapePeel } from '../utils/soundEffects.js';
 
 export default function PolaroidCard({
   photo,
@@ -10,57 +9,48 @@ export default function PolaroidCard({
 }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [imgError, setImgError] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
 
-  const toggleFlip = () => {
-    if (!isDragging) {
-      setIsFlipped(!isFlipped);
-    }
+  const toggleFlip = (e) => {
+    e?.stopPropagation?.();
+    setIsFlipped((prev) => !prev);
   };
 
   return (
-    <motion.div 
-      drag
-      dragConstraints={{ left: -60, right: 60, top: -40, bottom: 40 }}
-      dragElastic={0.15}
-      dragTransition={{ bounceStiffness: 400, bounceDamping: 25 }}
-      whileDrag={{ scale: 1.08, zIndex: 40, cursor: 'grabbing', rotate: 0 }}
-      onDragStart={() => {
-        setIsDragging(true);
-        playTapePeel();
-      }}
-      onDragEnd={() => {
-        setTimeout(() => setIsDragging(false), 50);
-      }}
-      className="relative group perspective-1000 select-none cursor-grab py-4 focus:outline-none touch-pan-y"
-      onClick={toggleFlip}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          toggleFlip();
-        }
-      }}
-      role="button"
-      tabIndex={0}
-      aria-expanded={isFlipped}
-      aria-label={
-        isFlipped 
-          ? `Note on back of photo from ${photo.location}: "${photo.backNote}". Click to flip back.` 
-          : `Photo from ${photo.location}: ${photo.caption}. Click to flip and read note.`
-      }
+    <div
+      className="relative select-none py-4"
       style={{
         transform: `rotate(${photo.cardTilt || '0deg'})`,
       }}
     >
-      {/* 3D Card Container */}
-      <div 
-        className={`relative w-[280px] xs:w-72 sm:w-72 h-[350px] sm:h-[360px] max-w-[calc(100vw-2.5rem)] rounded-lg transition-transform duration-700 transform-style-3d shadow-paper group-hover:shadow-paper-elevated group-hover:scale-[1.02] group-focus:ring-2 group-focus:ring-skyMist ${
-          isFlipped ? 'rotate-y-180' : ''
-        }`}
+      <motion.div 
+        whileHover={{ scale: 1.03, y: -4 }}
+        whileTap={{ scale: 0.98 }}
+        className="relative group cursor-pointer focus:outline-none"
+        onClick={toggleFlip}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleFlip(e);
+          }
+        }}
+        role="button"
+        tabIndex={0}
+        aria-expanded={isFlipped}
+        aria-label={
+          isFlipped 
+            ? `Note on back of photo from ${photo.location}: "${photo.backNote}". Click to flip back.` 
+            : `Photo from ${photo.location}: ${photo.caption}. Click to flip and read note.`
+        }
       >
+        {/* 3D Card Container */}
+        <div 
+          className={`relative w-[280px] xs:w-72 sm:w-72 h-[350px] sm:h-[360px] max-w-[calc(100vw-2.5rem)] rounded-lg transition-transform duration-700 transform-style-3d shadow-paper group-hover:shadow-paper-elevated group-focus:ring-2 group-focus:ring-skyMist ${
+            isFlipped ? 'rotate-y-180' : ''
+          }`}
+        >
         {/* Washi Tape Strip pinned to card top edge */}
         <div 
-          className={`washi-tape absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-5.5 z-30 rounded-xs transition-transform duration-300 ${photo.tapeColor || 'bg-skyMist/80'}`}
+          className={`washi-tape absolute -top-3 left-1/2 -translate-x-1/2 w-24 h-5.5 z-30 rounded-xs transition-transform duration-300 pointer-events-none ${photo.tapeColor || 'bg-skyMist/80'}`}
           style={{
             transform: `translateX(-50%) rotate(${photo.tapeRotation || '0deg'})`,
           }}
@@ -143,7 +133,8 @@ export default function PolaroidCard({
 
         </div>
 
-      </div>
-    </motion.div>
+        </div>
+      </motion.div>
+    </div>
   );
 }
