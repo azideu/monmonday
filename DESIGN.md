@@ -44,6 +44,12 @@ typography:
     fontWeight: 700
     lineHeight: 1.4
     letterSpacing: "0.08em"
+  caption:
+    fontFamily: "Nunito, system-ui, sans-serif"
+    fontSize: "0.625rem"
+    fontWeight: 600
+    lineHeight: 1.3
+    letterSpacing: "0.05em"
 rounded:
   xs: "2px"
   sm: "4px"

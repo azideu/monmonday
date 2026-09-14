@@ -12,17 +12,33 @@ export default function App() {
   // Fluid Cursor State (defaults to true)
   const [isFluidEnabled, setIsFluidEnabled] = useState(true);
 
-  // Audio Player State
+  // Audio Player State (persisted across refreshes in localStorage)
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(0.7);
-  const [showWelcomeModal, setShowWelcomeModal] = useState(true);
+  const [volume, setVolume] = useState(() => {
+    try {
+      const saved = localStorage.getItem('mon_audio_volume');
+      return saved !== null ? parseFloat(saved) : 0.7;
+    } catch {
+      return 0.7;
+    }
+  });
+  const [showWelcomeModal, setShowWelcomeModal] = useState(() => {
+    try {
+      return localStorage.getItem('mon_welcomed') !== 'true';
+    } catch {
+      return true;
+    }
+  });
 
   // Active modal for letter reading
   const [activeLetter, setActiveLetter] = useState(null);
 
   // References for Audio
   const audioRef = useRef(null);
+  const letterAudioRef = useRef(null);
+  const wasBgPlayingBeforeLetter = useRef(false);
+  const [isLetterAudioPlaying, setIsLetterAudioPlaying] = useState(false);
   const synthIntervalRef = useRef(null);
   const audioCtxRef = useRef(null);
 
@@ -53,6 +69,9 @@ export default function App() {
     return () => {
       audio.pause();
       stopSynthChimes();
+      if (letterAudioRef.current) {
+        letterAudioRef.current.pause();
+      }
     };
   }, []);
 
@@ -60,7 +79,7 @@ export default function App() {
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.src = currentTrack.audioUrl;
-      if (isPlaying) {
+      if (isPlaying && !letterAudioRef.current) {
         audioRef.current.play().catch(() => {
           startSynthChimes();
         });
@@ -68,12 +87,75 @@ export default function App() {
     }
   }, [currentTrackIndex]);
 
-  // Update volume
+  // Update volume for background player and any active letter audio
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = volume;
     }
+    if (letterAudioRef.current) {
+      letterAudioRef.current.volume = volume;
+    }
   }, [volume]);
+
+  // Handle letter dedicated audio playback & background player coordination
+  useEffect(() => {
+    const letterAudioSource = activeLetter?.audioUrl || activeLetter?.audio;
+
+    if (activeLetter && letterAudioSource) {
+      // 1. If background music is playing, pause it gracefully and remember state
+      if (isPlaying) {
+        wasBgPlayingBeforeLetter.current = true;
+        if (audioRef.current) {
+          audioRef.current.pause();
+        }
+        stopSynthChimes();
+        setIsPlaying(false);
+      } else {
+        wasBgPlayingBeforeLetter.current = false;
+      }
+
+      // 2. Stop any existing letter audio instance
+      if (letterAudioRef.current) {
+        letterAudioRef.current.pause();
+        letterAudioRef.current = null;
+      }
+
+      // 3. Create and play letter audio
+      const letterAudio = new Audio(letterAudioSource);
+      letterAudio.volume = volume;
+      letterAudioRef.current = letterAudio;
+
+      letterAudio.onplay = () => setIsLetterAudioPlaying(true);
+      letterAudio.onpause = () => setIsLetterAudioPlaying(false);
+      letterAudio.onended = () => setIsLetterAudioPlaying(false);
+
+      letterAudio.play().catch((err) => {
+        console.warn("Letter audio autoplay prevented or blocked:", err);
+      });
+    } else if (!activeLetter) {
+      // Letter closed: stop letter audio
+      if (letterAudioRef.current) {
+        letterAudioRef.current.pause();
+        letterAudioRef.current = null;
+      }
+      setIsLetterAudioPlaying(false);
+
+      // Resume background music if it was playing before opening the letter
+      if (wasBgPlayingBeforeLetter.current) {
+        wasBgPlayingBeforeLetter.current = false;
+        if (audioRef.current) {
+          audioRef.current.play().then(() => {
+            setIsPlaying(true);
+          }).catch(() => {
+            setIsPlaying(true);
+            startSynthChimes();
+          });
+        }
+      }
+    }
+    // Note: If activeLetter is open but has NO audio, do nothing!
+    // Background audio continues playing smoothly and uninterrupted without muting.
+  }, [activeLetter]);
 
   // Peaceful synthesized chime fallback using Web Audio API
   const startSynthChimes = () => {
@@ -159,12 +241,25 @@ export default function App() {
 
   // Welcome modal handlers
   const handleStartWithMusic = () => {
+    try {
+      localStorage.setItem('mon_welcomed', 'true');
+    } catch {}
     setShowWelcomeModal(false);
     togglePlay();
   };
 
   const handleExploreSilently = () => {
+    try {
+      localStorage.setItem('mon_welcomed', 'true');
+    } catch {}
     setShowWelcomeModal(false);
+  };
+
+  const handleVolumeChange = (newVolume) => {
+    setVolume(newVolume);
+    try {
+      localStorage.setItem('mon_audio_volume', String(newVolume));
+    } catch {}
   };
 
   return (
@@ -202,7 +297,7 @@ export default function App() {
         onNextTrack={handleNextTrack}
         onPrevTrack={handlePrevTrack}
         volume={volume}
-        onVolumeChange={setVolume}
+        onVolumeChange={handleVolumeChange}
         polaroids={polaroids}
         letters={letters}
         onOpenLetter={(letter) => setActiveLetter(letter)}
@@ -218,6 +313,15 @@ export default function App() {
         isOpen={Boolean(activeLetter)}
         onClose={() => setActiveLetter(null)}
         celebrantName={celebrant.name}
+        isLetterAudioPlaying={isLetterAudioPlaying}
+        onToggleLetterAudio={() => {
+          if (!letterAudioRef.current) return;
+          if (isLetterAudioPlaying) {
+            letterAudioRef.current.pause();
+          } else {
+            letterAudioRef.current.play().catch(console.warn);
+          }
+        }}
       />
 
       {/* Audio Autoplay primer modal */}

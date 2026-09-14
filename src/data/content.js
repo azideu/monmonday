@@ -44,6 +44,8 @@ export const birthdayConfig = {
       stampText: "AIR MAIL",
       date: "Sep 18, 2026",
       type: "typed",
+      audioUrl: "./music/akarihappybday.mp3",
+      audioTitle: "Akari's Birthday Song",
       preview: "Wishing you the brightest, most peaceful birthday! Thank you for always bringing sunshine...",
       content: `Happy birthday Monmonkyu!
 
@@ -151,6 +153,8 @@ Kiwan`,
       stampText: "MEOW MAIL",
       date: "Sep 18, 2026",
       type: "typed",
+      audioUrl: "./music/kucingbdayguitar.mp3",
+      audioTitle: "Kucing Kelabu's Birthday Serenade",
       preview: "Purr purr... Happy birthday human! Sending you soft paws, warm lap naps, and quiet purrs...",
       content: `Purr purr... Happy birthday Monmonkyu!
 
@@ -235,6 +239,8 @@ Opanchu`,
       stampText: "AIR MAIL",
       date: "Sep 18, 2026",
       type: "typed",
+      audioUrl: "https://cdn.freesound.org/previews/416/416632_5121236-lq.mp3",
+      audioTitle: "Late Night Voice Note Memento",
       preview: "Happy birthday Monmonkyu! Genuinely so grateful for our late night chats and endless laughs...",
       content: `Happy birthday Monmonkyu!
 

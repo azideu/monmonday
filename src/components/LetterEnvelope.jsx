@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Sparkles, Image as ImageIcon } from 'lucide-react';
+import { Mail, Sparkles, Image as ImageIcon, Volume2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import IconRenderer from './IconRenderer.jsx';
 import { playTapePeel } from '../utils/soundEffects.js';
@@ -148,6 +148,15 @@ export default function LetterEnvelope({ letter, onOpenLetter, index, defaultRec
               From: <strong className="font-bold text-slateAsh">{letter.author}</strong>
             </span>
             <div className="flex items-center gap-1.5">
+              {(letter?.audioUrl || letter?.audio) && (
+                <span 
+                  className="inline-flex items-center gap-0.5 text-[10px] font-mono text-slateAsh/80 bg-white/80 px-1.5 py-0.5 rounded-full border border-slateAsh/15"
+                  title="Includes audio note / song"
+                >
+                  <Volume2 className="w-2.5 h-2.5 text-pastelCoral" />
+                  <span>audio</span>
+                </span>
+              )}
               {hasImages && (
                 <span 
                   className="inline-flex items-center gap-0.5 text-[10px] font-mono text-slateAsh/70 bg-white/70 px-1.5 py-0.5 rounded-full border border-slateAsh/15"

@@ -59,10 +59,10 @@ export default function ScrapbookDecoMargin({ side = "left", items = [] }) {
                     }`}
                   >
                     <Camera className="w-5 h-5 text-slateAsh/50 mb-1" />
-                    <span className="text-[11px] font-sans font-medium text-slateAsh/80 leading-tight">
+                    <span className="text-xs font-sans font-medium text-slateAsh/80 leading-tight">
                       {item.placeholder || "Photo slot"}
                     </span>
-                    <span className="text-[9px] font-mono text-slateAsh/50 mt-0.5">
+                    <span className="text-[10px] font-mono text-slateAsh/50 mt-0.5">
                       {item.note || "Add photo in content.js"}
                     </span>
                   </div>
@@ -89,17 +89,17 @@ export default function ScrapbookDecoMargin({ side = "left", items = [] }) {
                 <div className="absolute -right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-[#EBF7FD] border-l border-slateAsh/30" />
 
                 <div className="flex items-center justify-between border-b border-dashed border-slateAsh/25 pb-1 mb-1.5">
-                  <span className="text-[9px] 2xl:text-[10px] font-mono uppercase tracking-wider text-slateAsh/60">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-slateAsh/60">
                     {item.category || "ADMIT ONE"}
                   </span>
-                  <span className="text-[9px] 2xl:text-[10px] font-mono text-slateAsh/70 font-bold">
+                  <span className="text-[10px] font-mono text-slateAsh/70 font-bold">
                     {item.number || "№ 0918"}
                   </span>
                 </div>
                 <p className="font-handwriting text-base 2xl:text-lg text-slateAsh leading-tight">
                   {item.title}
                 </p>
-                <p className="text-[10px] 2xl:text-[11px] font-sans text-slateAsh/70 mt-0.5">
+                <p className="text-[11px] font-sans text-slateAsh/70 mt-0.5">
                   {item.subtitle}
                 </p>
               </div>
@@ -118,7 +118,7 @@ export default function ScrapbookDecoMargin({ side = "left", items = [] }) {
                     {item.title}
                   </span>
                   {item.subtitle && (
-                    <span className="text-[9px] font-mono text-slateAsh/70">
+                    <span className="text-[10px] font-mono text-slateAsh/70">
                       {item.subtitle}
                     </span>
                   )}
@@ -142,7 +142,7 @@ export default function ScrapbookDecoMargin({ side = "left", items = [] }) {
                     <p className="font-mono text-[10px] font-bold text-slateAsh truncate">
                       {item.track}
                     </p>
-                    <p className="font-sans text-[9px] text-slateAsh/60 truncate">
+                    <p className="font-sans text-[10px] text-slateAsh/60 truncate">
                       {item.artist}
                     </p>
                   </div>
@@ -159,20 +159,20 @@ export default function ScrapbookDecoMargin({ side = "left", items = [] }) {
               >
                 <div className="relative w-24 2xl:w-28 h-28 2xl:h-32 bg-white rounded border border-dashed border-slateAsh/35 p-1.5 flex flex-col items-center justify-between shadow-paper-sm bg-[radial-gradient(#D4F1FF_1px,transparent_1px)] [background-size:8px_8px]">
                   <div className="w-full flex items-center justify-between px-1">
-                    <span className="text-[9px] font-mono font-bold text-slateAsh/60">AIR</span>
-                    <span className="text-[9px] font-mono text-slateAsh/60">2026</span>
+                    <span className="text-[10px] font-mono font-bold text-slateAsh/60">AIR</span>
+                    <span className="text-[10px] font-mono text-slateAsh/60">2026</span>
                   </div>
                   <div className="w-10 2xl:w-12 h-10 2xl:h-12 rounded-full bg-pastelMint/40 flex items-center justify-center border border-slateAsh/15">
                     <IconRenderer name={item.icon || "flower"} className="w-5 2xl:w-6 h-5 2xl:h-6 text-slateAsh/80" />
                   </div>
-                  <span className="font-handwriting text-[11px] 2xl:text-xs text-slateAsh font-bold tracking-wide">
+                  <span className="font-handwriting text-xs text-slateAsh font-bold tracking-wide">
                     {item.label || "Special Delivery"}
                   </span>
                 </div>
                 {/* Circular postmark stamp overlay */}
-                <div className="absolute -bottom-2 -right-1 w-12 2xl:w-14 h-12 2xl:h-14 rounded-full border border-slateAsh/30 flex flex-col items-center justify-center rotate-[-12deg] pointer-events-none opacity-60">
-                  <span className="text-[7px] 2xl:text-[8px] font-mono tracking-tighter text-slateAsh">SEP 18</span>
-                  <span className="text-[6px] 2xl:text-[7px] font-mono tracking-tighter text-slateAsh">CELEBRATE</span>
+                <div className="absolute -bottom-2 -right-1 w-14 h-14 rounded-full border border-slateAsh/35 flex flex-col items-center justify-center rotate-[-12deg] pointer-events-none opacity-60">
+                  <span className="text-[10px] font-mono tracking-tighter text-slateAsh font-semibold">SEP 18</span>
+                  <span className="text-[10px] font-mono tracking-tighter text-slateAsh">CELEBRATE</span>
                 </div>
               </div>
             );

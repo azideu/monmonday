@@ -113,7 +113,7 @@ export default function CassettePlayer({
               <div className="flex items-center gap-1.5 bg-cloudWhite px-2 py-0.5 rounded border border-slateAsh/20 shadow-inner">
                 {/* VU Left */}
                 <div className="flex items-center gap-1">
-                  <span className="text-[9px] font-mono font-bold text-slateAsh/60">L</span>
+                  <span className="text-[10px] font-mono font-bold text-slateAsh/60">L</span>
                   <div className="w-9 h-2.5 bg-slateAsh/15 rounded-xs relative overflow-hidden flex items-center">
                     <div 
                       className="h-full bg-linear-to-r from-pastelMint via-buttercup to-coralBlush transition-all duration-100 ease-out rounded-xs"
@@ -123,7 +123,7 @@ export default function CassettePlayer({
                 </div>
                 {/* VU Right */}
                 <div className="flex items-center gap-1">
-                  <span className="text-[9px] font-mono font-bold text-slateAsh/60">R</span>
+                  <span className="text-[10px] font-mono font-bold text-slateAsh/60">R</span>
                   <div className="w-9 h-2.5 bg-slateAsh/15 rounded-xs relative overflow-hidden flex items-center">
                     <div 
                       className="h-full bg-linear-to-r from-pastelMint via-buttercup to-coralBlush transition-all duration-100 ease-out rounded-xs"

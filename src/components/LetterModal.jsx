@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, Sparkles, Image as ImageIcon, ZoomIn, FileText } from 'lucide-react';
+import { X, Calendar, Sparkles, Image as ImageIcon, ZoomIn, FileText, Volume2, VolumeX, Play, Pause, Music } from 'lucide-react';
 import IconRenderer from './IconRenderer.jsx';
 import { playPaperRustle } from '../utils/soundEffects.js';
 
@@ -51,7 +51,14 @@ function getLetterImages(letter) {
   return images;
 }
 
-export default function LetterModal({ letter, isOpen, onClose, celebrantName = "Monmonkyu" }) {
+export default function LetterModal({ 
+  letter, 
+  isOpen, 
+  onClose, 
+  celebrantName = "Monmonkyu",
+  isLetterAudioPlaying = false,
+  onToggleLetterAudio = () => {},
+}) {
   const modalRef = useRef(null);
   const closeButtonRef = useRef(null);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -199,14 +206,43 @@ export default function LetterModal({ letter, isOpen, onClose, celebrantName = "
               </div>
             </div>
 
-            <button
-              ref={closeButtonRef}
-              onClick={onClose}
-              className="p-2 sm:p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full hover:bg-white text-slateAsh/70 hover:text-slateAsh active:scale-95 transition-all border border-transparent hover:border-slateAsh/15 shrink-0 cursor-pointer"
-              aria-label="Close letter"
-            >
-              <X className="w-5 h-5" />
-            </button>
+            <div className="flex items-center gap-2 shrink-0">
+              {(letter.audioUrl || letter.audio) && (
+                <button
+                  type="button"
+                  onClick={onToggleLetterAudio}
+                  className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full text-xs font-mono font-medium transition-all shadow-paper-sm border cursor-pointer ${
+                    isLetterAudioPlaying
+                      ? 'bg-pastelCoral/20 border-pastelCoral/50 text-slateAsh animate-pulse'
+                      : 'bg-white/90 border-slateAsh/20 text-slateAsh/80 hover:bg-white'
+                  }`}
+                  aria-label={isLetterAudioPlaying ? "Pause voice note / audio" : "Play voice note / audio"}
+                  title={letter.audioTitle || "Voice note / audio attached"}
+                >
+                  {isLetterAudioPlaying ? (
+                    <>
+                      <Pause className="w-3.5 h-3.5 text-slateAsh" />
+                      <span className="hidden sm:inline">Pause Audio</span>
+                    </>
+                  ) : (
+                    <>
+                      <Play className="w-3.5 h-3.5 fill-slateAsh text-slateAsh" />
+                      <span className="hidden sm:inline">Play Audio</span>
+                    </>
+                  )}
+                  <Volume2 className="w-3.5 h-3.5 opacity-75" />
+                </button>
+              )}
+
+              <button
+                ref={closeButtonRef}
+                onClick={onClose}
+                className="p-2 sm:p-2.5 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-full hover:bg-white text-slateAsh/70 hover:text-slateAsh active:scale-95 transition-all border border-transparent hover:border-slateAsh/15 shrink-0 cursor-pointer"
+                aria-label="Close letter"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
           </div>
 
           {/* Letter Content Body */}
