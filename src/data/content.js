@@ -10,7 +10,7 @@ export const birthdayConfig = {
   playlist: [
     {
       id: "track-1",
-      title: "Happy Birthday! (But Jazz)",
+      title: "Happy Birthday! (But Jazz Piano)",
       artist: "akari",
       duration: "2:33",
       audioUrl: "./music/akarihappybday.mp3",
@@ -28,7 +28,14 @@ export const birthdayConfig = {
       artist: "Kucing Kelabu",
       duration: "0:30",
       audioUrl: "./music/kucingbdayguitar.mp3",
-    }
+    },
+    {
+      id: "track-4",
+      title: "Happy Birthday! (But Kalimba)",
+      artist: "Alin",
+      duration: "0:42",
+      audioUrl: "./music/alinkalimba.mp3",
+    },
   ],
 
   // Letters from friends
@@ -50,14 +57,6 @@ export const birthdayConfig = {
       scanUrl: "./photos/akaridearestati.png",
       audioUrl: "./music/akaribdayguitar.mp3",
       audioTitle: "akari's Birthday Song",
-      content: `happy birthday ati!! <3
-
-recorded a silly little acoustic tune for you, hope it brings a smile to your face today. thank you for being the person who always checks in on me and listens when my brain is all over the place.
-
-eat lots of good food today and don't do any work. seriously, take a proper break.
-
-love you lots,
-akari`,
     },
     {
       id: "letter-alin",
@@ -70,6 +69,8 @@ akari`,
       stampText: "SPECIAL",
       date: "Sep 18, 2026",
       type: "typed",
+      audioUrl: "./music/alinkalimba.mp3",
+      audioTitle: "Alin's Birthday Kalimba",
       content: `Happy birthday Mon-chan!
 
 Still laughing thinking about our 2 AM design rabbit holes where we spent forty-five minutes debating two slightly different shades of blue. Nobody else gets my specific brand of design nitpicking like you do.
