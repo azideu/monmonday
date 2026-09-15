@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, Sparkles, Image as ImageIcon, ZoomIn, FileText, Volume2, VolumeX, Play, Pause, Music } from 'lucide-react';
+import { X, Calendar, Sparkles, Image as ImageIcon, ZoomIn, FileText, Volume2, VolumeX, Play, Pause, Music, ChevronLeft, ChevronRight } from 'lucide-react';
 import IconRenderer from './IconRenderer.jsx';
 import { playPaperRustle } from '../utils/soundEffects.js';
 
@@ -58,6 +58,12 @@ export default function LetterModal({
   celebrantName = "Monmonkyu",
   isLetterAudioPlaying = false,
   onToggleLetterAudio = () => {},
+  hasPrev = false,
+  hasNext = false,
+  onPrevLetter = () => {},
+  onNextLetter = () => {},
+  letterIndex = -1,
+  totalLetters = 0,
 }) {
   const modalRef = useRef(null);
   const closeButtonRef = useRef(null);
@@ -85,6 +91,20 @@ export default function LetterModal({
           onClose();
         }
         return;
+      }
+
+      // Arrow key navigation between letters (when not inside an input/textarea and not viewing enlarged photo)
+      if (!selectedImage && !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) {
+        if (e.key === 'ArrowLeft' && hasPrev) {
+          e.preventDefault();
+          onPrevLetter();
+          return;
+        }
+        if (e.key === 'ArrowRight' && hasNext) {
+          e.preventDefault();
+          onNextLetter();
+          return;
+        }
       }
 
       // Focus trap within modal
@@ -119,7 +139,7 @@ export default function LetterModal({
       document.body.style.overflow = 'auto';
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isOpen, onClose, selectedImage]);
+  }, [isOpen, onClose, selectedImage, hasPrev, hasNext, onPrevLetter, onNextLetter]);
 
   const letterImages = letter ? getLetterImages(letter) : [];
   const scanImages = letterImages.filter((img) => img.isScan);
@@ -190,17 +210,17 @@ export default function LetterModal({
                   className="font-bold text-slateAsh text-sm sm:text-lg flex flex-wrap items-center gap-1.5 sm:gap-2 leading-tight"
                 >
                   <span className="truncate">{letter.author}</span>
-                  <span className="text-[11px] sm:text-xs px-2 sm:px-2.5 py-0.5 rounded-full bg-white/80 border border-slateAsh/15 text-slateAsh/80 font-normal">
+                  <span className="text-xs px-2 sm:px-2.5 py-0.5 rounded-full bg-white/80 border border-slateAsh/15 text-slateAsh/80 font-normal">
                     {letter.relationship}
                   </span>
                   {letterImages.length > 0 && (
-                    <span className="inline-flex items-center gap-1 text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-full bg-white/90 border border-slateAsh/15 text-slateAsh/70 font-mono">
+                    <span className="inline-flex items-center gap-1 text-xs px-1.5 sm:px-2 py-0.5 rounded-full bg-white/90 border border-slateAsh/15 text-slateAsh/70 font-mono">
                       <ImageIcon className="w-3 h-3" />
                       {letterImages.length}
                     </span>
                   )}
                 </h3>
-                <p className="text-[11px] sm:text-xs text-slateAsh/60 flex items-center gap-1 font-sans mt-0.5">
+                <p className="text-xs text-slateAsh/60 flex items-center gap-1 font-sans mt-0.5">
                   <Calendar className="w-3 h-3" /> {letter.date}
                 </p>
               </div>
@@ -362,18 +382,55 @@ export default function LetterModal({
 
           </div>
 
-          {/* Footer note */}
-          <div className="bg-[#FFFDF9] border-t border-slateAsh/10 px-6 py-3 flex items-center justify-between text-xs text-slateAsh/60">
-            <span className="flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5 text-buttercup" />
-              Written for {letter?.recipientNickname || celebrantName}
-            </span>
-            <button
-              onClick={onClose}
-              className="font-medium text-slateAsh hover:underline focus:ring-2 focus:ring-skyMist rounded px-1"
-            >
-              Close
-            </button>
+          {/* Footer note & Sequential Letter Navigation */}
+          <div className="bg-[#FFFDF9] border-t border-slateAsh/10 px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3 text-xs text-slateAsh/70">
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={onPrevLetter}
+                disabled={!hasPrev}
+                className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border font-sans font-medium transition-all ${
+                  hasPrev
+                    ? 'bg-white hover:bg-skyMist/40 border-slateAsh/20 text-slateAsh cursor-pointer shadow-paper-sm active:scale-95'
+                    : 'opacity-35 border-slateAsh/10 text-slateAsh/40 cursor-not-allowed'
+                }`}
+                aria-label="Previous letter"
+              >
+                <ChevronLeft className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Previous</span>
+              </button>
+
+              <span className="font-mono text-xs text-slateAsh/60 px-1">
+                {letterIndex >= 0 ? `${letterIndex + 1} of ${totalLetters}` : ''}
+              </span>
+
+              <button
+                type="button"
+                onClick={onNextLetter}
+                disabled={!hasNext}
+                className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border font-sans font-medium transition-all ${
+                  hasNext
+                    ? 'bg-white hover:bg-skyMist/40 border-slateAsh/20 text-slateAsh cursor-pointer shadow-paper-sm active:scale-95'
+                    : 'opacity-35 border-slateAsh/10 text-slateAsh/40 cursor-not-allowed'
+                }`}
+                aria-label="Next letter"
+              >
+                <span className="hidden sm:inline">Next</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <span className="hidden md:inline text-slateAsh/50 text-xs font-sans">
+                Tip: Use ← → keys to flip letters
+              </span>
+              <button
+                onClick={onClose}
+                className="font-medium text-slateAsh hover:underline focus:ring-2 focus:ring-skyMist rounded px-2 py-1 cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </motion.div>
       </div>

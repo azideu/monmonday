@@ -20,6 +20,7 @@ export default function ScrapbookDecoMargin({ side = "left", items = [] }) {
       >
         {items.map((item, idx) => {
           if (item.type === 'photo') {
+            if (!item.imageUrl) return null;
             return (
               <div
                 key={idx}
@@ -38,34 +39,16 @@ export default function ScrapbookDecoMargin({ side = "left", items = [] }) {
                 {/* Pushpin / Thumbtack dot */}
                 <div className="absolute -top-1 left-2.5 w-2.5 h-2.5 rounded-full bg-coralBlush shadow-xs border border-white" />
 
-                {/* Photo Area / Placeholder */}
+                {/* Photo Area */}
                 <div className="relative w-full aspect-square bg-skyMist/20 rounded overflow-hidden flex items-center justify-center border border-dashed border-slateAsh/20">
-                  {item.imageUrl ? (
-                    <img
-                      src={item.imageUrl}
-                      alt={item.caption || "Scrapbook photo"}
-                      className="w-full h-full object-cover"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                        if (e.currentTarget.nextSibling) {
-                          e.currentTarget.nextSibling.style.display = 'flex';
-                        }
-                      }}
-                    />
-                  ) : null}
-                  <div
-                    className={`w-full h-full flex flex-col items-center justify-center p-2 text-center bg-skyMist/30 ${
-                      item.imageUrl ? 'hidden' : 'flex'
-                    }`}
-                  >
-                    <Camera className="w-5 h-5 text-slateAsh/50 mb-1" />
-                    <span className="text-xs font-sans font-medium text-slateAsh/80 leading-tight">
-                      {item.placeholder || "Photo slot"}
-                    </span>
-                    <span className="text-[10px] font-mono text-slateAsh/50 mt-0.5">
-                      {item.note || "Add photo in content.js"}
-                    </span>
-                  </div>
+                  <img
+                    src={item.imageUrl}
+                    alt={item.caption || "Scrapbook photo"}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
                 </div>
 
                 {/* Caption */}
@@ -99,7 +82,7 @@ export default function ScrapbookDecoMargin({ side = "left", items = [] }) {
                 <p className="font-handwriting text-base 2xl:text-lg text-slateAsh leading-tight">
                   {item.title}
                 </p>
-                <p className="text-[11px] font-sans text-slateAsh/70 mt-0.5">
+                <p className="text-xs font-sans text-slateAsh/70 mt-0.5">
                   {item.subtitle}
                 </p>
               </div>

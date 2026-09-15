@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Sparkles, Image as ImageIcon, Volume2 } from 'lucide-react';
+import { Mail, Sparkles, Image as ImageIcon, Volume2, Check } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import IconRenderer from './IconRenderer.jsx';
 
-export default function LetterEnvelope({ letter, onOpenLetter, index, defaultRecipient = "Monmonkyu" }) {
+export default function LetterEnvelope({ letter, onOpenLetter, index, defaultRecipient = "Monmonkyu", isRead = false }) {
   const [isHovered, setIsHovered] = useState(false);
 
   const recipient = letter?.recipientNickname || letter?.recipient || letter?.to || defaultRecipient;
@@ -116,6 +116,11 @@ export default function LetterEnvelope({ letter, onOpenLetter, index, defaultRec
             {/* Wax rim detail */}
             <div className="absolute inset-0.5 rounded-full border border-slateAsh/15 pointer-events-none" />
           </motion.div>
+          {isRead && (
+            <span className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 bg-white/95 text-slateAsh text-[10px] font-mono font-bold px-2 py-0.2 rounded-full border border-slateAsh/20 shadow-xs flex items-center gap-0.5 whitespace-nowrap">
+              <Check className="w-2.5 h-2.5 text-pastelCoral" /> read
+            </span>
+          )}
         </div>
 
         {/* Addressing area */}
@@ -166,7 +171,7 @@ export default function LetterEnvelope({ letter, onOpenLetter, index, defaultRec
         >
           <div className="bg-white/90 text-slateAsh text-xs font-semibold px-3 py-1.5 rounded-full shadow-paper-sm border border-slateAsh/15 flex items-center gap-1.5">
             <Sparkles className="w-3.5 h-3.5 text-coralBlush" />
-            Click to open
+            {isRead ? 'Click to re-read' : 'Click to open'}
           </div>
         </div>
 

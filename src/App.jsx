@@ -31,8 +31,47 @@ export default function App() {
     }
   });
 
-  // Active modal for letter reading
+  // Active modal for letter reading & tracking read letters
   const [activeLetter, setActiveLetter] = useState(null);
+  const [readLetterIds, setReadLetterIds] = useState(() => {
+    try {
+      const saved = localStorage.getItem('mon_read_letters');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const handleOpenLetter = (letter) => {
+    setActiveLetter(letter);
+    const letterId = letter?.id || letter?.author;
+    if (letterId) {
+      setReadLetterIds((prev) => {
+        if (prev.includes(letterId)) return prev;
+        const updated = [...prev, letterId];
+        try {
+          localStorage.setItem('mon_read_letters', JSON.stringify(updated));
+        } catch {}
+        return updated;
+      });
+    }
+  };
+
+  const currentLetterIndex = activeLetter
+    ? letters.findIndex((l) => (l.id || l.author) === (activeLetter.id || activeLetter.author))
+    : -1;
+
+  const handlePrevLetter = () => {
+    if (currentLetterIndex > 0) {
+      handleOpenLetter(letters[currentLetterIndex - 1]);
+    }
+  };
+
+  const handleNextLetter = () => {
+    if (currentLetterIndex >= 0 && currentLetterIndex < letters.length - 1) {
+      handleOpenLetter(letters[currentLetterIndex + 1]);
+    }
+  };
 
   // References for Audio & Smooth Transitions
   const audioRef = useRef(null);
@@ -229,6 +268,28 @@ export default function App() {
         }
       }, 150);
 
+    } else if (activeLetter && !letterAudioSource) {
+      // Switching from a letter that had audio to one without audio:
+      if (letterAudioRef.current) {
+        clearLetterFade();
+        letterAudioRef.current.pause();
+        letterAudioRef.current = null;
+        setIsLetterAudioPlaying(false);
+      }
+      if (wasBgPlayingBeforeLetter.current && audioRef.current && audioRef.current.paused) {
+        wasBgPlayingBeforeLetter.current = false;
+        audioRef.current.volume = 0;
+        audioRef.current.play().then(() => {
+          setIsPlaying(true);
+          bgFadeIntervalRef.current = fadeAudio(audioRef.current, 0, getNormalizedVol(volume), 900, () => {
+            isTransitioningAudioRef.current = false;
+          });
+        }).catch(() => {
+          setIsPlaying(true);
+          startSynthChimes();
+          isTransitioningAudioRef.current = false;
+        });
+      }
     } else if (!activeLetter) {
       // Letter modal closed
       isTransitioningAudioRef.current = true;
@@ -274,8 +335,6 @@ export default function App() {
         isTransitioningAudioRef.current = false;
       }
     }
-    // Note: If activeLetter is open but has NO audio, do nothing!
-    // Background audio continues playing smoothly and uninterrupted without muting.
   }, [activeLetter]);
 
   // Peaceful synthesized chime fallback using Web Audio API
@@ -421,11 +480,12 @@ export default function App() {
         onVolumeChange={handleVolumeChange}
         polaroids={polaroids}
         letters={letters}
-        onOpenLetter={(letter) => setActiveLetter(letter)}
+        onOpenLetter={handleOpenLetter}
         celebration={celebration}
         sideMargins={sideMargins}
         isFluidEnabled={isFluidEnabled}
         onToggleFluid={() => setIsFluidEnabled((prev) => !prev)}
+        readLetterIds={readLetterIds}
       />
 
       {/* Letter Unfold Modal */}
@@ -435,6 +495,12 @@ export default function App() {
         onClose={() => setActiveLetter(null)}
         celebrantName={celebrant.name}
         isLetterAudioPlaying={isLetterAudioPlaying}
+        hasPrev={currentLetterIndex > 0}
+        hasNext={currentLetterIndex >= 0 && currentLetterIndex < letters.length - 1}
+        onPrevLetter={handlePrevLetter}
+        onNextLetter={handleNextLetter}
+        letterIndex={currentLetterIndex}
+        totalLetters={letters.length}
         onToggleLetterAudio={() => {
           if (!letterAudioRef.current) return;
           clearLetterFade();

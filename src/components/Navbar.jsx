@@ -28,7 +28,7 @@ export default function Navbar({
           </div>
           <span className="font-bold text-slateAsh text-xs sm:text-sm font-sans flex items-center gap-1.5">
             <span>{celebrant.name}</span>
-            <span className="hidden sm:inline-block text-[11px] px-2 py-0.5 rounded-full bg-skyMist/70 text-slateAsh font-semibold border border-skyMist/80 whitespace-nowrap">
+            <span className="hidden sm:inline-block text-xs px-2 py-0.5 rounded-full bg-skyMist/70 text-slateAsh font-semibold border border-skyMist/80 whitespace-nowrap">
               {celebrant.birthdayDate}
             </span>
           </span>

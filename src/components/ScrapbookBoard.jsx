@@ -4,7 +4,7 @@ import PolaroidCard from './PolaroidCard.jsx';
 import LetterEnvelope from './LetterEnvelope.jsx';
 import BirthdayCake from './BirthdayCake.jsx';
 import ScrapbookDecoMargin from './ScrapbookDecoMargin.jsx';
-import { Heart, Waves } from 'lucide-react';
+import { Heart } from 'lucide-react';
 
 export default function ScrapbookBoard({
   celebrant,
@@ -23,6 +23,7 @@ export default function ScrapbookBoard({
   sideMargins,
   isFluidEnabled,
   onToggleFluid,
+  readLetterIds = [],
 }) {
   return (
     <div className="relative w-full overflow-x-clip">
@@ -56,37 +57,6 @@ export default function ScrapbookBoard({
             <div className="w-16 h-0.5 bg-skyMist/80 rounded-full" />
             <Heart className="w-4 h-4 fill-skyMist text-slateAsh/60" />
             <div className="w-16 h-0.5 bg-skyMist/80 rounded-full" />
-          </div>
-
-          {/* Fluid Effect Toggle Switch & Hint */}
-          <div className="flex flex-col items-center justify-center gap-2 mt-5">
-            <div className="flex items-center gap-3 bg-white/90 backdrop-blur-xs px-4 py-2 rounded-full border border-skyMist shadow-paper-sm text-xs sm:text-sm font-semibold text-slateAsh">
-              <span className="flex items-center gap-2">
-                <Waves className="w-4 h-4 text-slateAsh" />
-                Enable Effect
-              </span>
-              <button
-                type="button"
-                role="switch"
-                aria-checked={isFluidEnabled}
-                onClick={onToggleFluid}
-                className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${isFluidEnabled ? 'bg-skyMist border-skyMist/80' : 'bg-slateAsh/25'
-                  }`}
-              >
-                <span className="sr-only">Enable effect</span>
-                <span
-                  aria-hidden="true"
-                  className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-paper-sm border border-slateAsh/15 transition-transform duration-200 ease-in-out ${isFluidEnabled ? 'translate-x-5' : 'translate-x-0'
-                    }`}
-                />
-              </button>
-            </div>
-            {isFluidEnabled && (
-              <span className="text-xs sm:text-sm font-handwriting text-slateAsh/70 tracking-wide transition-opacity duration-300">
-                <span className="sm:hidden">Touch & glide around</span>
-                <span className="hidden sm:inline">Move cursor anywhere</span>
-              </span>
-            )}
           </div>
         </section>
 
@@ -133,6 +103,7 @@ export default function ScrapbookBoard({
                 index={index}
                 onOpenLetter={onOpenLetter}
                 defaultRecipient={celebrant?.name || "Monmonkyu"}
+                isRead={readLetterIds.includes(letter.id || letter.author)}
               />
             ))}
           </div>
@@ -140,6 +111,14 @@ export default function ScrapbookBoard({
 
         {/* SECTION 3: Mixtape / Soundtrack Station */}
         <section id="mixtape-section" className="relative pt-4">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl sm:text-3xl font-bold text-slateAsh tracking-tight font-serifDisplay">
+              Birthday mixtape
+            </h2>
+            <p className="text-xs sm:text-sm text-slateAsh/60 mt-1 font-sans">
+              Curated acoustic tunes and serenades recorded for your day.
+            </p>
+          </div>
           <CassettePlayer
             playlist={playlist}
             currentTrackIndex={currentTrackIndex}

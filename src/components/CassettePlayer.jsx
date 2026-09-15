@@ -430,7 +430,7 @@ export default function CassettePlayer({
           )}
         </button>
 
-        <p className="mt-1.5 text-[11px] text-slateAsh/60 flex items-center gap-1.5 font-sans">
+        <p className="mt-1.5 text-xs text-slateAsh/60 flex items-center gap-1.5 font-sans">
           <Music className="w-3 h-3 text-slateAsh/45 inline" />
           <span>All birthday tunes in one zip file</span>
         </p>

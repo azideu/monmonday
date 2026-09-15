@@ -71,15 +71,15 @@ export default function PolaroidCard({
             ) : (
               <div className="w-full h-full bg-skyMist/30 flex flex-col items-center justify-center p-4 text-center select-none">
                 <Camera className="w-8 h-8 text-slateAsh/50 mb-1.5" />
-                <span className="text-xs text-slateAsh/80 font-bold font-sans">Photo slot</span>
-                <span className="text-xs text-slateAsh/60 mt-0.5 font-sans">Add your picture here</span>
+                <span className="text-xs text-slateAsh/80 font-bold font-sans">Memory Snapshot</span>
+                <span className="text-xs text-slateAsh/60 mt-0.5 font-sans">Click to read note</span>
               </div>
             )}
 
             {/* Flip Indicator hint: subtle animated badge on mobile, reveals on hover on desktop */}
             <div className="absolute bottom-2.5 right-2.5 bg-slateAsh/85 text-white px-2.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 shadow-paper-sm opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-all backdrop-blur-xs border border-white/20 select-none pointer-events-none">
               <RotateCw className="w-3 h-3 animate-[spin_4s_linear_infinite]" />
-              <span className="text-[11px] tracking-wide font-sans">Flip Note</span>
+              <span className="text-xs tracking-wide font-sans">Flip Note</span>
             </div>
           </div>
 
