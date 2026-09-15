@@ -24,6 +24,7 @@ export default function ScrapbookBoard({
   isFluidEnabled,
   onToggleFluid,
   readLetterIds = [],
+  unlockedLetterIds = [],
 }) {
   return (
     <div className="relative w-full overflow-x-clip">
@@ -96,16 +97,22 @@ export default function ScrapbookBoard({
 
           {/* Envelopes Cluster */}
           <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8 lg:gap-10">
-            {letters.map((letter, index) => (
-              <LetterEnvelope
-                key={letter.id || index}
-                letter={letter}
-                index={index}
-                onOpenLetter={onOpenLetter}
-                defaultRecipient={celebrant?.name || "Monmonkyu"}
-                isRead={readLetterIds.includes(letter.id || letter.author)}
-              />
-            ))}
+            {letters.map((letter, index) => {
+              const isLocked = Boolean(
+                letter.password && !unlockedLetterIds.includes(letter.id || letter.author)
+              );
+              return (
+                <LetterEnvelope
+                  key={letter.id || index}
+                  letter={letter}
+                  index={index}
+                  onOpenLetter={onOpenLetter}
+                  defaultRecipient={celebrant?.name || "Monmonkyu"}
+                  isRead={readLetterIds.includes(letter.id || letter.author)}
+                  isLocked={isLocked}
+                />
+              );
+            })}
           </div>
         </section>
 

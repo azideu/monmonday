@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Navbar from './components/Navbar.jsx';
 import ScrapbookBoard from './components/ScrapbookBoard.jsx';
 import LetterModal from './components/LetterModal.jsx';
+import SecretLetterModal from './components/SecretLetterModal.jsx';
 import AudioWelcomeModal from './components/AudioWelcomeModal.jsx';
 import FluidCursor from './components/FluidCursor.jsx';
 import { birthdayConfig } from './data/content.js';
@@ -42,9 +43,53 @@ export default function App() {
     }
   });
 
+  // Password-protected secret letters state & unlock modal
+  const [unlockedLetterIds, setUnlockedLetterIds] = useState(() => {
+    try {
+      const saved = localStorage.getItem('mon_unlocked_letters');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+  const [secretUnlockLetter, setSecretUnlockLetter] = useState(null);
+
   const handleOpenLetter = (letter) => {
+    if (!letter) return;
+    const isLocked = Boolean(
+      letter.password && !unlockedLetterIds.includes(letter.id || letter.author)
+    );
+    if (isLocked) {
+      setSecretUnlockLetter(letter);
+      return;
+    }
+
     setActiveLetter(letter);
-    const letterId = letter?.id || letter?.author;
+    const letterId = letter.id || letter.author;
+    if (letterId) {
+      setReadLetterIds((prev) => {
+        if (prev.includes(letterId)) return prev;
+        const updated = [...prev, letterId];
+        try {
+          localStorage.setItem('mon_read_letters', JSON.stringify(updated));
+        } catch {}
+        return updated;
+      });
+    }
+  };
+
+  const handleUnlockSuccess = (letter) => {
+    if (!letter) return;
+    const letterId = letter.id || letter.author;
+    if (letterId && !unlockedLetterIds.includes(letterId)) {
+      const updated = [...unlockedLetterIds, letterId];
+      setUnlockedLetterIds(updated);
+      try {
+        localStorage.setItem('mon_unlocked_letters', JSON.stringify(updated));
+      } catch {}
+    }
+    setSecretUnlockLetter(null);
+    setActiveLetter(letter);
     if (letterId) {
       setReadLetterIds((prev) => {
         if (prev.includes(letterId)) return prev;
@@ -63,13 +108,31 @@ export default function App() {
 
   const handlePrevLetter = () => {
     if (currentLetterIndex > 0) {
-      handleOpenLetter(letters[currentLetterIndex - 1]);
+      const prevLetter = letters[currentLetterIndex - 1];
+      const isLocked = Boolean(
+        prevLetter.password && !unlockedLetterIds.includes(prevLetter.id || prevLetter.author)
+      );
+      if (isLocked) {
+        setActiveLetter(null);
+        setSecretUnlockLetter(prevLetter);
+      } else {
+        handleOpenLetter(prevLetter);
+      }
     }
   };
 
   const handleNextLetter = () => {
     if (currentLetterIndex >= 0 && currentLetterIndex < letters.length - 1) {
-      handleOpenLetter(letters[currentLetterIndex + 1]);
+      const nextLetter = letters[currentLetterIndex + 1];
+      const isLocked = Boolean(
+        nextLetter.password && !unlockedLetterIds.includes(nextLetter.id || nextLetter.author)
+      );
+      if (isLocked) {
+        setActiveLetter(null);
+        setSecretUnlockLetter(nextLetter);
+      } else {
+        handleOpenLetter(nextLetter);
+      }
     }
   };
 
@@ -486,6 +549,15 @@ export default function App() {
         isFluidEnabled={isFluidEnabled}
         onToggleFluid={() => setIsFluidEnabled((prev) => !prev)}
         readLetterIds={readLetterIds}
+        unlockedLetterIds={unlockedLetterIds}
+      />
+
+      {/* Secret Letter Password Unlock Modal */}
+      <SecretLetterModal
+        letter={secretUnlockLetter}
+        isOpen={Boolean(secretUnlockLetter)}
+        onClose={() => setSecretUnlockLetter(null)}
+        onUnlock={handleUnlockSuccess}
       />
 
       {/* Letter Unfold Modal */}

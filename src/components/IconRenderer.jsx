@@ -12,6 +12,8 @@ import {
   Sparkles,
   Camera,
   Mail,
+  Lock,
+  Key,
 } from 'lucide-react';
 
 const iconMap = {
@@ -27,6 +29,8 @@ const iconMap = {
   sparkles: Sparkles,
   camera: Camera,
   mail: Mail,
+  lock: Lock,
+  key: Key,
 };
 
 export default function IconRenderer({ name, className = "w-5 h-5", fallback = "sparkles" }) {

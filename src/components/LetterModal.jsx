@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, Sparkles, Image as ImageIcon, ZoomIn, FileText, Volume2, VolumeX, Play, Pause, Music, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, Calendar, Sparkles, Image as ImageIcon, ZoomIn, ZoomOut, RotateCcw, Maximize2, FileText, PenTool, Volume2, VolumeX, Play, Pause, Music, ChevronLeft, ChevronRight } from 'lucide-react';
 import IconRenderer from './IconRenderer.jsx';
 import { playPaperRustle } from '../utils/soundEffects.js';
 
@@ -12,34 +13,39 @@ import { playPaperRustle } from '../utils/soundEffects.js';
  */
 function getLetterImages(letter) {
   const images = [];
+  const scanUrl = letter?.handwrittenImageUrl || letter?.scanUrl;
 
-  // If scanUrl is provided and not already in images
-  if (letter.scanUrl) {
+  // If handwritten image scan is provided and not already in images
+  if (scanUrl) {
     images.push({
-      url: letter.scanUrl,
-      caption: letter.scanCaption || "Handwritten letter scan",
+      url: scanUrl,
+      caption: letter.scanCaption || "",
       isScan: true,
     });
   }
 
   // If multiple images provided
-  if (Array.isArray(letter.images)) {
+  if (Array.isArray(letter?.images)) {
     letter.images.forEach((img, idx) => {
       if (typeof img === 'string') {
-        images.push({ url: img, caption: '', isScan: false });
+        if (img !== scanUrl) {
+          images.push({ url: img, caption: '', isScan: false });
+        }
       } else if (img && typeof img === 'object' && img.url) {
-        images.push({
-          url: img.url,
-          caption: img.caption || '',
-          alt: img.alt || `Photo attachment ${idx + 1}`,
-          isScan: Boolean(img.isScan),
-        });
+        if (img.url !== scanUrl) {
+          images.push({
+            url: img.url,
+            caption: img.caption || '',
+            alt: img.alt || `Photo attachment ${idx + 1}`,
+            isScan: Boolean(img.isScan),
+          });
+        }
       }
     });
-  } else if (letter.imageUrl || letter.image) {
+  } else if (letter?.imageUrl || letter?.image) {
     const url = letter.imageUrl || letter.image;
     // Don't duplicate if it equals scanUrl
-    if (url !== letter.scanUrl) {
+    if (url !== scanUrl) {
       images.push({
         url,
         caption: letter.imageCaption || '',
@@ -68,8 +74,57 @@ export default function LetterModal({
   const modalRef = useRef(null);
   const closeButtonRef = useRef(null);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [zoomScale, setZoomScale] = useState(1);
+  const [isFitMode, setIsFitMode] = useState(false);
 
-  // Trap focus, play paper rustle, and handle Escape
+  const handleOpenImage = (img) => {
+    setSelectedImage(img);
+    setZoomScale(1);
+    setIsFitMode(false);
+  };
+
+  const handleCloseImage = () => {
+    setSelectedImage(null);
+    setZoomScale(1);
+    setIsFitMode(false);
+  };
+
+  const handleZoomIn = (e) => {
+    e?.stopPropagation?.();
+    setIsFitMode(false);
+    setZoomScale((prev) => Math.min(3, +(prev + 0.25).toFixed(2)));
+  };
+
+  const handleZoomOut = (e) => {
+    e?.stopPropagation?.();
+    setIsFitMode(false);
+    setZoomScale((prev) => Math.max(0.75, +(prev - 0.25).toFixed(2)));
+  };
+
+  const handleResetZoom = (e) => {
+    e?.stopPropagation?.();
+    setZoomScale(1);
+    setIsFitMode(false);
+  };
+
+  const handleToggleFit = (e) => {
+    e?.stopPropagation?.();
+    setIsFitMode((prev) => !prev);
+    setZoomScale(1);
+  };
+
+  const handleDoubleTap = (e) => {
+    e?.stopPropagation?.();
+    if (zoomScale > 1 || isFitMode) {
+      setZoomScale(1);
+      setIsFitMode(false);
+    } else {
+      setZoomScale(1.75);
+      setIsFitMode(false);
+    }
+  };
+
+  // Trap focus, play paper rustle, and handle Escape / Zoom keys
   useEffect(() => {
     if (!isOpen) return;
 
@@ -86,11 +141,33 @@ export default function LetterModal({
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         if (selectedImage) {
-          setSelectedImage(null);
+          handleCloseImage();
         } else {
           onClose();
         }
         return;
+      }
+
+      // Keyboard shortcuts when lightbox image viewer is active
+      if (selectedImage) {
+        if (e.key === '+' || e.key === '=') {
+          e.preventDefault();
+          setIsFitMode(false);
+          setZoomScale((prev) => Math.min(3, +(prev + 0.25).toFixed(2)));
+          return;
+        }
+        if (e.key === '-' || e.key === '_') {
+          e.preventDefault();
+          setIsFitMode(false);
+          setZoomScale((prev) => Math.max(0.75, +(prev - 0.25).toFixed(2)));
+          return;
+        }
+        if (e.key === '0') {
+          e.preventDefault();
+          setZoomScale(1);
+          setIsFitMode(false);
+          return;
+        }
       }
 
       // Arrow key navigation between letters (when not inside an input/textarea and not viewing enlarged photo)
@@ -144,10 +221,11 @@ export default function LetterModal({
   const letterImages = letter ? getLetterImages(letter) : [];
   const scanImages = letterImages.filter((img) => img.isScan);
   const attachedPhotos = letterImages.filter((img) => !img.isScan);
-  const hasOnlyScans = scanImages.length > 0 && attachedPhotos.length === 0 && letter?.type === 'handwritten';
+  const isHandwritten = letter?.type === 'handwritten' || scanImages.length > 0;
 
   return (
-    <AnimatePresence>
+    <>
+      <AnimatePresence>
       {isOpen && letter && (
         <div 
           className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
@@ -167,7 +245,9 @@ export default function LetterModal({
           />
 
           {/* 3D Origami Unfolding Letter Container with isolated perspective */}
-          <div className="relative z-10 w-full max-w-2xl my-8 perspective-1000 flex justify-center">
+          <div className={`relative z-10 w-full max-w-2xl my-8 perspective-1000 flex justify-center transition-opacity duration-200 ${
+            selectedImage ? 'opacity-0 pointer-events-none' : 'opacity-100'
+          }`}>
             <motion.div
               ref={modalRef}
               initial={{ scale: 0.7, opacity: 0, y: 40, rotateX: -24, rotateY: 6 }}
@@ -213,10 +293,24 @@ export default function LetterModal({
                   <span className="text-xs px-2 sm:px-2.5 py-0.5 rounded-full bg-white/80 border border-slateAsh/15 text-slateAsh/80 font-normal">
                     {letter.relationship}
                   </span>
-                  {letterImages.length > 0 && (
-                    <span className="inline-flex items-center gap-1 text-xs px-1.5 sm:px-2 py-0.5 rounded-full bg-white/90 border border-slateAsh/15 text-slateAsh/70 font-mono">
+                  {isHandwritten ? (
+                    <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-white/90 border border-slateAsh/15 text-slateAsh/80 font-mono">
+                      <PenTool className="w-3 h-3 text-[#E56B6F]" />
+                      <span>Handwritten</span>
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-white/90 border border-slateAsh/15 text-slateAsh/70 font-mono">
+                      <FileText className="w-3 h-3 text-slateAsh/60" />
+                      <span>Typed</span>
+                    </span>
+                  )}
+                  {attachedPhotos.length > 0 && (
+                    <span 
+                      className="inline-flex items-center gap-1 text-xs px-1.5 sm:px-2 py-0.5 rounded-full bg-white/90 border border-slateAsh/15 text-slateAsh/70 font-mono"
+                      title={`${attachedPhotos.length} attached photo${attachedPhotos.length > 1 ? 's' : ''}`}
+                    >
                       <ImageIcon className="w-3 h-3" />
-                      {letterImages.length}
+                      {attachedPhotos.length}
                     </span>
                   )}
                 </h3>
@@ -268,62 +362,66 @@ export default function LetterModal({
           {/* Letter Content Body */}
           <div className="p-6 sm:p-10 lined-paper min-h-[350px] max-h-[75vh] overflow-y-auto space-y-6">
             
-            {/* Handwritten Scan (if provided) */}
-            {scanImages.length > 0 && (
-              <div className="space-y-4">
-                {scanImages.map((scan, idx) => (
-                  <div key={idx} className="relative group">
-                    <div className="washi-tape absolute -top-2 left-8 w-20 h-5 bg-buttercup/80 z-10 -rotate-2 rounded-xs border border-slateAsh/10" />
-                    <div className="p-3 bg-white rounded-xl shadow-paper border border-slateAsh/15">
-                      <div 
-                        className="relative cursor-zoom-in overflow-hidden rounded-lg bg-cloudWhite"
-                        onClick={() => setSelectedImage(scan)}
-                      >
-                        <img
-                          src={scan.url}
-                          alt={scan.caption || `Handwritten scan from ${letter.author}`}
-                          className="w-full h-auto max-h-[500px] object-contain mx-auto transition-transform duration-200 group-hover:scale-[1.01]"
-                          onError={(e) => {
-                            e.currentTarget.parentElement.innerHTML = `
-                              <div class="p-8 text-center bg-skyMist/10 border border-dashed border-slateAsh/20 rounded-lg">
-                                <p class="text-xs font-mono text-slateAsh/70">Handwritten scan (${scan.url})</p>
-                                <p class="text-xs text-slateAsh/50 mt-1">Place your image file in public/photos/ or provide a valid URL.</p>
-                              </div>
-                            `;
-                          }}
-                        />
-                        <div className="absolute bottom-2 right-2 bg-slateAsh/75 text-white p-1.5 rounded-full opacity-80 group-hover:opacity-100 transition-opacity">
-                          <ZoomIn className="w-4 h-4" />
+            {/* If handwritten: display only the handwritten message scan image */}
+            {isHandwritten ? (
+              scanImages.length > 0 ? (
+                <div className="space-y-6">
+                  {scanImages.map((scan, idx) => (
+                    <div key={idx} className="relative group max-w-xl mx-auto">
+                      <div className="washi-tape absolute -top-2.5 left-10 w-24 h-6 bg-buttercup/90 z-20 -rotate-2 rounded-xs border border-slateAsh/10 shadow-2xs" />
+                      <div className="p-3 sm:p-4 bg-[#FFFDF9] rounded-xl shadow-paper border border-slateAsh/15">
+                        <div 
+                          className="relative cursor-zoom-in overflow-hidden rounded-lg bg-cloudWhite flex items-center justify-center"
+                          onClick={() => handleOpenImage(scan)}
+                          title="Click to zoom in"
+                        >
+                          <img
+                            src={scan.url}
+                            alt={scan.caption || `Handwritten letter from ${letter.author}`}
+                            className="w-full h-auto object-contain mx-auto rounded"
+                            onError={(e) => {
+                              e.currentTarget.parentElement.innerHTML = `
+                                <div class="p-8 text-center bg-skyMist/10 border border-dashed border-slateAsh/20 rounded-lg w-full">
+                                  <p class="text-xs font-mono text-slateAsh/70">Handwritten scan (${scan.url})</p>
+                                  <p class="text-xs text-slateAsh/50 mt-1">Place your image file in public/photos/ or provide a valid URL.</p>
+                                </div>
+                              `;
+                            }}
+                          />
+                          <div className="absolute bottom-3 right-3 bg-slateAsh/80 text-white px-2.5 py-1 rounded-full text-xs font-sans flex items-center gap-1.5 opacity-80 group-hover:opacity-100 transition-opacity shadow-paper-sm">
+                            <ZoomIn className="w-3.5 h-3.5" />
+                            <span className="hidden sm:inline">Tap to zoom</span>
+                          </div>
                         </div>
+                        {scan.caption && (
+                          <p className="font-handwriting text-base text-slateAsh/80 text-center mt-3">
+                            {scan.caption}
+                          </p>
+                        )}
                       </div>
-                      {scan.caption && (
-                        <p className="font-handwriting text-base text-slateAsh/80 text-center mt-2">
-                          {scan.caption}
-                        </p>
-                      )}
                     </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* Letter Text (Typed or transcript of scan) */}
-            {letter.content && (
-              <div className={scanImages.length > 0 ? "pt-4 border-t border-dashed border-slateAsh/25" : ""}>
-                {scanImages.length > 0 && (
-                  <div className="flex items-center gap-1.5 text-xs font-mono uppercase text-slateAsh/50 tracking-wider mb-2">
-                    <FileText className="w-3.5 h-3.5" />
-                    <span>Transcript:</span>
-                  </div>
-                )}
-                <div className={`${
-                  scanImages.length > 0 
-                    ? "font-sans text-slateAsh text-sm sm:text-base leading-relaxed" 
-                    : "font-handwriting text-2xl sm:text-3xl text-slateAsh leading-relaxed"
-                } whitespace-pre-line`}>
+                  ))}
+                </div>
+              ) : (
+                /* Fallback if marked handwritten but image scan URL is missing */
+                <div className="p-8 text-center bg-white/80 rounded-xl border border-dashed border-slateAsh/25 max-w-md mx-auto">
+                  <PenTool className="w-6 h-6 text-slateAsh/40 mx-auto mb-2" />
+                  <p className="font-mono text-xs text-slateAsh/70">Handwritten letter scan pending</p>
+                  <p className="text-xs text-slateAsh/50 mt-1">Add handwrittenImageUrl: "./photos/filename.png" to display the scan.</p>
+                  {letter.content && (
+                    <div className="mt-4 pt-4 border-t border-slateAsh/15 font-handwriting text-2xl text-slateAsh whitespace-pre-line text-left">
+                      {letter.content}
+                    </div>
+                  )}
+                </div>
+              )
+            ) : (
+              /* If typed: display typed text directly onto the lined stationery */
+              letter.content && (
+                <div className="font-handwriting text-2xl sm:text-3xl text-slateAsh leading-relaxed whitespace-pre-line max-w-prose">
                   {letter.content}
                 </div>
-              </div>
+              )
             )}
 
             {/* Attached Memorabilia / Photos Grid */}
@@ -348,7 +446,7 @@ export default function LetterModal({
                         
                         <div 
                           className="relative cursor-zoom-in overflow-hidden rounded bg-cloudWhite aspect-4/3 flex items-center justify-center"
-                          onClick={() => setSelectedImage(photo)}
+                          onClick={() => handleOpenImage(photo)}
                         >
                           <img
                             src={photo.url}
@@ -435,43 +533,171 @@ export default function LetterModal({
         </motion.div>
       </div>
 
-      {/* Lightbox Modal for enlarged image preview */}
-      {selectedImage && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-60 bg-slateAsh/80 backdrop-blur-md flex items-center justify-center p-4"
-          onClick={() => setSelectedImage(null)}
+    </div>
+  )}
+</AnimatePresence>
+
+{/* Lightbox Modal with True Interactive Zoom & Document Reading Portaled to document.body */}
+{typeof document !== 'undefined' && createPortal(
+  <AnimatePresence>
+    {selectedImage && (
+      <motion.div
+        key="lightbox-zoom-portal"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-[100] isolate bg-slateAsh/90 backdrop-blur-md flex flex-col items-center justify-between select-none"
+        onClick={handleCloseImage}
+      >
+        {/* Top Floating Control Ribbon */}
+        <div 
+          className="w-full pt-4 px-4 flex items-center justify-between max-w-4xl z-30 pointer-events-auto"
+          onClick={(e) => e.stopPropagation()}
         >
-          <div 
-            className="relative max-w-4xl max-h-[90vh] bg-white p-3 sm:p-4 rounded-xl shadow-2xl border-2 border-slateAsh/20 flex flex-col items-center"
-            onClick={(e) => e.stopPropagation()}
-          >
+          {/* Title / Badge */}
+          <div className="flex items-center gap-2">
+            <span className="bg-white/90 text-slateAsh text-xs font-mono font-medium px-3 py-1 rounded-full shadow-paper-sm border border-slateAsh/15 flex items-center gap-1.5">
+              {selectedImage.isScan ? (
+                <>
+                  <PenTool className="w-3 h-3 text-[#E56B6F]" />
+                  <span>Handwritten Letter</span>
+                </>
+              ) : (
+                <>
+                  <ImageIcon className="w-3 h-3 text-slateAsh/70" />
+                  <span>Photo View</span>
+                </>
+              )}
+            </span>
+          </div>
+
+          {/* Interactive Zoom Toolbar */}
+          <div className="bg-white/95 backdrop-blur-md text-slateAsh px-2 py-1 rounded-full shadow-paper-elevated border border-slateAsh/20 flex items-center gap-1">
             <button
-              onClick={() => setSelectedImage(null)}
-              className="absolute top-2 right-2 p-1.5 rounded-full bg-white/90 hover:bg-white text-slateAsh shadow-paper-sm z-10"
-              aria-label="Close enlarged image"
+              type="button"
+              onClick={handleZoomOut}
+              disabled={zoomScale <= 0.75}
+              className="p-1.5 rounded-full hover:bg-slateAsh/10 text-slateAsh disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
+              title="Zoom Out (-)"
+              aria-label="Zoom out"
             >
-              <X className="w-5 h-5" />
+              <ZoomOut className="w-4 h-4" />
             </button>
 
-            <img
-              src={selectedImage.url}
-              alt={selectedImage.caption || "Enlarged view"}
-              className="max-h-[80vh] w-auto max-w-full object-contain rounded"
-            />
+            <button
+              type="button"
+              onClick={handleResetZoom}
+              className="font-mono text-xs font-bold text-slateAsh px-2 py-0.5 rounded hover:bg-slateAsh/10 min-w-[52px] text-center transition-colors cursor-pointer"
+              title="Reset zoom to 100% (0)"
+            >
+              {Math.round(zoomScale * 100)}%
+            </button>
+
+            <button
+              type="button"
+              onClick={handleZoomIn}
+              disabled={zoomScale >= 3.0}
+              className="p-1.5 rounded-full hover:bg-slateAsh/10 text-slateAsh disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer"
+              title="Zoom In (+)"
+              aria-label="Zoom in"
+            >
+              <ZoomIn className="w-4 h-4" />
+            </button>
+
+            <div className="w-px h-4 bg-slateAsh/20 mx-0.5" />
+
+            <button
+              type="button"
+              onClick={handleToggleFit}
+              className={`p-1.5 rounded-full hover:bg-slateAsh/10 text-slateAsh transition-colors cursor-pointer ${
+                isFitMode ? 'bg-skyMist/60 text-slateAsh font-bold' : ''
+              }`}
+              title={isFitMode ? "Switch to Reading Width View" : "Fit Full Letter on Screen"}
+              aria-label={isFitMode ? "Switch to Reading Width View" : "Fit Full Letter on Screen"}
+            >
+              {isFitMode ? <Maximize2 className="w-4 h-4" /> : <RotateCcw className="w-4 h-4" />}
+            </button>
+
+            <div className="w-px h-4 bg-slateAsh/20 mx-0.5" />
+
+            <button
+              type="button"
+              onClick={handleCloseImage}
+              className="p-1.5 rounded-full hover:bg-coralBlush/50 text-slateAsh hover:text-slateAsh transition-colors cursor-pointer"
+              title="Close (Esc)"
+              aria-label="Close enlarged image"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+        {/* Scrollable Viewport & Magnification Canvas */}
+        <div 
+          className="w-full h-full flex-1 overflow-auto p-4 sm:p-8 flex items-start justify-center cursor-default"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              handleCloseImage();
+            }
+          }}
+        >
+          <div 
+            className={`transition-all duration-200 ease-out my-auto ${
+              isFitMode 
+                ? 'max-h-[80vh] w-auto flex flex-col items-center justify-center'
+                : selectedImage.isScan
+                  ? 'w-full max-w-2xl sm:max-w-3xl my-6 flex flex-col items-center'
+                  : 'w-auto max-w-4xl my-auto flex flex-col items-center justify-center'
+            }`}
+            style={{
+              transform: zoomScale !== 1 ? `scale(${zoomScale})` : undefined,
+              transformOrigin: 'top center',
+            }}
+            onClick={(e) => e.stopPropagation()}
+            onDoubleClick={handleDoubleTap}
+          >
+            {/* Paper Card Frame */}
+            <div className={`relative bg-white rounded-xl shadow-paper-elevated border-2 border-white/80 p-2 sm:p-3 transition-shadow ${
+              zoomScale > 1 ? 'cursor-grab active:cursor-grabbing' : 'cursor-zoom-in'
+            }`}>
+              {/* Washi tape detail on scans */}
+              {selectedImage.isScan && (
+                <div className="washi-tape absolute -top-3 left-1/2 -translate-x-1/2 w-28 h-6 bg-buttercup/90 z-20 -rotate-1 rounded-xs border border-slateAsh/15 shadow-xs" />
+              )}
+
+              <img
+                src={selectedImage.url}
+                alt={selectedImage.caption || (selectedImage.isScan ? `Handwritten letter from ${letter.author}` : "Enlarged photo")}
+                className={`rounded block mx-auto ${
+                  isFitMode 
+                    ? 'max-h-[76vh] w-auto object-contain'
+                    : selectedImage.isScan
+                      ? 'w-full h-auto object-contain'
+                      : 'max-h-[80vh] w-auto max-w-full object-contain'
+                }`}
+                draggable={false}
+              />
+            </div>
 
             {selectedImage.caption && (
-              <p className="font-handwriting text-lg text-slateAsh mt-2 text-center">
+              <p className="font-handwriting text-lg sm:text-xl text-white drop-shadow-md mt-3 text-center px-4 bg-slateAsh/60 py-1 rounded-full backdrop-blur-xs">
                 {selectedImage.caption}
               </p>
             )}
           </div>
-        </motion.div>
-      )}
-    </div>
-  )}
-</AnimatePresence>
-  );
+        </div>
+
+        {/* Bottom Helpful Navigation Tips */}
+        <div className="pb-3 text-center pointer-events-none z-20">
+          <span className="text-xs font-mono text-white/70 bg-slateAsh/70 backdrop-blur-xs px-3 py-1 rounded-full border border-white/10 shadow-xs">
+            Scroll mousewheel to read • Double-click to {zoomScale > 1 ? 'reset' : 'zoom in'} • Esc to close
+          </span>
+        </div>
+      </motion.div>
+    )}
+  </AnimatePresence>,
+  document.body
+)}
+</>
+);
 }

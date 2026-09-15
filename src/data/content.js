@@ -20,7 +20,7 @@ export const birthdayConfig = {
       title: "Happy Birthday! (But Guitar)",
       artist: "akari",
       duration: "1:02",
-      audioUrl: "./music/akaribdayguitar.mp3",
+      audioUrl: "./music/akaribdayguitar2.mp3",
     },
     {
       id: "track-3",
@@ -36,17 +36,20 @@ export const birthdayConfig = {
     {
       id: "letter-akari",
       author: "akari",
-      relationship: "Dear Friend",
+      relationship: "dearest bestie",
       recipientNickname: "ati <3",
       envelopeColor: "bg-[#D4F1FF]", // Sky Mist
       sealColor: "#FFD6D6", // Soft Coral Blush
       sealIcon: "flower",
       stampText: "AIR MAIL",
       date: "Sep 18, 2026",
-      type: "typed",
+      type: "handwritten",
+      password: "monkari",
+      passwordHint: "Our duo nickname combination!",
+      handwrittenImageUrl: "./photos/akaridearestati.png",
+      scanUrl: "./photos/akaridearestati.png",
       audioUrl: "./music/akaribdayguitar.mp3",
       audioTitle: "akari's Birthday Song",
-      preview: "happy birthday ati!! recorded a little tune for you on the guitar, hope you like it...",
       content: `happy birthday ati!! <3
 
 recorded a silly little acoustic tune for you, hope it brings a smile to your face today. thank you for being the person who always checks in on me and listens when my brain is all over the place.
@@ -67,7 +70,6 @@ akari`,
       stampText: "SPECIAL",
       date: "Sep 18, 2026",
       type: "typed",
-      preview: "Happy birthday Mon-chan!! Still thinking about that 2 AM Figma rabbit hole...",
       content: `Happy birthday Mon-chan!
 
 Still laughing thinking about our 2 AM design rabbit holes where we spent forty-five minutes debating two slightly different shades of blue. Nobody else gets my specific brand of design nitpicking like you do.
@@ -88,7 +90,6 @@ Alin`,
       stampText: "PRIORITY",
       date: "Sep 17, 2026",
       type: "typed",
-      preview: "Yo Mon! Happy birthday man. Queue up some tunes and hop on Discord...",
       content: `Yo Mon!
 
 Happy birthday man. Turn off your alarm, grab some iced coffee, and take the whole day easy.
@@ -109,7 +110,6 @@ Fiyoll`,
       stampText: "EXPRESS",
       date: "Sep 17, 2026",
       type: "typed",
-      preview: "Happy birthday buddy! Still can't believe we survived that hike without a map...",
       content: `Hey Monmon,
 
 Happy birthday buddy! I was just looking through old photos from that trail where we took a wrong turn, ran out of trail mix, and ended up eating roadside gas station corn dogs. Best afternoon of the whole summer.
@@ -130,7 +130,6 @@ Kai`,
       stampText: "FIRST CLASS",
       date: "Sep 17, 2026",
       type: "typed",
-      preview: "Happy birthday Kyu! Missing our quiet corner table café sessions...",
       content: `Happy birthday Kyu!
 
 Missing our corner table study afternoons where we basically just drank roasted barley tea and typed in companionable silence for three hours. It's rare to find someone you can just sit quietly with without it feeling awkward.
@@ -153,7 +152,6 @@ Kiwan`,
       type: "typed",
       audioUrl: "./music/kucingbdayguitar.mp3",
       audioTitle: "Kucing Kelabu's Birthday Serenade",
-      preview: "meow. happy birthday hooman. i knocked a pen off your desk as a gift...",
       content: `meow. happy birthday hooman.
 
 i left you a very nice gift: a dried leaf i brought inside and placed directly in your slipper. you are welcome.
@@ -174,7 +172,6 @@ Kucing Kelabu`,
       stampText: "SPECIAL",
       date: "Sep 16, 2026",
       type: "typed",
-      preview: "HAPPY BIRTHDAY MONKYU!! We are definitely doing karaoke this weekend...",
       content: `HAPPY BIRTHDAY MONKYU!!
 
 Listen, I don't care how busy everyone gets, we are booking a karaoke room this weekend and shouting Avril Lavigne songs until our voices give out. Non-negotiable!
@@ -195,7 +192,6 @@ Marci`,
       stampText: "PARCEL",
       date: "Sep 16, 2026",
       type: "typed",
-      preview: "Happy birthday Monmonkyu! Just wanted to send a little reminder that you're wonderful...",
       content: `Happy birthday Monmonkyu!
 
 Just sending a little note to say I'm really glad you exist. You always notice when people are having an off day, and you send the funniest cat videos at exactly the right time.
@@ -216,7 +212,6 @@ Meguri`,
       stampText: "LOVE",
       date: "Sep 18, 2026",
       type: "typed",
-      preview: "MONMON!! HAPPY BIRTHDAY!! Make a huge wish when you blow out the candle!!...",
       content: `MONMON!! HAPPY 22ND BIRTHDAY!!
 
 WOOOO!! Hope your day is filled with good snacks, zero chores, and ridiculous photos! Make sure you make a super specific wish when you blow out the candle on this page.
@@ -236,7 +231,6 @@ Opanchu`,
       stampText: "AIR MAIL",
       date: "Sep 18, 2026",
       type: "typed",
-      preview: "Happy birthday Mon! Really glad we have those ridiculous 1 AM voice notes...",
       content: `Happy birthday Mon!
 
 Really grateful for our random 1 AM voice note rambles where we start by discussing dinner and end up analyzing life decisions an hour later. You're one of the easiest people in the world to talk to.
