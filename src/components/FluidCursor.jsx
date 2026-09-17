@@ -97,6 +97,7 @@ export default function FluidCursor({
     };
 
     const handlePointerMove = (e) => {
+      if (e.pointerType === 'touch') return;
       const x = e.clientX;
       const y = e.clientY;
 

@@ -1,10 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CassettePlayer from './CassettePlayer.jsx';
 import PolaroidCard from './PolaroidCard.jsx';
 import LetterEnvelope from './LetterEnvelope.jsx';
 import BirthdayCake from './BirthdayCake.jsx';
 import ScrapbookDecoMargin from './ScrapbookDecoMargin.jsx';
+import MobileKeepsakesTray from './MobileKeepsakesTray.jsx';
+import MomentLightboxModal from './MomentLightboxModal.jsx';
 import { Heart } from 'lucide-react';
+import { useReveal } from '../hooks/useReveal.js';
+
+/**
+ * Split a string into <span> elements for the inkDrop word-by-word entrance.
+ * Each word gets a staggered delay. The title typically has 3–6 words so
+ * delays stay well under 600 ms total — fast enough to feel instant,
+ * slow enough to feel handwritten.
+ */
+function InkDropTitle({ text, className }) {
+  const words = text.split(' ');
+  return (
+    <span className={className}>
+      {words.map((word, i) => (
+        <span
+          key={i}
+          className="hero-word"
+          style={{ animationDelay: `${i * 0.12}s` }}
+        >
+          {word}{i < words.length - 1 ? '\u00A0' : ''}
+        </span>
+      ))}
+    </span>
+  );
+}
 
 export default function ScrapbookBoard({
   celebrant,
@@ -29,6 +55,31 @@ export default function ScrapbookBoard({
   readLetterIds = [],
   unlockedLetterIds = [],
 }) {
+  // Section scroll-reveal refs
+  const photosRef = useReveal();
+  const lettersRef = useReveal();
+  const mixtapeRef = useReveal();
+  const cakeRef = useReveal();
+
+  // Lightbox modal state for expanding central polaroid moments
+  const [expandedMomentIndex, setExpandedMomentIndex] = useState(null);
+
+  const handleExpandPhoto = (photo, index) => {
+    setExpandedMomentIndex(index);
+  };
+
+  const handleCloseLightbox = () => {
+    setExpandedMomentIndex(null);
+  };
+
+  const handlePrevMoment = () => {
+    setExpandedMomentIndex((prev) => (prev > 0 ? prev - 1 : prev));
+  };
+
+  const handleNextMoment = () => {
+    setExpandedMomentIndex((prev) => (prev < polaroids.length - 1 ? prev + 1 : prev));
+  };
+
   return (
     <div className="relative w-full overflow-x-clip">
       {/* Decorative desktop side margins with photos & playful ephemera */}
@@ -37,58 +88,79 @@ export default function ScrapbookBoard({
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 pb-24 space-y-16 relative z-10">
 
-        {/* Scrapbook Hero Banner */}
+        {/* ── Hero Banner ─────────────────────────────────────────── */}
         <section className="relative text-center pt-8 pb-6 select-none">
 
-          {/* Floating background decorative doodle badges */}
-          <div className="absolute top-2 left-6 hidden lg:block rotate-[-8deg] bg-skyMist text-slateAsh px-3.5 py-1.5 rounded-full text-xs font-handwriting font-bold shadow-paper-sm border border-skyMist/90">
+          {/* Floating doodle badges — gentle continuous float */}
+          <div
+            className="absolute top-2 left-6 hidden lg:block hero-badge hero-badge-left bg-skyMist text-slateAsh px-3.5 py-1.5 rounded-full text-xs font-handwriting font-bold shadow-paper-sm border border-skyMist/90"
+          >
             18/9/2004
           </div>
-          <div className="absolute top-4 right-8 hidden lg:block rotate-[6deg] bg-skyMist text-slateAsh px-3.5 py-1.5 rounded-full text-xs font-handwriting font-bold shadow-paper-sm border border-skyMist/90">
+          <div
+            className="absolute top-4 right-8 hidden lg:block hero-badge hero-badge-right bg-skyMist text-slateAsh px-3.5 py-1.5 rounded-full text-xs font-handwriting font-bold shadow-paper-sm border border-skyMist/90"
+          >
             Happy Birthday!
           </div>
 
+          {/* Title: ink-drop word-by-word entrance */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slateAsh tracking-tight font-serifDisplay mb-3">
-            {celebrant.title}
+            <InkDropTitle text={celebrant.title} />
           </h1>
 
-          <p className="text-base sm:text-lg text-slateAsh/70 max-w-2xl mx-auto font-sans leading-relaxed">
+          {/* Subtitle: fades in after title settles */}
+          <p className="hero-subtitle text-base sm:text-lg text-slateAsh/70 max-w-2xl mx-auto font-sans leading-relaxed">
             {celebrant.subtitle}
           </p>
 
-          {/* Subtle decorative divider with heart */}
+          {/* Divider: lines draw outward, heart pulses once */}
           <div className="flex items-center justify-center gap-3 mt-6">
-            <div className="w-16 h-0.5 bg-skyMist/80 rounded-full" />
-            <Heart className="w-4 h-4 fill-skyMist text-slateAsh/60" />
-            <div className="w-16 h-0.5 bg-skyMist/80 rounded-full" />
+            <div className="w-16 h-0.5 bg-skyMist/80 rounded-full hero-divider-line hero-divider-line-left" />
+            <Heart className="w-4 h-4 fill-skyMist text-slateAsh/60 hero-divider-heart" />
+            <div className="w-16 h-0.5 bg-skyMist/80 rounded-full hero-divider-line hero-divider-line-right" />
           </div>
         </section>
 
-        {/* SECTION 1: Scattered Polaroids Gallery (Leading with Memories) */}
-        <section id="photos-section" className="relative pt-2">
+        {/* ── Section 1: Polaroid Memories ──────────────────────── */}
+        <section
+          id="photos-section"
+          ref={photosRef}
+          className="section-reveal relative pt-2"
+        >
           <div className="text-center mb-8">
             <h2 className="text-2xl sm:text-3xl font-bold text-slateAsh tracking-tight font-serifDisplay">
               Favorite memories
             </h2>
             <p className="text-xs sm:text-sm text-slateAsh/60 mt-1 font-sans">
-              Click any photo to flip it over and read the note on the back.
+              Click any photo to expand full view, or click the caption to flip and read the note.
             </p>
           </div>
 
-          {/* Polaroids Grid / Scatter */}
+          {/* Polaroids Grid */}
           <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8 lg:gap-10">
             {polaroids.map((photo, index) => (
               <PolaroidCard
                 key={photo.id || index}
                 photo={photo}
                 index={index}
+                onExpandPhoto={handleExpandPhoto}
               />
             ))}
           </div>
+
+          {/* ── Mobile/Tablet Adaptation: Desk Keepsakes & Ephemera Shelf (<1280px) ── */}
+          <MobileKeepsakesTray
+            leftItems={sideMargins?.left}
+            rightItems={sideMargins?.right}
+          />
         </section>
 
-        {/* SECTION 2: Letters & Envelopes */}
-        <section id="letters-section" className="relative pt-4">
+        {/* ── Section 2: Letters ────────────────────────────────── */}
+        <section
+          id="letters-section"
+          ref={lettersRef}
+          className="section-reveal delay-1 relative pt-4"
+        >
           <div className="text-center mb-8">
             <h2 className="text-2xl sm:text-3xl font-bold text-slateAsh tracking-tight font-serifDisplay">
               Letters for you
@@ -119,8 +191,12 @@ export default function ScrapbookBoard({
           </div>
         </section>
 
-        {/* SECTION 3: Mixtape / Soundtrack Station */}
-        <section id="mixtape-section" className="relative pt-4">
+        {/* ── Section 3: Birthday Mixtape ───────────────────────── */}
+        <section
+          id="mixtape-section"
+          ref={mixtapeRef}
+          className="section-reveal delay-2 relative pt-4"
+        >
           <div className="text-center mb-8">
             <h2 className="text-2xl sm:text-3xl font-bold text-slateAsh tracking-tight font-serifDisplay">
               Birthday mixtape
@@ -145,8 +221,12 @@ export default function ScrapbookBoard({
           />
         </section>
 
-        {/* SECTION 4: Birthday Candle & Cake */}
-        <section id="cake-section" className="pt-4">
+        {/* ── Section 4: Birthday Cake ──────────────────────────── */}
+        <section
+          id="cake-section"
+          ref={cakeRef}
+          className="section-reveal delay-3 pt-4"
+        >
           <BirthdayCake
             celebration={celebration}
             celebrantName={celebrant.name}
@@ -165,6 +245,19 @@ export default function ScrapbookBoard({
         </footer>
 
       </main>
+
+      {/* Lightbox Modal for Full Image Expansion */}
+      <MomentLightboxModal
+        moment={expandedMomentIndex !== null ? polaroids[expandedMomentIndex] : null}
+        isOpen={expandedMomentIndex !== null}
+        onClose={handleCloseLightbox}
+        onPrev={handlePrevMoment}
+        onNext={handleNextMoment}
+        currentIndex={expandedMomentIndex ?? 0}
+        totalCount={polaroids.length}
+        hasPrev={expandedMomentIndex !== null && expandedMomentIndex > 0}
+        hasNext={expandedMomentIndex !== null && expandedMomentIndex < polaroids.length - 1}
+      />
     </div>
   );
 }

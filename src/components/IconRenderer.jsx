@@ -14,6 +14,20 @@ import {
   Mail,
   Lock,
   Key,
+  Music,
+  Flame,
+  Star,
+  Send,
+  Bookmark,
+  Clover,
+  Disc,
+  Smile,
+  Feather,
+  Sun,
+  Tag,
+  Cat,
+  Mic,
+  Guitar,
 } from 'lucide-react';
 
 const iconMap = {
@@ -31,6 +45,22 @@ const iconMap = {
   mail: Mail,
   lock: Lock,
   key: Key,
+  music: Music,
+  flame: Flame,
+  star: Star,
+  send: Send,
+  plane: Send,
+  bookmark: Bookmark,
+  clover: Clover,
+  disc: Disc,
+  smile: Smile,
+  feather: Feather,
+  sun: Sun,
+  tag: Tag,
+  cat: Cat,
+  mic: Mic,
+  guitar: Guitar,
+  plushie: Sparkles,
 };
 
 export default function IconRenderer({ name, className = "w-5 h-5", fallback = "sparkles" }) {

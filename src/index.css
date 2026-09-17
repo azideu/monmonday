@@ -8,6 +8,7 @@
     scrollbar-gutter: stable;
   }
 
+  html,
   body {
     background-color: #EBF7FD;
     color: #3E4A5B;
@@ -37,7 +38,7 @@
   }
 }
 
-/* 3D Transform Utilities for Polaroid Flip & Envelope */
+/* ─── 3D Transform Utilities ─────────────────────────────────── */
 .perspective-1000 {
   perspective: 1000px;
 }
@@ -55,7 +56,7 @@
   transform: rotateY(180deg);
 }
 
-/* Washi Tape styling */
+/* ─── Washi Tape styling ─────────────────────────────────────── */
 .washi-tape {
   background: rgba(255, 255, 255, 0.65);
   backdrop-filter: blur(1px);
@@ -85,7 +86,7 @@
   right: -2px;
 }
 
-/* Paper Grain background pattern */
+/* ─── Paper Grain background pattern ─────────────────────────── */
 .bg-scrapbook-pattern {
   background-color: #EBF7FD;
   background-image: radial-gradient(#B6DCF5 1px, transparent 1px), radial-gradient(#D4F1FF 1px, #EBF7FD 1px);
@@ -93,7 +94,7 @@
   background-position: 0 0, 14px 14px;
 }
 
-/* Stationery ruled lines for typed letters */
+/* ─── Stationery ruled lines for typed letters ───────────────── */
 .lined-paper {
   background-color: #FFFDF9;
   background-image: repeating-linear-gradient(
@@ -105,7 +106,22 @@
   line-height: 32px;
 }
 
-/* Smoke rising animation */
+
+/* ════════════════════════════════════════════════════════════
+   KEYFRAMES
+   ════════════════════════════════════════════════════════════ */
+
+/* Candle flame flicker — two variants for organic feel */
+@keyframes flicker {
+  0%   { transform: scaleX(1)   scaleY(1)   rotate(-1deg); opacity: 1; }
+  20%  { transform: scaleX(0.93) scaleY(1.06) rotate(2deg);  opacity: 0.9; }
+  40%  { transform: scaleX(1.04) scaleY(0.95) rotate(-2deg); opacity: 1; }
+  60%  { transform: scaleX(0.96) scaleY(1.05) rotate(1.5deg);opacity: 0.95; }
+  80%  { transform: scaleX(1.02) scaleY(0.97) rotate(-1deg); opacity: 1; }
+  100% { transform: scaleX(1)   scaleY(1)   rotate(1deg);  opacity: 0.92; }
+}
+
+/* Smoke rising after candle blown */
 @keyframes smokeRise {
   0% {
     transform: translateY(0) scale(0.8);
@@ -120,11 +136,60 @@
     opacity: 0;
   }
 }
-.animate-smoke-rise {
-  animation: smokeRise 2s ease-out infinite;
+
+/* Generic fade-in with subtle upward rise */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Audio equalizer bars animation */
+/* ─── Hero: Ink Drop — each span within .hero-ink-drop ──────── */
+/* Characters start invisible, descend from slightly above, settle */
+@keyframes inkDrop {
+  0%   { opacity: 0; transform: translateY(-8px) rotate(-2deg); filter: blur(2px); }
+  60%  { opacity: 1; transform: translateY(2px)  rotate(0.5deg); filter: blur(0); }
+  80%  { transform: translateY(-1px) rotate(-0.3deg); }
+  100% { opacity: 1; transform: translateY(0) rotate(0); filter: blur(0); }
+}
+
+/* ─── Section scroll-reveal: paper lifted off the desk ──────── */
+@keyframes paperLift {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─── Hero badge float ───────────────────────────────────────── */
+@keyframes floatBadge {
+  0%, 100% { transform: translateY(0) rotate(var(--badge-rot, -8deg)); }
+  50%       { transform: translateY(-5px) rotate(var(--badge-rot, -8deg)); }
+}
+
+/* ─── Divider line draw from center ─────────────────────────── */
+@keyframes drawLine {
+  from { transform: scaleX(0); opacity: 0; }
+  to   { transform: scaleX(1); opacity: 1; }
+}
+
+/* ─── Heart beat on the divider ─────────────────────────────── */
+@keyframes heartBeat {
+  0%, 80%, 100% { transform: scale(1);    }
+  40%            { transform: scale(1.22); }
+  60%            { transform: scale(1.12); }
+}
+
+/* ─── Audio equalizer bars ───────────────────────────────────── */
 @keyframes eqBar1 {
   0%, 100% { height: 4px; }
   50% { height: 12px; }
@@ -137,6 +202,20 @@
   0%, 100% { height: 5px; }
   50% { height: 13px; }
 }
+
+
+/* ════════════════════════════════════════════════════════════
+   ANIMATION UTILITY CLASSES
+   ════════════════════════════════════════════════════════════ */
+
+.animate-smoke-rise {
+  animation: smokeRise 2s ease-out infinite;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 .animate-eq-1 {
   animation: eqBar1 0.8s ease-in-out infinite;
 }
@@ -146,3 +225,105 @@
 .animate-eq-3 {
   animation: eqBar3 0.9s ease-in-out infinite 0.3s;
 }
+
+/* ─── Hero: Ink Drop title ───────────────────────────────────── */
+/* Each word span inside the h1 */
+.hero-word {
+  display: inline-block;
+  opacity: 0;
+  animation: inkDrop 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ─── Hero badge float ───────────────────────────────────────── */
+.hero-badge {
+  animation: floatBadge 4s ease-in-out infinite;
+  animation-delay: var(--badge-delay, 0s);
+}
+.hero-badge-left {
+  --badge-rot: -8deg;
+  --badge-delay: 0.2s;
+}
+.hero-badge-right {
+  --badge-rot: 6deg;
+  --badge-delay: 0.9s;
+}
+
+/* ─── Divider lines & heart ──────────────────────────────────── */
+.hero-divider-line {
+  transform-origin: center;
+  animation: drawLine 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.hero-divider-line-left  { animation-delay: 0.8s; }
+.hero-divider-line-right { animation-delay: 0.95s; }
+
+.hero-divider-heart {
+  animation: heartBeat 1.6s ease-in-out 1.1s 2;
+}
+
+/* ─── Hero subtitle ──────────────────────────────────────────── */
+.hero-subtitle {
+  opacity: 0;
+  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;
+}
+
+/* ─── Section scroll-reveal ──────────────────────────────────── */
+.section-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.section-reveal.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Child delay variants for staggered reveals */
+.section-reveal.delay-1 { transition-delay: 0.08s; }
+.section-reveal.delay-2 { transition-delay: 0.16s; }
+.section-reveal.delay-3 { transition-delay: 0.24s; }
+.section-reveal.delay-4 { transition-delay: 0.32s; }
+
+
+/* ════════════════════════════════════════════════════════════
+   REDUCED MOTION OVERRIDES
+   All animations that move elements spatially are stripped.
+   Opacity transitions that confirm state remain.
+   ════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .hero-word,
+  .hero-subtitle {
+    opacity: 1;
+    animation: none;
+  }
+
+  .hero-badge {
+    animation: none;
+  }
+
+  .hero-divider-line {
+    transform: scaleX(1);
+    opacity: 1;
+    animation: none;
+  }
+
+  .hero-divider-heart {
+    animation: none;
+  }
+
+  .section-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.15s ease both;
+  }
+
+  .animate-smoke-rise {
+    animation: none;
+    opacity: 0.4;
+  }
+}
+

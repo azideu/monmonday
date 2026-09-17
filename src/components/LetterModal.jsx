@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, Sparkles, Image as ImageIcon, ZoomIn, ZoomOut, RotateCcw, Maximize2, FileText, PenTool, Volume2, VolumeX, Play, Pause, Music, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, Calendar, Sparkles, Image as ImageIcon, ZoomIn, ZoomOut, RotateCcw, Maximize2, PenTool, Volume2, VolumeX, Play, Pause, Music, ChevronLeft, ChevronRight } from 'lucide-react';
 import IconRenderer from './IconRenderer.jsx';
 import { playPaperRustle } from '../utils/soundEffects.js';
 
@@ -10,45 +10,43 @@ import { playPaperRustle } from '../utils/soundEffects.js';
  * - letter.images: array of strings or objects { url, caption, alt }
  * - letter.imageUrl / letter.image: string
  * - letter.scanUrl: handwritten letter image scan
+ * Strictly returns genuine images with valid non-empty URLs. No placeholder attachments.
  */
 function getLetterImages(letter) {
   const images = [];
   const scanUrl = letter?.handwrittenImageUrl || letter?.scanUrl;
 
-  // If handwritten image scan is provided and not already in images
-  if (scanUrl) {
+  // If handwritten image scan is provided
+  if (scanUrl && typeof scanUrl === 'string' && scanUrl.trim()) {
     images.push({
-      url: scanUrl,
+      url: scanUrl.trim(),
       caption: letter.scanCaption || "",
       isScan: true,
     });
   }
 
-  // If multiple images provided
-  if (Array.isArray(letter?.images)) {
+  // Attached photo memories below the message (strictly real images only)
+  if (Array.isArray(letter?.images) && letter.images.length > 0) {
     letter.images.forEach((img, idx) => {
-      if (typeof img === 'string') {
-        if (img !== scanUrl) {
-          images.push({ url: img, caption: '', isScan: false });
-        }
-      } else if (img && typeof img === 'object' && img.url) {
-        if (img.url !== scanUrl) {
-          images.push({
-            url: img.url,
-            caption: img.caption || '',
-            alt: img.alt || `Photo attachment ${idx + 1}`,
-            isScan: Boolean(img.isScan),
-          });
-        }
+      if (typeof img === 'string' && img.trim()) {
+        images.push({ url: img.trim(), caption: '', isScan: false });
+      } else if (img && typeof img === 'object' && img.url && typeof img.url === 'string' && img.url.trim()) {
+        images.push({
+          url: img.url.trim(),
+          caption: img.caption || '',
+          alt: img.alt || `Photo attachment ${idx + 1}`,
+          illustration: img.illustration || '',
+          isScan: false,
+        });
       }
     });
-  } else if (letter?.imageUrl || letter?.image) {
-    const url = letter.imageUrl || letter.image;
-    // Don't duplicate if it equals scanUrl
-    if (url !== scanUrl) {
+  } else {
+    const rawUrl = letter?.imageUrl || letter?.image || letter?.photoUrl;
+    if (rawUrl && typeof rawUrl === 'string' && rawUrl.trim()) {
       images.push({
-        url,
-        caption: letter.imageCaption || '',
+        url: rawUrl.trim(),
+        caption: letter.imageCaption || letter.caption || '',
+        illustration: letter.illustration || '',
         isScan: false,
       });
     }
@@ -213,7 +211,7 @@ export default function LetterModal({
 
     return () => {
       clearTimeout(timer);
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = '';
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen, onClose, selectedImage, hasPrev, hasNext, onPrevLetter, onNextLetter]);
@@ -293,17 +291,6 @@ export default function LetterModal({
                   <span className="text-xs px-2 sm:px-2.5 py-0.5 rounded-full bg-white/80 border border-slateAsh/15 text-slateAsh/80 font-normal">
                     {letter.relationship}
                   </span>
-                  {isHandwritten ? (
-                    <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-white/90 border border-slateAsh/15 text-slateAsh/80 font-mono">
-                      <PenTool className="w-3 h-3 text-[#E56B6F]" />
-                      <span>Handwritten</span>
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-white/90 border border-slateAsh/15 text-slateAsh/70 font-mono">
-                      <FileText className="w-3 h-3 text-slateAsh/60" />
-                      <span>Typed</span>
-                    </span>
-                  )}
                   {attachedPhotos.length > 0 && (
                     <span 
                       className="inline-flex items-center gap-1 text-xs px-1.5 sm:px-2 py-0.5 rounded-full bg-white/90 border border-slateAsh/15 text-slateAsh/70 font-mono"
@@ -401,6 +388,15 @@ export default function LetterModal({
                       </div>
                     </div>
                   ))}
+
+                  {/* If there's typed content in a handwritten letter, display it below */}
+                  {letter.content && typeof letter.content === 'string' && letter.content.trim() && (
+                    <div className="pt-6 border-t border-dashed border-slateAsh/25">
+                      <div className="font-handwriting text-2xl sm:text-3xl text-slateAsh leading-relaxed whitespace-pre-line max-w-prose">
+                        {letter.content}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ) : (
                 /* Fallback if marked handwritten but image scan URL is missing */
@@ -427,47 +423,56 @@ export default function LetterModal({
             {/* Attached Memorabilia / Photos Grid */}
             {attachedPhotos.length > 0 && (
               <div className="pt-6 border-t border-dashed border-slateAsh/25 space-y-3">
-                <span className="text-xs font-mono uppercase text-slateAsh/50 tracking-wider block">
-                  Attached Photos & Doodles:
-                </span>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-mono uppercase text-slateAsh/60 tracking-wider flex items-center gap-1.5">
+                    <ImageIcon className="w-3.5 h-3.5 text-slateAsh/70" />
+                    <span>Attached Memory:</span>
+                  </span>
+                  <span className="text-[10px] font-mono text-slateAsh/50">
+                    Click photo to zoom
+                  </span>
+                </div>
                 
                 <div className={`grid gap-4 ${attachedPhotos.length === 1 ? 'grid-cols-1 max-w-md mx-auto' : 'grid-cols-1 sm:grid-cols-2'}`}>
                   {attachedPhotos.map((photo, pIdx) => {
                     const rotations = ['-rotate-1', 'rotate-1', '-rotate-2', 'rotate-2'];
                     const cardRotation = rotations[pIdx % rotations.length];
+                    const hasRealImage = Boolean(photo.url);
 
                     return (
                       <div 
                         key={pIdx}
-                        className={`relative group bg-white p-3 rounded-lg shadow-paper border border-slateAsh/15 ${cardRotation} transition-transform hover:rotate-0 duration-200`}
+                        className={`relative group bg-white p-3 rounded-xl shadow-paper border border-slateAsh/15 ${cardRotation} transition-all hover:rotate-0 hover:scale-[1.02] duration-200 cursor-pointer`}
+                        onClick={() => handleOpenImage(photo)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            handleOpenImage(photo);
+                          }
+                        }}
+                        aria-label={`View attached photo: ${photo.caption || 'Memory'}`}
                       >
                         {/* Washi tape pin */}
-                        <div className="washi-tape absolute -top-2 left-1/2 -translate-x-1/2 w-16 h-4 bg-pastelMint/80 z-10 rounded-xs border border-slateAsh/10" />
+                        <div className="washi-tape absolute -top-2.5 left-1/2 -translate-x-1/2 w-20 h-4 bg-pastelMint/85 z-10 rounded-xs border border-slateAsh/10 -rotate-1 shadow-2xs" />
                         
-                        <div 
-                          className="relative cursor-zoom-in overflow-hidden rounded bg-cloudWhite aspect-4/3 flex items-center justify-center"
-                          onClick={() => handleOpenImage(photo)}
-                        >
+                        <div className="relative overflow-hidden rounded-lg bg-[#F9FBFC] aspect-4/3 flex items-center justify-center border border-slateAsh/10">
                           <img
                             src={photo.url}
                             alt={photo.alt || photo.caption || `Attachment from ${letter.author}`}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                            onError={(e) => {
-                              e.currentTarget.parentElement.innerHTML = `
-                                <div class="p-4 text-center bg-skyMist/15 text-slateAsh/70 w-full h-full flex flex-col items-center justify-center">
-                                  <span class="text-xs font-mono">Attachment photo</span>
-                                  <span class="text-[10px] text-slateAsh/50 mt-1">${photo.url}</span>
-                                </div>
-                              `;
-                            }}
+                            loading="lazy"
                           />
-                          <div className="absolute bottom-2 right-2 bg-slateAsh/75 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-                            <ZoomIn className="w-3.5 h-3.5" />
+
+                          <div className="absolute bottom-2 right-2 bg-slateAsh/80 text-white px-2 py-1 rounded-full text-[10px] font-mono flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-paper-sm">
+                            <ZoomIn className="w-3 h-3" />
+                            <span>Zoom</span>
                           </div>
                         </div>
 
                         {photo.caption && (
-                          <p className="font-handwriting text-base text-slateAsh text-center mt-2 leading-tight">
+                          <p className="font-handwriting text-base text-slateAsh text-center mt-2.5 leading-snug">
                             {photo.caption}
                           </p>
                         )}
@@ -665,18 +670,20 @@ export default function LetterModal({
                 <div className="washi-tape absolute -top-3 left-1/2 -translate-x-1/2 w-28 h-6 bg-buttercup/90 z-20 -rotate-1 rounded-xs border border-slateAsh/15 shadow-xs" />
               )}
 
-              <img
-                src={selectedImage.url}
-                alt={selectedImage.caption || (selectedImage.isScan ? `Handwritten letter from ${letter.author}` : "Enlarged photo")}
-                className={`rounded block mx-auto ${
-                  isFitMode 
-                    ? 'max-h-[76vh] w-auto object-contain'
-                    : selectedImage.isScan
-                      ? 'w-full h-auto object-contain'
-                      : 'max-h-[80vh] w-auto max-w-full object-contain'
-                }`}
-                draggable={false}
-              />
+              {selectedImage.url && (
+                <img
+                  src={selectedImage.url}
+                  alt={selectedImage.caption || (selectedImage.isScan ? `Handwritten letter from ${letter.author}` : "Enlarged photo")}
+                  className={`rounded block mx-auto ${
+                    isFitMode 
+                      ? 'max-h-[76vh] w-auto object-contain'
+                      : selectedImage.isScan
+                        ? 'w-full h-auto object-contain'
+                        : 'max-h-[80vh] w-auto max-w-full object-contain'
+                  }`}
+                  draggable={false}
+                />
+              )}
             </div>
 
             {selectedImage.caption && (

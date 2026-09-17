@@ -51,7 +51,7 @@ export default function AudioWelcomeModal({
 
     return () => {
       clearTimeout(timer);
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = '';
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen]);

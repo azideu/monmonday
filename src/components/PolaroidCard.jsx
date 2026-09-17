@@ -1,18 +1,31 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { RotateCw, Calendar, MapPin, Camera } from 'lucide-react';
+import { RotateCw, Calendar, MapPin, Camera, Maximize2 } from 'lucide-react';
 import IconRenderer from './IconRenderer.jsx';
+import { playPaperRustle } from '../utils/soundEffects.js';
 
 export default function PolaroidCard({
   photo,
-  index
+  index,
+  onExpandPhoto,
 }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [imgError, setImgError] = useState(false);
 
   const toggleFlip = (e) => {
     e?.stopPropagation?.();
+    playPaperRustle();
     setIsFlipped((prev) => !prev);
+  };
+
+  const handlePhotoClick = (e) => {
+    e?.stopPropagation?.();
+    if (photo.imageUrl && !imgError && onExpandPhoto) {
+      playPaperRustle();
+      onExpandPhoto(photo, index);
+    } else {
+      toggleFlip(e);
+    }
   };
 
   return (
@@ -25,21 +38,21 @@ export default function PolaroidCard({
       <motion.div 
         whileHover={{ scale: 1.03, y: -4 }}
         whileTap={{ scale: 0.98 }}
-        className="relative group cursor-pointer focus:outline-none"
-        onClick={toggleFlip}
+        className="relative group focus:outline-none"
+        onClick={isFlipped ? toggleFlip : undefined}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
             toggleFlip(e);
           }
         }}
-        role="button"
+        role="region"
         tabIndex={0}
         aria-expanded={isFlipped}
         aria-label={
           isFlipped 
             ? `Note on back of photo from ${photo.location}: "${photo.backNote}". Click to flip back.` 
-            : `Photo from ${photo.location}: ${photo.caption}. Click to flip and read note.`
+            : `Photo from ${photo.location}: ${photo.caption}. Click image to expand, or click chin to flip.`
         }
       >
         {/* 3D Card Container */}
@@ -58,14 +71,26 @@ export default function PolaroidCard({
         {/* FRONT SIDE */}
         <div className="absolute inset-0 w-full h-full bg-white rounded-lg p-3.5 pb-5 flex flex-col justify-between backface-hidden border border-slateAsh/10">
           
-          {/* Photo Frame */}
-          <div className="relative w-full aspect-square bg-skyMist/20 rounded overflow-hidden shadow-inner flex items-center justify-center border border-dashed border-skyMist/80">
+          {/* Photo Frame (Click to Expand Full Image) */}
+          <div 
+            onClick={handlePhotoClick}
+            className="relative w-full aspect-square bg-skyMist/20 rounded overflow-hidden shadow-inner flex items-center justify-center border border-dashed border-skyMist/80 cursor-pointer group/photo"
+            role="button"
+            tabIndex={0}
+            aria-label={`Expand full image of ${photo.caption}`}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handlePhotoClick(e);
+              }
+            }}
+          >
             {photo.imageUrl && !imgError ? (
               <img
                 src={photo.imageUrl}
                 alt={photo.caption}
                 onError={() => setImgError(true)}
-                className="w-full h-full object-cover pointer-events-none transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-full object-cover pointer-events-none"
                 loading="lazy"
               />
             ) : (
@@ -76,16 +101,36 @@ export default function PolaroidCard({
               </div>
             )}
 
-            {/* Flip Indicator hint: subtle animated badge on mobile, reveals on hover on desktop */}
-            <div className="absolute bottom-2.5 right-2.5 bg-slateAsh/85 text-white px-2.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 shadow-paper-sm opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-all backdrop-blur-xs border border-white/20 select-none pointer-events-none">
-              <RotateCw className="w-3 h-3 animate-[spin_4s_linear_infinite]" />
+            {/* Expand Image Badge (Bottom Left) */}
+            {photo.imageUrl && !imgError && (
+              <div className="absolute bottom-2.5 left-2.5 bg-slateAsh/85 text-white px-2.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 shadow-paper-sm opacity-90 sm:opacity-0 sm:group-hover/photo:opacity-100 transition-all backdrop-blur-xs border border-white/20 select-none">
+                <Maximize2 className="w-3 h-3 text-skyMist" />
+                <span className="text-xs tracking-wide font-sans">Expand</span>
+              </div>
+            )}
+
+            {/* Flip Indicator hint (Bottom Right) */}
+            <button
+              type="button"
+              onClick={toggleFlip}
+              className="absolute bottom-2.5 right-2.5 bg-slateAsh/85 hover:bg-slateAsh text-white px-2.5 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 shadow-paper-sm opacity-90 sm:opacity-0 sm:group-hover/photo:opacity-100 transition-all backdrop-blur-xs border border-white/20 select-none cursor-pointer"
+              title="Flip to read note"
+              aria-label="Flip to read note"
+            >
+              <RotateCw className="w-3 h-3" />
               <span className="text-xs tracking-wide font-sans">Flip Note</span>
-            </div>
+            </button>
           </div>
 
-          {/* Polaroid Chin / Caption Area */}
-          <div className="pt-3 px-1">
-            <p className="font-handwriting text-slateAsh text-lg md:text-xl font-bold leading-tight truncate">
+          {/* Polaroid Chin / Caption Area (Click to Flip) */}
+          <div 
+            onClick={toggleFlip}
+            className="pt-3 px-1 cursor-pointer"
+            role="button"
+            tabIndex={0}
+            aria-label={`Flip card to read note for ${photo.caption}`}
+          >
+            <p className="font-handwriting text-slateAsh text-lg md:text-xl font-bold leading-tight truncate hover:text-slateAsh/80 transition-colors">
               {photo.caption}
             </p>
             <div className="flex items-center justify-between text-xs text-slateAsh/60 mt-1 font-sans">
@@ -102,7 +147,10 @@ export default function PolaroidCard({
         </div>
 
         {/* BACK SIDE (Secret memory note) */}
-        <div className="absolute inset-0 w-full h-full bg-[#FFFDF9] rounded-lg p-5 flex flex-col justify-between rotate-y-180 backface-hidden border border-amber-900/15 shadow-inner-paper">
+        <div 
+          onClick={toggleFlip}
+          className="absolute inset-0 w-full h-full bg-[#FFFDF9] rounded-lg p-5 flex flex-col justify-between rotate-y-180 backface-hidden border border-amber-900/15 shadow-inner-paper cursor-pointer"
+        >
           
           {/* Top Stamp / Date on back of print */}
           <div className="flex items-center justify-between border-b border-dashed border-slateAsh/20 pb-2">

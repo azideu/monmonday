@@ -103,9 +103,12 @@ export default function BirthdayCake({ celebration, celebrantName = "Monmonkyu" 
               <div className="relative flex flex-col items-center -mb-1">
                 {!isBlown ? (
                   <div className="relative">
-                    {/* Outer flame glow */}
-                    <div className="w-6 h-9 bg-buttercup rounded-full filter blur-[2px] animate-pulse" />
-                    {/* Core flame */}
+                    {/* Outer flame glow — warm amber bloom, breathes at ~2s */}
+                    <div
+                      className="w-6 h-9 bg-buttercup rounded-full filter blur-[3px]"
+                      style={{ animation: 'flicker 2.1s infinite alternate ease-in-out' }}
+                    />
+                    {/* Core flame — teardrop, flickers at 1.4s for organic feel */}
                     <div
                       className="absolute inset-0 m-auto w-3.5 h-7 bg-orange-400 rounded-full"
                       style={{
@@ -113,7 +116,7 @@ export default function BirthdayCake({ celebration, celebrantName = "Monmonkyu" 
                         animation: 'flicker 1.4s infinite alternate ease-in-out'
                       }}
                     />
-                    {/* Inner white hot spot */}
+                    {/* Inner white hot spot — stationary, just blinks gently */}
                     <div className="absolute inset-0 m-auto w-1.5 h-3.5 bg-white rounded-full top-1.5" />
                   </div>
                 ) : (
@@ -143,8 +146,11 @@ export default function BirthdayCake({ celebration, celebrantName = "Monmonkyu" 
               <div className="relative flex flex-col items-center -mb-1">
                 {!isBlown ? (
                   <div className="relative">
-                    {/* Outer flame glow */}
-                    <div className="w-6 h-9 bg-buttercup rounded-full filter blur-[2px] animate-pulse delay-100" />
+                    {/* Outer flame glow — offset timing for natural twin-candle feel */}
+                    <div
+                      className="w-6 h-9 bg-buttercup rounded-full filter blur-[3px]"
+                      style={{ animation: 'flicker 2.4s 0.3s infinite alternate-reverse ease-in-out' }}
+                    />
                     {/* Core flame */}
                     <div
                       className="absolute inset-0 m-auto w-3.5 h-7 bg-orange-400 rounded-full"
@@ -159,7 +165,7 @@ export default function BirthdayCake({ celebration, celebrantName = "Monmonkyu" 
                 ) : (
                   /* Smoke Puff when blown */
                   <div className="h-9 flex items-center justify-center">
-                    <Cloud className="w-5 h-5 animate-smoke-rise text-slateAsh/50 select-none fill-slateAsh/10 delay-75" strokeWidth={1.75} aria-hidden="true" />
+                    <Cloud className="w-5 h-5 animate-smoke-rise text-slateAsh/50 select-none fill-slateAsh/10" style={{ animationDelay: '0.15s' }} strokeWidth={1.75} aria-hidden="true" />
                   </div>
                 )}
                 {/* Candle Wick */}

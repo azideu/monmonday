@@ -50,9 +50,44 @@ export const birthdayConfig = {
       duration: "3:50",
       audioUrl: "./music/ENHYPEN - SHOUT OUT.mp3",
     },
+    {
+      id: "track-7",
+      title: "Oh! Asmara by Kobo Kanaeru",
+      artist: "akari",
+      duration: "4:07",
+      audioUrl: "./music/Oh! Asmara - Kobo Kanaeru.mp3",
+    },
+    {
+      id: "track-8",
+      title: "Is It The Answer by Reality Club",
+      artist: "Harris",
+      duration: "3:52",
+      audioUrl: "./music/Is It The Answer - Reality Club.mp3",
+    },
+    {
+      id: "track-9",
+      title: "Mantra Hujan by Kobo Kanaeru (acoustic)",
+      artist: "Zai",
+      duration: "2:46",
+      audioUrl: "./music/mantra hujan acoustic.mp3",
+    },
+    {
+      id: "track-10",
+      title: "Only Ones Who Know by Arctic Monkeys",
+      artist: "Kucing Kelabu",
+      duration: "3:04",
+      audioUrl: "./music/Only Ones Who Know.mp3",
+    },
+    {
+      id: "track-11",
+      title: "Dan Dan Don Don by Nanashi Mumei",
+      artist: "Meguri",
+      duration: "1:32",
+      audioUrl: "./music/Dan Dan Don Don.mp3",
+    },
   ],
 
-  // Letters from friends
+  // Letters from friends (sorted alphabetically)
   letters: [
     {
       id: "letter-akari",
@@ -70,76 +105,147 @@ export const birthdayConfig = {
       scanUrl: "./photos/akaridearestati.png",
       audioUrl: "./music/akaribdayguitar.mp3",
       audioTitle: "akari's Birthday Song (Electric Guitar 1)",
+      imageUrl: "./photos/monkaripho.jpg",
+      imageCaption: "looking pho-ward to more memories with you <3",
+      illustration: "guitar",
     },
     {
       id: "letter-alin",
       author: "Alin",
-      relationship: "Creative Buddy",
-      recipientNickname: "Mon-chan",
+      relationship: "Your Biggest Supporter",
+      recipientNickname: "Monmonn",
       envelopeColor: "bg-[#FFEE8C]", // Buttercup Glow
       sealColor: "#C8F7DC", // Pastel Mint
       sealIcon: "sparkles",
       date: "Sep 18, 2026",
       type: "typed",
+      password: "sayang",
+      passwordHint: "Call me that again.",
       audioUrl: "./music/alinkalimba.mp3",
       audioTitle: "Alin's Birthday Kalimba",
-      content: `Happy birthday Mon-chan!
+      illustration: "sparkles",
+      content: `Letter for mon's birthday 
 
-Still laughing thinking about our 2 AM design rabbit holes where we spent forty-five minutes debating two slightly different shades of blue. Nobody else gets my specific brand of design nitpicking like you do.
+Hii Atiqah Azzahra aka Monmonkyuu❤️ 
 
-I hope you get a huge slice of whatever cake you picked out this year. Let's start that new silly project idea once your birthday week winds down!
+Happy birthday to youuu 🎂 You are my favourite, beautiful, cute, and funniest streamer I've ever known . I never thought someone I met online could bring so much happiness to the people around you, and somehow to me. 🥹🤍
 
-Cheers,
-Alin`,
+I'm really thankful for all the random conversations, stupid jokes, laughs, advice and all the little moments sepanjang alin mengenali monmon. Maybe some of them nampak biasa je to you, but for me, they actually mean a lot. so yeah, i’m really glad i joined your livestream that day.
+
+I want you to know walaupun dunia ni banyak ujiannya, I hope that you not gonna give up on yourself!! I know that sometimes things can be really tiring, and maybe there are days where you feel like you’re not doing enough. But please remember that you’re actually doing your best, and that’s already something to be proud of. Please don't forget how far you've already come. I'm genuinely so proud of you!! I hope that you know bahawa your existence sangat memberi makna to people around you. And YES!!, I'm one of those people.
+
+On your birthday, alin doakan semoga monmon dipanjangkan umur, dimurahkan rezeki, diberikan kesihatan yang baik, diberikan kekuatan untuk menghadapi segala ujian dimasa akan dtg. I hope that you always get the happiness and peace you've been looking for. Jaga diri. Jaga hati.
+
+Happy birthday once again monmonnn.. I hope this year will be awesome pawsome to you.. and yeah... I'm really glad I met you.
+
+Btw, I played the kalimba and recorded it for you hehe.. I hope you like itt...
+
+Sending virtual warm hugs to you,
+alin.`,
     },
     {
       id: "letter-fiyoll",
       author: "Fiyoll",
-      relationship: "Music & Gaming Pal",
-      recipientNickname: "Mon",
+      relationship: "Scatboy",
+      recipientNickname: "Monmon",
       envelopeColor: "bg-[#C8F7DC]", // Pastel Mint
       sealColor: "#E5DBFF", // Pale Lilac
       sealIcon: "coffee",
-      date: "Sep 17, 2026",
+      date: "Sep 18, 2026",
       type: "typed",
-      content: `Yo Mon!
+      illustration: "coffee",
+      content: `Dear Mon,
 
-Happy birthday man. Turn off your alarm, grab some iced coffee, and take the whole day easy.
+Happy birthday,I know I've only been active for like a while and I may be a weird and childish individual,but I'd like to thank you because I've never felt this nice expressing myself.Coming across your live has to be one of the best things to happen to me.
 
-Also half the songs on my monthly playlist are still tracks you sent me out of nowhere at midnight. Keep the recommendations coming, and hop on Discord later if you want to run a few casual matches.
+I'd also like to say sorry if I've ever made you feel a bit uncomfortable with some of my chats in the dc server.
 
-Catch you later,
-Fiyoll`,
+Semoga harini become your happiest day and hari yang akan datang jugak menjadi hari yang fun for you.Semoga Mon panjang umur untuk layan lagi kerenah kami.Lastly,semoga mon dimurahkan rezeki supaya setiap hari dapat makan pho.
+
+I'm also sorry if this birthday letter kinda sounds like a boring/formal birthday letter.This is like my first time writing one.
+
+Real lastly,moga dapat jumpa mon and everybody else in the near future.
+
+Sincerely,
+Your only S(catboy)`,
+    },
+    {
+      id: "letter-gyro",
+      author: "Gyro",
+      relationship: "Friend",
+      recipientNickname: "Monmon",
+      envelopeColor: "bg-[#FFD6D6]", // Soft Coral Blush
+      sealColor: "#D4F1FF", // Sky Mist
+      sealIcon: "star",
+      date: "Sep 18, 2026",
+      type: "typed",
+      illustration: "star",
+      content: "",
+    },
+    {
+      id: "letter-halibutter",
+      author: "Halibutter",
+      relationship: "uhh viewer kot",
+      recipientNickname: "driver haritu",
+      envelopeColor: "bg-[#E5DBFF]", // Pale Lilac
+      sealColor: "#FFEE8C", // Buttercup Glow
+      sealIcon: "heart",
+      date: "Sep 18, 2026",
+      type: "typed",
+      illustration: "heart",
+      content: `happy birthday mon, semoga muda tinggi dan comel selalu
+
+sign,
+uhh halibutter. ssselangor. l-l-lapan belas`,
+    },
+    {
+      id: "letter-harris",
+      author: "Harris",
+      relationship: "Feet",
+      recipientNickname: "Mon",
+      envelopeColor: "bg-[#D4F1FF]", // Sky Mist
+      sealColor: "#FFEE8C", // Buttercup Glow
+      sealIcon: "music",
+      date: "Sep 18, 2026",
+      type: "typed",
+      illustration: "music",
+      imageUrl: "./photos/harriskobo.jpg",
+      imageCaption: "Is this super duper cute moe",
+      content: `HAPPY BIRFDAY MONMONNN!! >w< 🎀💗✨ I hope you know how truly awesome pawsome you are!! 🐾💞 I’m really grateful for all the silly, happy moments and memories we’ve shared. May Kobo bless you with endless happiness, warm hugs & lots of little joys!! 🌧️☁️💙 Stay happy, stay silly, stay YOU!! >~< NYAAAA!! And uhhh… don’t mind me nomming ur Kobo 😋💙`,
     },
     {
       id: "letter-kai",
       author: "Kai",
-      relationship: "Adventure Partner",
+      relationship: "No. 1 supporter",
       recipientNickname: "Monmon",
-      envelopeColor: "bg-[#FFD6D6]", // Soft Coral Blush
-      sealColor: "#FFEE8C", // Buttercup Glow
+      envelopeColor: "bg-[#FFEE8C]", // Buttercup Glow
+      sealColor: "#FFD6D6", // Soft Coral Blush
       sealIcon: "tent",
-      date: "Sep 17, 2026",
+      date: "Sep 18, 2026",
       type: "typed",
-      content: `Hey Monmon,
+      illustration: "car",
+      imageUrl: "./photos/kaicing.webp",
+      imageCaption: "me every time watching your live",
+      content: `Happy birthday monmon, I've learned a lot from your live stream and I also learned a lot from you. You are such a great person and I wish you all the best. I know that you will do so much great things in the future and I pray that everything gonna be smooth. I hope we can spend so much time together and I hope you will never get bored of me smh. Since I'm so great after all. I really enjoy  watching your stream, listening to your story, laughing at your joke even tho you want to beat me and get banned for it ( it's a joke right?? You don't want to beat me up fr right ..). I pray that you always stay positive and strong in the future.
 
-Happy birthday buddy! I was just looking through old photos from that trail where we took a wrong turn, ran out of trail mix, and ended up eating roadside gas station corn dogs. Best afternoon of the whole summer.
+Sincerely,
 
-Next road trip snack run is 100% on my tab. Have the best day today!
-
-Best,
-Kai`,
+Kai 
+(No 1 fan)
+(Your top 1 in giving song recommendations)
+(The first person to put your oshi mark)`,
     },
     {
       id: "letter-kiwan",
       author: "Kiwan",
       relationship: "Tsundere Fan",
       recipientNickname: "Monmon",
-      envelopeColor: "bg-[#E5DBFF]", // Pale Lilac
+      envelopeColor: "bg-[#C8F7DC]", // Pastel Mint
       sealColor: "#D4F1FF", // Sky Mist
       sealIcon: "leaf",
-      date: "Sep 17, 2026",
+      date: "Sep 18, 2026",
       type: "typed",
+      illustration: "sparkles",
       content: `tap tap
 
 yo is this thing on?
@@ -156,98 +262,158 @@ Cheers to more whimsical and energetic streams from you -- a 174cm, aussie-born 
     {
       id: "letter-kucing-kelabu",
       author: "Kucing Kelabu",
-      relationship: "The Gray Cat & Confidant",
-      recipientNickname: "Hooman",
-      envelopeColor: "bg-[#D4F1FF]", // Sky Mist
-      sealColor: "#FFD6D6", // Soft Coral Blush
+      relationship: "kcg klb",
+      recipientNickname: "mon(my)monkyu",
+      envelopeColor: "bg-[#FFD6D6]", // Soft Coral Blush
+      sealColor: "#E5DBFF", // Pale Lilac
       sealIcon: "heart",
       date: "Sep 18, 2026",
-      type: "typed",
+      type: "handwritten",
+      handwrittenImageUrl: "./photos/kucingmonmonletter.png",
+      scanUrl: "./photos/kucingmonmonletter.png",
       audioUrl: "./music/kucingbdayguitar.mp3",
       audioTitle: "Kucing Kelabu's Birthday Serenade",
-      content: `meow. happy birthday hooman.
-
-i left you a very nice gift: a dried leaf i brought inside and placed directly in your slipper. you are welcome.
-
-thank you for letting me sleep on your laptop keyboard while you try to work, and for scratching right behind my ears when i stare at you loudly. now please go lie in the patch of sunlight on the floor and take a nap like a sensible creature.
-
-headbutts and purrs,
-Kucing Kelabu`,
+      illustration: "cat",
+      content: `ps : dedicating my first guitar song for you 🩶🩵`,
     },
     {
       id: "letter-marci",
       author: "Marci",
-      relationship: "Karaoke Crew",
-      recipientNickname: "Monkyu",
-      envelopeColor: "bg-[#FFEE8C]", // Buttercup Glow
+      relationship: "Your something",
+      recipientNickname: "Laksahoney",
+      envelopeColor: "bg-[#E5DBFF]", // Pale Lilac
       sealColor: "#C8F7DC", // Pastel Mint
       sealIcon: "cake",
-      date: "Sep 16, 2026",
+      date: "Sep 18, 2026",
       type: "typed",
-      content: `HAPPY BIRTHDAY MONKYU!!
+      password: "wlwei",
+      passwordHint: "walawei (without the As)",
+      illustration: "cake",
+      imageUrl: "./photos/marciedit.jpg",
+      imageCaption: "Awesome pawsome princess",
+      content: `Time... is a beautiful creation of God.
 
-Listen, I don't care how busy everyone gets, we are booking a karaoke room this weekend and shouting Avril Lavigne songs until our voices give out. Non-negotiable!
+It can make you feel happy...
+It can make you feel sad...
+It can harm you...
+It can heal you...
+It can give you hope...
+It can betray you...
+It can curse you...
+And it can also be a blessing to you...
 
-Hope you get treated like royalty all day today. Save me a slice of whatever cake has the most frosting!
+And I just wanted you to know...
 
-Love,
-Marci`,
+All the time that we spend together... every second of it...
+
+IS WORTH IT.
+
+Thank you for being the stars in the darkness of my night...
+The cloud that gives me shade and peace on a scorching sunny day...
+And for being kind, loving, beautiful, cute, "tall," and a good inspiration to us in life...
+
+Happy birthday monmonkuu!!!!🎉🎉🎉🎉
+
+May you have a beautiful day...
+Get to eat all the good food...
+May God make things easier for you as you go through life...
+And give you the strength to keep moving forward in life. ❤️
+
+Someone as cute as you doesn't deserve a bad day. 🥀
+
+And as always:
+
+Keep living.
+Keep being happy.
+Don't force yourself to heal.
+I hope you heal from anything you don't talk about.
+
+We love you. 🌹
+
+You are a gem to me too. 💎`,
+    },
+    {
+      id: "letter-may",
+      author: "May",
+      relationship: "Bulan 5",
+      recipientNickname: "Momon",
+      envelopeColor: "bg-[#D4F1FF]", // Sky Mist
+      sealColor: "#FFD6D6", // Soft Coral Blush
+      sealIcon: "sparkles",
+      date: "Sep 18, 2026",
+      type: "typed",
+      illustration: "sparkles",
+      content: "HAPPY BIRTHDAY MOMONNN<3, I just wanna say that I’m genuinely so grateful that I found your live because somehow, watching you always makes my day a little better. Every time I see you’re live, I already know I’m about to laugh, get entertained, and probably learn something new from you HAHAHA. You have this way of making your lives feel so lively and fun, even when you’re just talking about random things, and I honestly really enjoy watching them. Besides making people laugh, I also really appreciate all the life advice and little things you share during your lives because sometimes they actually make me think differently about certain things. You probably don’t even realise it, but the things you say and the energy you bring can genuinely brighten someone’s day. I hope you know that there are people who look forward to your lives and enjoy having you around, even if it’s just through a screen. On your birthday, I hope you get all the happiness, love, and good things that you deserve. I hope this new year of your life brings you more amazing experiences, more reasons to laugh, and hopefully less stress hehe. Thank you for always being yourself, for entertaining us, and for sharing your thoughts and advice with everyone. Please keep being the fun, chaotic, positive person that you are because you really do make people’s days better without even trying. Happy birthday once again!! I hope you have an amazing day and an even more amazing year ahead!!",
     },
     {
       id: "letter-meguri",
       author: "Meguri",
-      relationship: "Sunshine Friend",
-      recipientNickname: "Monmonkyu",
+      relationship: "Monguri the MON caller",
+      recipientNickname: "mon (stream chat reference)",
       envelopeColor: "bg-[#C8F7DC]", // Pastel Mint
       sealColor: "#FFD6D6", // Soft Coral Blush
       sealIcon: "gift",
-      date: "Sep 16, 2026",
+      date: "Sep 18, 2026",
       type: "typed",
-      content: `Happy birthday Monmonkyu!
+      illustration: "gift",
+      content: `To Mon~
 
-Just sending a little note to say I'm really glad you exist. You always notice when people are having an off day, and you send the funniest cat videos at exactly the right time.
+WOWOWOWO Happy Birthday, Mon!🎂🎉 
 
-Don't let anyone stress you out today. Put your phone on do not disturb, eat something tasty, and enjoy being 22!
+I wish you all the best in whatever you decide to do and always be blessed with health life and happiness ..and thanks for moment you create while in live "MON" and irl ..... Just enjoy your life,buy (LOT OF KOBO MERCH)
+Whatever happens, don't forget to take care of yourself. Life can get busy and stressful sometimes, but remember never give you up never let you down......
+i just want to say thank you for being my friend dho..I'm glad we meet and can be friend and have same interest as me.. Kobokerz 💜  X Jailbird💙 /Chattini🩷 /Moonafic💜 /Tokoyami Kenzoku💜/Hoomans🤎 
 
-Big hugs,
-Meguri`,
+Anyway, I hope you have an amazing birthday and enjoy every second of it
+
+Happy 22nd Birthday again, Mon! ❤️🥳
+Stay happy, stay awesome pawsome, and keep being the wonderful person you are! 💗
+
+From,
+Meguri,Megurin,Mongurin
+`,
     },
     {
       id: "letter-opanchu",
       author: "Opanchu",
-      relationship: "Cheerleader",
-      recipientNickname: "Monmon~",
+      relationship: "little star fairy",
+      recipientNickname: "monmon-chan ♡",
       envelopeColor: "bg-[#FFD6D6]", // Soft Coral Blush
       sealColor: "#E5DBFF", // Pale Lilac
-      sealIcon: "camera",
+      sealIcon: "flower",
       date: "Sep 18, 2026",
       type: "typed",
-      content: `MONMON!! HAPPY 22ND BIRTHDAY!!
+      imageUrl: "./photos/opanchumonbirthday.png",
+      imageCaption: "you shine the brightest !",
+      illustration: "camera",
+      content: `konnichiwa monmon chan !! 🤍
+ 
+happy birthday to a genuinely good person who continues to bring happiness to the people around you and never lose the genuine heart that makes you special . thank you for being awesome pawsum streamer too !! . 
 
-WOOOO!! Hope your day is filled with good snacks, zero chores, and ridiculous photos! Make sure you make a super specific wish when you blow out the candle on this page.
+I hope you continue smiling and appreciating the little moments that make life beautiful . Be happy always , thank you for surviving in this cruel world . wishing you all the best might sound pretty lame , your existence alone is already enough .
 
-Always rooting for you! Let's hang out super soon!!
+this world will bring you storms and pains and you won't always get why things happened that way , but I hope you know you don't have to face it all alone . You have so many people who love and cherish you including monlings too . Im glad that you showed up on my fyp  If not , I wouldn't have met you rn . 
 
-Opanchu`,
+thank you again monmon chan i hope your days filled with happiness and good news . semoga dimurahkan rezeki selalu dan sihat selalu monmon !! 🫶🏻
+
+opanchu`,
     },
     {
       id: "letter-zai",
       author: "Zai",
-      relationship: "Late Night Voice Notes",
-      recipientNickname: "Monmon",
+      relationship: "Viewer (udang)",
+      recipientNickname: "kamioshi",
       envelopeColor: "bg-[#E5DBFF]", // Pale Lilac
       sealColor: "#FFEE8C", // Buttercup Glow
       sealIcon: "mail",
       date: "Sep 18, 2026",
       type: "typed",
-      content: `Happy birthday Mon!
+      imageUrl: "./photos/zai.jpg",
+      imageCaption: "Me and little shark.",
+      illustration: "mail",
+      content: `To my kami oshi
 
-Really grateful for our random 1 AM voice note rambles where we start by discussing dinner and end up analyzing life decisions an hour later. You're one of the easiest people in the world to talk to.
-
-Here's to year 22 being kind to you. Have a great one today!
-
-Best,
-Zai`,
+Happy 22nd birthday, MonMon!!! 🎂🎉 I’m not the best with words, so please forgive me if this sounds a bit cringe... 🙈 but I just want to say thank you so much for everything. 💛 Ever since I stumbled upon your TikTok Live, you haven't just brightened my days, but you've also helped me meet a lot of wonderful people in your community. 🫂✨ That’s why I want to say a huge thank you. I hope this year and all the years to come are filled with great days and endless happiness for you. 🌟 Again, THANK YOU! 🥳`,
     },
   ],
 
@@ -255,74 +421,74 @@ Zai`,
   polaroids: [
     {
       id: "photo-1",
-      imageUrl: "",
-      caption: "Campfire by the lake",
+      imageUrl: "./photos/monmonedit.jpg",
+      caption: "Opanchu's Monmon edit!",
       date: "July 2025",
-      location: "Pine Lake",
+      location: "Discord",
       tapeColor: "bg-[#D4F1FF]/80", // Sky Mist
       tapeRotation: "1.5deg",
       cardTilt: "-2deg",
-      backNote: "We burned half the marshmallows, dropped the graham crackers in the dirt, and talked until 3 AM.",
-      doodle: "tent",
+      backNote: "Opanchu made a really cool edit of you! Hope you love it!",
+      doodle: "camera",
     },
     {
       id: "photo-2",
-      imageUrl: "",
-      caption: "Road trip stop along the coast",
-      date: "October 2025",
-      location: "Big Sur",
+      imageUrl: "./photos/mongurikariplushies.jpg",
+      caption: "First admons meetup!",
+      date: "August 2025",
+      location: "Lalaport",
       tapeColor: "bg-[#FFEE8C]/80", // Buttercup
       tapeRotation: "-2deg",
       cardTilt: "2.5deg",
-      backNote: "The car made a terrifying rattling noise right before this turn, but this view made everyone forget about it.",
-      doodle: "car",
+      backNote: "mereka bertiga telah mengambil bahagian di dalam doodoo fight - monmon",
+      doodle: "flower",
     },
     {
       id: "photo-3",
-      imageUrl: "",
-      caption: "Picnic in the park",
-      date: "April 2026",
-      location: "Golden Park",
+      imageUrl: "./photos/guitarkarimonris.jpg",
+      caption: "KariMonRis' Swee Lee shenanigans!",
+      date: "September 2026",
+      location: "Swee Lee",
       tapeColor: "bg-[#C8F7DC]/80", // Pastel Mint
       tapeRotation: "2deg",
       cardTilt: "-1.5deg",
-      backNote: "About five minutes after this picture, it started pouring and we had to sprint for the gazebo with the pizza boxes.",
-      doodle: "pizza",
+      backNote: "The employees there must've been annoyed with us cuz we spent like 2 hours in there",
+      doodle: "guitar",
     },
     {
       id: "photo-4",
-      imageUrl: "",
-      caption: "Birthday rooftop party",
-      date: "September 2025",
-      location: "Rooftop Studio",
+      imageUrl: "./photos/monkoboriver.jpg",
+      caption: "Mon with Kobo along the lake!",
+      date: "August 2026",
+      location: "Random Ass Lake",
       tapeColor: "bg-[#FFD6D6]/80", // Soft Coral Blush
       tapeRotation: "-1.5deg",
       cardTilt: "2deg",
-      backNote: "Still laughing at how the 21 candles managed to set off the smoke alarm almost immediately while you were posing with the cake.",
+      backNote: "Celebrating Kobo's birthday, and now it's yours!",
       doodle: "cake",
     },
     {
       id: "photo-5",
-      imageUrl: "",
-      caption: "Board game showdown",
-      date: "January 2026",
-      location: "Kai's Living Room",
+      imageUrl: "./photos/monmonochestra.jpg",
+      caption: "Monmon at the Orchestral Concert",
+      date: "August 2026",
+      location: "Petronas Philharmonic Hall",
       tapeColor: "bg-[#E5DBFF]/80", // Pale Lilac
       tapeRotation: "1.5deg",
       cardTilt: "-2.5deg",
-      backNote: "You spent forty minutes plotting a secret alliance only to roll double ones on the final turn. The look on your face was completely priceless.",
+      backNote: "Remember when you couldn't get a grab back home? Thank god your friend helped you out.",
       doodle: "sparkle",
     },
     {
       id: "photo-6",
-      imageUrl: "",
-      caption: "Rainy arcade marathon",
-      date: "June 2026",
-      location: "Pixel Palace",
+      imageUrl: "./photos/monmonkoboramen.jpg",
+      caption: "Monmon with Kobo eating noodles",
+      date: "July 2026",
+      location: "Somewhere in Malaysia idk",
       tapeColor: "bg-[#D4F1FF]/80", // Sky Mist
       tapeRotation: "-2deg",
       cardTilt: "1.5deg",
-      backNote: "We fed three rolls of tokens into the crane machine until you finally won that lopsided frog plushie. Best rainy Saturday ever.",
+      backNote: "One of your cutest outfits ever.",
       doodle: "heart",
     }
   ],
@@ -348,11 +514,11 @@ Zai`,
     left: [
       {
         type: "photo",
-        imageUrl: "", // Place a photo URL or file in /photos/ (e.g. "/photos/side-1.jpg")
-        caption: "One of my favorites",
-        placeholder: "Photo slot",
-        note: "Drop your photo here",
-        tapeColor: "bg-[#D4F1FF]/90",
+        imageUrl: "./photos/monmonroblox.png",
+        illustration: "car",
+        caption: "Life is roblox",
+        note: "Never stop doing the stupid roblox smug face",
+        tapeColor: "bg-skyMist/90",
         rotation: "-3deg",
       },
       {
@@ -360,8 +526,30 @@ Zai`,
         category: "BIRTHDAY PASS",
         number: "№ 0918-26",
         title: "Free Snacks Pass",
-        subtitle: "Good for grabbing extra dessert and zero chores.",
+        subtitle: "Ask meguri for some.",
         rotation: "2deg",
+      },
+      {
+        type: "pressed-flower",
+        botanical: "flower",
+        title: "Pressed Daisy",
+        subtitle: "Plucked for you • Sep 18",
+        rotation: "-2.5deg",
+      },
+      {
+        type: "photo",
+        imageUrl: "./photos/moncoolpic.jpg",
+        illustration: "coffee",
+        caption: "One of your best pics",
+        note: "Of course you look stunning in all of them.",
+        tapeColor: "bg-buttercup/90",
+        rotation: "2.5deg",
+      },
+      {
+        type: "note",
+        text: "Make sure you eat an extra of everything today!",
+        author: "Monmonlings",
+        rotation: "-2deg",
       },
       {
         type: "sticker",
@@ -369,67 +557,97 @@ Zai`,
         bgColor: "bg-coralBlush",
         title: "22nd year",
         subtitle: "from all of us",
-        rotation: "-5deg",
-      },
-      {
-        type: "note",
-        text: "Make sure you eat an extra slice of cake today!",
-        author: "The group chat",
-        rotation: "-2deg",
-      },
-      {
-        type: "photo",
-        imageUrl: "", // Place another photo URL or file
-        caption: "Random good memory",
-        placeholder: "Photo slot",
-        note: "Put a picture or doodle here",
-        tapeColor: "bg-[#FFEE8C]/90",
         rotation: "3deg",
       },
       {
+        type: "photo",
+        imageUrl: "./photos/kucingkucing.jpg",
+        illustration: "cat",
+        caption: "Nyan~",
+        note: "Kucing Kelabu's actual kucing.",
+        tapeColor: "bg-pastelMint/90",
+        rotation: "-3deg",
+      },
+      {
+        type: "receipt",
+        rotation: "-1.5deg",
+      },
+      {
+        type: "paper-plane",
+        title: "Paper Plane",
+        subtitle: "Fly high in year 22!",
+        rotation: "3.5deg",
+      },
+      {
+        type: "photo",
+        imageUrl: "./photos/monsedih.jpg",
+        illustration: "camera",
+        caption: "Mon sedih",
+        note: "Bro these guys have such random screenshots of you",
+        tapeColor: "bg-coralBlush/90",
+        rotation: "-2.5deg",
+      },
+      {
+        type: "stamp-cluster",
+        icon: "flower",
+        label: "Special Delivery",
+        rotation: "4deg",
+      },
+      {
         type: "music-badge",
-        track: "Now Playing: Electric Jam",
-        artist: "Bedroom guitar tapes",
-        rotation: "-3.5deg",
+        track: "Oh! Asmara",
+        artist: "Kobo Kanaeru",
+        rotation: "-3deg",
       },
       {
         type: "ticket",
         category: "WISH VOUCHER",
         number: "№ WISH-2026",
-        title: "One Big Birthday Wish",
+        title: "One Big Birthday Wish!",
         subtitle: "No expiration date. Take your time.",
         rotation: "2.5deg",
-      }
+      },
+      {
+        type: "photo",
+        imageUrl: "./photos/borgir.png",
+        illustration: "coffee",
+        caption: "Borgir",
+        note: "Borgir.",
+        tapeColor: "bg-paleLilac/90",
+        rotation: "-2deg",
+      },
+      {
+        type: "photo",
+        imageUrl: "./photos/otwlarping.jpg",
+        illustration: "plushie",
+        caption: "W Larps",
+        note: "To the larpiest larper ever",
+        tapeColor: "bg-pastelMint/90",
+        rotation: "3deg",
+      },
+      {
+        type: "wish-coin",
+        year: "2026",
+        title: "Wishing Coin",
+        caption: "Toss into the fountain for luck",
+        rotation: "2.5deg",
+      },
     ],
     right: [
       {
         type: "stamp-cluster",
-        icon: "flower",
+        icon: "sparkles",
         label: "For Monmonkyu",
         rotation: "3deg",
       },
       {
         type: "photo",
-        imageUrl: "", // Place a photo URL or file
-        caption: "Favorite candid",
-        placeholder: "Photo slot",
-        note: "Drop your photo here",
-        tapeColor: "bg-[#C8F7DC]/90",
-        rotation: "2deg",
-      },
-      {
-        type: "sticker",
-        icon: "sparkles",
-        bgColor: "bg-buttercup",
-        title: "sep 18",
-        subtitle: "celebrating you",
-        rotation: "4deg",
-      },
-      {
-        type: "note",
-        text: "Good tunes, warm drinks, and not having to check your email.",
-        author: "Saturday vibes",
-        rotation: "-3deg",
+        imageUrl: "./photos/moncraft.png",
+        illustration: "camera",
+        caption: "Your shitty internet",
+        note: "You kept freezing and you look like herobrine.",
+        tapeColor: "bg-pastelMint/90",
+        rotation: "-2.5deg",
       },
       {
         type: "ticket",
@@ -437,23 +655,111 @@ Zai`,
         number: "№ 2026-BDAY",
         title: "Golden Year Ticket",
         subtitle: "Good for all 365 days ahead.",
-        rotation: "1.5deg",
+        rotation: "2deg",
+      },
+      {
+        type: "pressed-flower",
+        botanical: "clover",
+        title: "Four-Leaf Clover",
+        subtitle: "Good luck charm for 22",
+        rotation: "-3.5deg",
       },
       {
         type: "photo",
-        imageUrl: "", // Place another photo URL or file
-        caption: "Quiet afternoon",
-        placeholder: "Photo slot",
-        note: "Add a snapshot here",
-        tapeColor: "bg-[#E5DBFF]/90",
-        rotation: "-2.5deg",
+        imageUrl: "./photos/kobocomment.jpg",
+        illustration: "mic",
+        caption: "Kobo Comment",
+        note: "One of the few comments Kobo has left on your tiktok.",
+        tapeColor: "bg-coralBlush/90",
+        rotation: "2.5deg",
+      },
+      {
+        type: "sticker",
+        icon: "sparkles",
+        bgColor: "bg-buttercup",
+        title: "sep 18",
+        subtitle: "celebrating you",
+        rotation: "-3deg",
       },
       {
         type: "note",
-        text: "Genuinely glad you're around. Hope this year treats you gently.",
-        author: "Always cheering for you",
+        text: "Good good, good bevs, and a cool website to look back to in the future.",
+        author: "Saturday vibes",
+        rotation: "2deg",
+      },
+      {
+        type: "photo",
+        imageUrl: "./photos/discordvcguitarists.jpg",
+        illustration: "plushie",
+        caption: "Playing guitar in VC!",
+        note: "Kucing Kelabu might be the next Yngwie Malmsteen",
+        tapeColor: "bg-skyMist/90",
+        rotation: "-2deg",
+      },
+      {
+        type: "music-badge",
+        track: "Terukir Di Bintang",
+        artist: "Yuna (Acoustic)",
+        rotation: "2.5deg",
+      },
+      {
+        type: "ticket",
+        category: "NIGHT PASS",
+        number: "№ 0100-AM",
+        title: "Voice Note Pass",
+        subtitle: "Everyone here owes you a voice note of whatever you want.",
+        rotation: "-1.5deg",
+      },
+      {
+        type: "photo",
+        imageUrl: "./photos/beanmon.png",
+        illustration: "car",
+        caption: "Mon but Mr. Bean",
+        note: "Seriously, what made you do this.",
+        tapeColor: "bg-buttercup/90",
+        rotation: "-2.5deg",
+      },
+      {
+        type: "photo",
+        imageUrl: "./photos/threemidfingers.png",
+        illustration: "camera",
+        caption: "Your 3 middle fingers",
+        note: "Do this towards random people in the middle of Bukit Bintang.",
+        tapeColor: "bg-coralBlush/90",
+        rotation: "-3deg",
+      },
+      {
+        type: "lyric-snippet",
+        title: "Liner Notes",
+        lyrics: "Terukir di bintang, tak mungkin hilang, cintaku padamu ✨",
+        author: "Yuna",
         rotation: "3deg",
-      }
+      },
+      {
+        type: "photo",
+        imageUrl: "./photos/ahmad.png",
+        illustration: "gift",
+        caption: "Ahmad",
+        note: "Ahmad",
+        tapeColor: "bg-skyMist/90",
+        rotation: "2.5deg",
+      },
+      {
+        type: "music-badge",
+        track: "Happy Birthday! (Kalimba)",
+        artist: "Alin",
+        rotation: "-2.5deg",
+      },
+      {
+        type: "ticket",
+        category: "SWEET PASS",
+        number: "№ 2026-CAKE",
+        title: "Cake Tasting Pass",
+        subtitle: "Unlimited second helpings allowed. Recommended actually",
+        rotation: "2.5deg",
+      },
     ]
   }
 };
+
+

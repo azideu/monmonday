@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Sparkles, Image as ImageIcon, Volume2, Check, PenTool, FileText, Lock } from 'lucide-react';
+import { Mail, Sparkles, Image as ImageIcon, Volume2, Check, Lock } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import IconRenderer from './IconRenderer.jsx';
 
@@ -246,29 +246,13 @@ export default function LetterEnvelope({ letter, onOpenLetter, index, defaultRec
                   <span className="hidden xs:inline">photo</span>
                 </span>
               )}
-              {isLocked ? (
+              {isLocked && (
                 <span 
                   className="inline-flex items-center gap-1 text-[10px] font-mono font-semibold text-slateAsh bg-white/95 px-2 py-0.5 rounded-full border border-slateAsh/20 shadow-2xs"
                   title="Secret password-protected letter"
                 >
                   <Lock className="w-2.5 h-2.5 text-[#E56B6F]" strokeWidth={2.2} />
                   <span>Secret</span>
-                </span>
-              ) : isHandwritten ? (
-                <span 
-                  className="inline-flex items-center gap-1 text-[10px] font-mono font-semibold text-slateAsh bg-white/95 px-2 py-0.5 rounded-full border border-slateAsh/20 shadow-2xs"
-                  title="Handwritten letter"
-                >
-                  <PenTool className="w-2.5 h-2.5 text-[#E56B6F]" strokeWidth={2.2} />
-                  <span>Handwritten</span>
-                </span>
-              ) : (
-                <span 
-                  className="inline-flex items-center gap-1 text-[10px] font-mono text-slateAsh/70 bg-white/80 px-1.5 py-0.5 rounded-full border border-slateAsh/15"
-                  title="Typed letter"
-                >
-                  <FileText className="w-2.5 h-2.5 text-slateAsh/60" strokeWidth={1.8} />
-                  <span>Typed</span>
                 </span>
               )}
             </div>

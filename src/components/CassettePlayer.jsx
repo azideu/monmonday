@@ -552,7 +552,7 @@ export default function CassettePlayer({
               onClick={handlePrev}
               title="Previous Track"
               aria-label="Previous track"
-              className="p-2 min-h-[40px] min-w-[40px] rounded-lg bg-white/90 text-slateAsh hover:bg-white hover:text-slateAsh active:scale-95 transition-all shadow-paper-sm border border-slateAsh/10 flex items-center justify-center cursor-pointer"
+              className="p-2 min-h-[44px] min-w-[44px] rounded-lg bg-white/90 text-slateAsh hover:bg-white hover:text-slateAsh active:scale-95 transition-all shadow-paper-sm border border-slateAsh/10 flex items-center justify-center cursor-pointer"
             >
               <SkipBack className="w-4 h-4" />
             </button>
@@ -561,7 +561,7 @@ export default function CassettePlayer({
               onClick={handlePlayToggle}
               title={isPlaying ? "Pause" : "Play"}
               aria-label={isPlaying ? "Pause track" : "Play track"}
-              className={`px-4 py-2 min-h-[40px] rounded-lg font-bold flex items-center gap-1.5 transition-all shadow-paper-sm active:scale-95 border border-slateAsh/15 cursor-pointer ${isPlaying
+              className={`px-4 py-2 min-h-[44px] rounded-lg font-bold flex items-center gap-1.5 transition-all shadow-paper-sm active:scale-95 border border-slateAsh/15 cursor-pointer ${isPlaying
                 ? 'bg-coralBlush text-slateAsh hover:brightness-105'
                 : 'bg-pastelMint text-slateAsh hover:brightness-105'
                 }`}
@@ -574,21 +574,21 @@ export default function CassettePlayer({
               onClick={handleNext}
               title="Next Track"
               aria-label="Next track"
-              className="p-2 min-h-[40px] min-w-[40px] rounded-lg bg-white/90 text-slateAsh hover:bg-white hover:text-slateAsh active:scale-95 transition-all shadow-paper-sm border border-slateAsh/10 flex items-center justify-center cursor-pointer"
+              className="p-2 min-h-[44px] min-w-[44px] rounded-lg bg-white/90 text-slateAsh hover:bg-white hover:text-slateAsh active:scale-95 transition-all shadow-paper-sm border border-slateAsh/10 flex items-center justify-center cursor-pointer"
             >
               <SkipForward className="w-4 h-4" />
             </button>
           </div>
 
           {/* Volume Control: full-width stacked on narrow mobile screens (<380px), inline on tablet/desktop */}
-          <div className="w-full sm:w-auto flex items-center justify-end sm:justify-center gap-2.5 bg-white/85 px-3 py-1.5 rounded-lg border border-slateAsh/10 shadow-paper-sm min-h-[40px]">
+          <div className="w-full sm:w-auto flex items-center justify-end sm:justify-center gap-2.5 bg-white/85 px-3 py-1.5 rounded-lg border border-slateAsh/10 shadow-paper-sm min-h-[44px]">
             <button
               onClick={() => {
                 const nextMute = !isMuted;
                 setIsMuted(nextMute);
                 onVolumeChange(nextMute ? 0 : 0.7);
               }}
-              className="text-slateAsh hover:text-slateAsh/80 transition-colors p-1"
+              className="text-slateAsh hover:text-slateAsh/80 transition-colors p-2 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer"
               title={isMuted ? "Unmute" : "Mute"}
               aria-label={isMuted ? "Unmute volume" : "Mute volume"}
             >
