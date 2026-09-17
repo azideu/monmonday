@@ -514,7 +514,7 @@ export default function CassettePlayer({
                 />
               </div>
 
-              {/* Draggable Playhead Thumb (Analog Tape Head Peg) */}
+              {/* Draggable Playhead Thumb (Analog Tape Head Peg) with 44x44px touch hitbox */}
               <div
                 className={`absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-white border-2 border-slateAsh shadow-paper-sm flex items-center justify-center transition-transform duration-100 ${
                   isDragging
@@ -523,6 +523,8 @@ export default function CassettePlayer({
                 }`}
                 style={{ left: `${progressPercent}%` }}
               >
+                {/* 44x44px invisible touch hitbox for mobile fingertips */}
+                <span className="absolute -inset-3.5 w-11 h-11 -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 pointer-events-auto" aria-hidden="true" />
                 {/* Center peg dot */}
                 <div className="w-1.5 h-1.5 rounded-full bg-slateAsh" />
               </div>
@@ -542,14 +544,15 @@ export default function CassettePlayer({
           </div>
         </div>
 
-        {/* Cassette Player Buttons */}
-        <div className="mt-3.5 flex items-center justify-between gap-2 pt-1">
+        {/* Cassette Player Buttons & Controls */}
+        <div className="mt-3.5 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2.5 pt-1">
           {/* Track changer buttons */}
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <button
               onClick={handlePrev}
               title="Previous Track"
-              className="p-2 rounded-lg bg-white/90 text-slateAsh hover:bg-white hover:text-slateAsh active:scale-95 transition-all shadow-paper-sm border border-slateAsh/10 cursor-pointer"
+              aria-label="Previous track"
+              className="p-2 min-h-[40px] min-w-[40px] rounded-lg bg-white/90 text-slateAsh hover:bg-white hover:text-slateAsh active:scale-95 transition-all shadow-paper-sm border border-slateAsh/10 flex items-center justify-center cursor-pointer"
             >
               <SkipBack className="w-4 h-4" />
             </button>
@@ -557,36 +560,39 @@ export default function CassettePlayer({
             <button
               onClick={handlePlayToggle}
               title={isPlaying ? "Pause" : "Play"}
-              className={`px-4 py-2 rounded-lg font-bold flex items-center gap-1.5 transition-all shadow-paper-sm active:scale-95 border border-slateAsh/15 cursor-pointer ${isPlaying
+              aria-label={isPlaying ? "Pause track" : "Play track"}
+              className={`px-4 py-2 min-h-[40px] rounded-lg font-bold flex items-center gap-1.5 transition-all shadow-paper-sm active:scale-95 border border-slateAsh/15 cursor-pointer ${isPlaying
                 ? 'bg-coralBlush text-slateAsh hover:brightness-105'
                 : 'bg-pastelMint text-slateAsh hover:brightness-105'
                 }`}
             >
               {isPlaying ? <Pause className="w-4 h-4 fill-slateAsh" /> : <Play className="w-4 h-4 fill-slateAsh" />}
-              <span className="text-xs">{isPlaying ? "Pause" : "Play"}</span>
+              <span className="text-xs font-sans">{isPlaying ? "Pause" : "Play"}</span>
             </button>
 
             <button
               onClick={handleNext}
               title="Next Track"
-              className="p-2 rounded-lg bg-white/90 text-slateAsh hover:bg-white hover:text-slateAsh active:scale-95 transition-all shadow-paper-sm border border-slateAsh/10 cursor-pointer"
+              aria-label="Next track"
+              className="p-2 min-h-[40px] min-w-[40px] rounded-lg bg-white/90 text-slateAsh hover:bg-white hover:text-slateAsh active:scale-95 transition-all shadow-paper-sm border border-slateAsh/10 flex items-center justify-center cursor-pointer"
             >
               <SkipForward className="w-4 h-4" />
             </button>
           </div>
 
-          {/* Volume Control */}
-          <div className="flex items-center gap-2 bg-white/80 px-2.5 py-1.5 rounded-lg border border-slateAsh/10">
+          {/* Volume Control: full-width stacked on narrow mobile screens (<380px), inline on tablet/desktop */}
+          <div className="w-full sm:w-auto flex items-center justify-end sm:justify-center gap-2.5 bg-white/85 px-3 py-1.5 rounded-lg border border-slateAsh/10 shadow-paper-sm min-h-[40px]">
             <button
               onClick={() => {
                 const nextMute = !isMuted;
                 setIsMuted(nextMute);
                 onVolumeChange(nextMute ? 0 : 0.7);
               }}
-              className="text-slateAsh hover:text-slateAsh/80 transition-colors"
+              className="text-slateAsh hover:text-slateAsh/80 transition-colors p-1"
               title={isMuted ? "Unmute" : "Mute"}
+              aria-label={isMuted ? "Unmute volume" : "Mute volume"}
             >
-              {isMuted || volume === 0 ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
+              {isMuted || volume === 0 ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
             </button>
             <input
               type="range"
@@ -594,12 +600,13 @@ export default function CassettePlayer({
               max="1"
               step="0.05"
               value={isMuted ? 0 : volume}
+              aria-label="Volume level"
               onChange={(e) => {
                 const val = parseFloat(e.target.value);
                 if (isMuted && val > 0) setIsMuted(false);
                 onVolumeChange(val);
               }}
-              className="w-16 h-1.5 bg-slateAsh/20 rounded-lg appearance-none cursor-pointer accent-slateAsh"
+              className="w-24 sm:w-20 h-2 bg-slateAsh/20 rounded-lg appearance-none cursor-pointer accent-slateAsh"
             />
           </div>
         </div>

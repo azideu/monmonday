@@ -131,7 +131,13 @@ export default function SecretLetterModal({ letter, isOpen, onClose, onUnlock })
               style={{ backgroundColor: letter.sealColor || '#FFD6D6' }}
             >
               {isUnlocked ? (
-                <Unlock className="w-8 h-8 text-slateAsh animate-bounce" strokeWidth={2.2} />
+                <motion.div
+                  initial={{ scale: 0.75, rotate: -12 }}
+                  animate={{ scale: [0.75, 1.15, 1], rotate: [-12, 4, 0] }}
+                  transition={{ ease: [0.16, 1, 0.3, 1], duration: 0.45 }}
+                >
+                  <Unlock className="w-8 h-8 text-slateAsh" strokeWidth={2.2} />
+                </motion.div>
               ) : (
                 <Lock className="w-7 h-7 text-slateAsh" strokeWidth={2.2} />
               )}

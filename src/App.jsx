@@ -543,17 +543,8 @@ export default function App() {
   return (
     <div className="min-h-screen bg-scrapbook-pattern relative text-slateAsh selection:bg-buttercup selection:text-slateAsh">
       
-      {/* Interactive WebGL Fluid Cursor (Soft #D4F1FF Sky Mist) */}
-      <FluidCursor
-        enabled={isFluidEnabled}
-        densityDissipation={4.8}
-        velocityDissipation={2.5}
-        pressure={0.1}
-        curl={2}
-        splatRadius={0.14}
-        splatForce={3500}
-        transparent={true}
-      />
+      {/* Analog Stationery Stardust Cursor Trail */}
+      <FluidCursor enabled={isFluidEnabled} />
 
       {/* Top Floating Navbar */}
       <Navbar

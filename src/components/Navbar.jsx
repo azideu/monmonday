@@ -75,19 +75,19 @@ export default function Navbar({
 
         {/* RIGHT: Controls (Fluid cursor & Music playback) */}
         <div className="flex items-center justify-end gap-1.5 sm:gap-2 shrink-0 z-10">
-          {/* Fluid Cursor Effect Toggle */}
+          {/* Magic Stardust Cursor Effect Toggle */}
           <button
             onClick={onToggleFluid}
-            title={isFluidEnabled ? "Disable Sky Mist fluid cursor" : "Enable Sky Mist fluid cursor"}
-            aria-label="Toggle Sky Mist fluid cursor effect"
+            title={isFluidEnabled ? "Disable magic stardust trail" : "Enable magic stardust trail"}
+            aria-label="Toggle magic stardust cursor effect"
             className={`flex items-center gap-1.5 text-xs font-semibold px-2 sm:px-3 py-2 sm:py-1.5 min-h-[38px] sm:min-h-[auto] rounded-xl transition-all shadow-paper-sm cursor-pointer ${
               isFluidEnabled
                 ? 'bg-skyMist text-slateAsh ring-1 ring-skyMist/80 border border-skyMist/90'
                 : 'bg-cloudWhite border border-slateAsh/15 text-slateAsh/60 hover:bg-skyMist/30'
             }`}
           >
-            <Waves className={`w-3.5 h-3.5 ${isFluidEnabled ? 'text-slateAsh' : 'text-slateAsh/60'}`} />
-            <span className="hidden md:inline">Fluid</span>
+            <Sparkles className={`w-3.5 h-3.5 ${isFluidEnabled ? 'text-slateAsh' : 'text-slateAsh/60'}`} />
+            <span className="hidden md:inline">Magic Dust</span>
           </button>
 
           {/* Music Quick Control with Fixed Width to prevent any layout shift */}
