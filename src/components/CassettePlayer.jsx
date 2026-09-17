@@ -12,26 +12,136 @@ export default function CassettePlayer({
   onNextTrack,
   onPrevTrack,
   volume = 0.7,
-  onVolumeChange
+  onVolumeChange,
+  currentTime = 0,
+  duration = 0,
+  onSeek,
 }) {
   const currentTrack = playlist[currentTrackIndex] || playlist[0];
   const [isMuted, setIsMuted] = useState(false);
-  const [localTime, setLocalTime] = useState(0);
   const [vuLeft, setVuLeft] = useState(15);
   const [vuRight, setVuRight] = useState(20);
   const [downloadStatus, setDownloadStatus] = useState('idle'); // 'idle' | 'loading' | 'success' | 'error'
   const [downloadProgress, setDownloadProgress] = useState('');
 
-  // Counter simulation & Audio-reactive VU meter animation
+  // Seeking & Playhead Drag State
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragTime, setDragTime] = useState(0);
+  const [isHovering, setIsHovering] = useState(false);
+  const [hoverTime, setHoverTime] = useState(0);
+  const [hoverRatio, setHoverRatio] = useState(0);
+  const trackRef = useRef(null);
+
+  // Compute effective track duration (HTML5 Audio duration with fallback to metadata duration string)
+  const getFallbackDuration = () => {
+    if (duration > 0 && !isNaN(duration) && isFinite(duration)) return duration;
+    if (currentTrack?.duration) {
+      const parts = currentTrack.duration.split(':');
+      if (parts.length === 2) {
+        const secs = parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+        if (!isNaN(secs) && secs > 0) return secs;
+      }
+    }
+    return 0;
+  };
+
+  const effectiveDuration = getFallbackDuration();
+  const displayTime = isDragging ? dragTime : currentTime;
+  const progressPercent = effectiveDuration > 0
+    ? Math.min(100, Math.max(0, (displayTime / effectiveDuration) * 100))
+    : 0;
+
+  // Format seconds to M:SS
+  const formatTime = (secs) => {
+    if (!secs || isNaN(secs) || secs < 0) return '0:00';
+    const m = Math.floor(secs / 60);
+    const s = Math.floor(secs % 60);
+    return `${m}:${String(s).padStart(2, '0')}`;
+  };
+
+  // Mechanical 3-digit counter synced to tape playback position
+  const formattedCounter = String(Math.floor(displayTime) % 1000).padStart(3, '0');
+
+  // Seeking interaction handlers
+  const getTimeFromEvent = (e) => {
+    if (!trackRef.current || effectiveDuration <= 0) return { time: 0, ratio: 0 };
+    const rect = trackRef.current.getBoundingClientRect();
+    const clientX = e.clientX ?? (e.touches && e.touches[0]?.clientX) ?? 0;
+    const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+    return { time: ratio * effectiveDuration, ratio };
+  };
+
+  const handlePointerDown = (e) => {
+    if (effectiveDuration <= 0) return;
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch {}
+    setIsDragging(true);
+    const { time } = getTimeFromEvent(e);
+    setDragTime(time);
+  };
+
+  const handlePointerMove = (e) => {
+    if (effectiveDuration <= 0) return;
+    const { time, ratio } = getTimeFromEvent(e);
+    if (isDragging) {
+      setDragTime(time);
+    } else {
+      setHoverTime(time);
+      setHoverRatio(ratio);
+    }
+  };
+
+  const handlePointerUp = (e) => {
+    if (!isDragging) return;
+    try {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    } catch {}
+    const { time } = getTimeFromEvent(e);
+    setIsDragging(false);
+    if (onSeek) {
+      onSeek(time);
+    }
+  };
+
+  const handlePointerEnter = (e) => {
+    if (effectiveDuration <= 0) return;
+    setIsHovering(true);
+    const { time, ratio } = getTimeFromEvent(e);
+    setHoverTime(time);
+    setHoverRatio(ratio);
+  };
+
+  const handlePointerLeave = () => {
+    setIsHovering(false);
+  };
+
+  const handleKeyDown = (e) => {
+    if (effectiveDuration <= 0 || !onSeek) return;
+    const step = 5;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      onSeek(Math.min(effectiveDuration, currentTime + step));
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      onSeek(Math.max(0, currentTime - step));
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      onSeek(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      onSeek(effectiveDuration);
+    }
+  };
+
+  const tooltipPercent = isDragging ? progressPercent : (hoverRatio * 100);
+  const tooltipTime = isDragging ? dragTime : hoverTime;
+
+  // Audio-reactive VU meter animation
   useEffect(() => {
-    let interval;
     let vuInterval;
 
     if (isPlaying) {
-      interval = setInterval(() => {
-        setLocalTime((prev) => (prev + 1) % 999);
-      }, 1000);
-
       // Analog VU needle bounce physics
       vuInterval = setInterval(() => {
         const base = volume * 55;
@@ -46,15 +156,11 @@ export default function CassettePlayer({
     }
 
     return () => {
-      clearInterval(interval);
       clearInterval(vuInterval);
     };
   }, [isPlaying, volume]);
 
-  const formattedCounter = String(localTime).padStart(3, '0');
-
   const handlePlayToggle = () => {
-    playDeckClick();
     onTogglePlay();
   };
 
@@ -349,6 +455,89 @@ export default function CassettePlayer({
                   <div className="w-2.5 h-2.5 rounded-full bg-[#2A3442]" />
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Analog Tape Ruler Progress Bar & Draggable Playhead */}
+          <div className="mt-3 pt-2.5 border-t border-dashed border-slateAsh/20">
+            {/* Time labels & tape scale indicators */}
+            <div className="flex items-center justify-between text-xs font-mono text-slateAsh/70 mb-1 select-none">
+              <span className="font-semibold text-slateAsh tracking-tight tabular-nums">
+                {formatTime(displayTime)}
+              </span>
+              <div className="flex items-center gap-1.5 opacity-40 text-[10px] font-mono tracking-widest uppercase">
+                <span>0</span>
+                <span>•</span>
+                <span>50</span>
+                <span>•</span>
+                <span>100</span>
+              </div>
+              <span className="text-slateAsh/60 tracking-tight tabular-nums">
+                {formatTime(effectiveDuration)}
+              </span>
+            </div>
+
+            {/* Interactive Progress Track with Touch/Mouse Slider */}
+            <div
+              ref={trackRef}
+              onPointerDown={handlePointerDown}
+              onPointerMove={handlePointerMove}
+              onPointerUp={handlePointerUp}
+              onPointerCancel={handlePointerUp}
+              onPointerEnter={handlePointerEnter}
+              onPointerLeave={handlePointerLeave}
+              className="group/track relative h-6 flex items-center cursor-pointer touch-none select-none"
+              role="slider"
+              tabIndex={0}
+              aria-label="Seek track position"
+              aria-valuemin={0}
+              aria-valuemax={Math.round(effectiveDuration)}
+              aria-valuenow={Math.round(displayTime)}
+              aria-valuetext={`${formatTime(displayTime)} of ${formatTime(effectiveDuration)}`}
+              onKeyDown={handleKeyDown}
+            >
+              {/* Recessed Tape Groove Track */}
+              <div className="relative w-full h-2 bg-cloudWhite rounded-full border border-slateAsh/25 shadow-inner overflow-hidden">
+                {/* Vintage tape ruler graduated tick marks */}
+                <div className="absolute inset-0 flex justify-between px-2 items-center pointer-events-none opacity-25">
+                  <span className="w-0.5 h-1 bg-slateAsh" />
+                  <span className="w-0.5 h-1 bg-slateAsh" />
+                  <span className="w-0.5 h-1 bg-slateAsh" />
+                  <span className="w-0.5 h-1 bg-slateAsh" />
+                  <span className="w-0.5 h-1 bg-slateAsh" />
+                </div>
+
+                {/* Progress Fill: Smooth gradient matching cassette VU meter */}
+                <div
+                  className="h-full bg-linear-to-r from-pastelMint via-buttercup to-coralBlush transition-[width] duration-75 ease-out rounded-full"
+                  style={{ width: `${progressPercent}%` }}
+                />
+              </div>
+
+              {/* Draggable Playhead Thumb (Analog Tape Head Peg) */}
+              <div
+                className={`absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-white border-2 border-slateAsh shadow-paper-sm flex items-center justify-center transition-transform duration-100 ${
+                  isDragging
+                    ? 'scale-125 shadow-paper ring-2 ring-skyMist'
+                    : 'group-hover/track:scale-110 group-hover/track:shadow-paper'
+                }`}
+                style={{ left: `${progressPercent}%` }}
+              >
+                {/* Center peg dot */}
+                <div className="w-1.5 h-1.5 rounded-full bg-slateAsh" />
+              </div>
+
+              {/* Floating Timestamp Tooltip on Hover or Drag */}
+              {(isHovering || isDragging) && effectiveDuration > 0 && (
+                <div
+                  className="absolute -top-6 -translate-x-1/2 pointer-events-none z-30 px-1.5 py-0.5 rounded bg-slateAsh text-white text-[10px] font-mono font-semibold shadow-md whitespace-nowrap"
+                  style={{ left: `${tooltipPercent}%` }}
+                >
+                  {formatTime(tooltipTime)}
+                  {/* Tooltip bottom pointer arrow */}
+                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1 border-t-2 border-t-slateAsh border-x-2 border-x-transparent border-b-0" />
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -16,6 +16,9 @@ export default function ScrapbookBoard({
   onPrevTrack,
   volume,
   onVolumeChange,
+  currentTime = 0,
+  duration = 0,
+  onSeek,
   polaroids,
   letters,
   onOpenLetter,
@@ -136,6 +139,9 @@ export default function ScrapbookBoard({
             onPrevTrack={onPrevTrack}
             volume={volume}
             onVolumeChange={onVolumeChange}
+            currentTime={currentTime}
+            duration={duration}
+            onSeek={onSeek}
           />
         </section>
 

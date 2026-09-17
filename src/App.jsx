@@ -144,6 +144,8 @@ export default function App() {
   const letterFadeIntervalRef = useRef(null);
   const isTransitioningAudioRef = useRef(false);
   const [isLetterAudioPlaying, setIsLetterAudioPlaying] = useState(false);
+  const [audioCurrentTime, setAudioCurrentTime] = useState(0);
+  const [audioDuration, setAudioDuration] = useState(0);
   const synthIntervalRef = useRef(null);
   const audioCtxRef = useRef(null);
 
@@ -215,6 +217,20 @@ export default function App() {
       handleNextTrack();
     };
 
+    // Track real playback position
+    audio.ontimeupdate = () => {
+      setAudioCurrentTime(audio.currentTime || 0);
+    };
+
+    const updateAudioDuration = () => {
+      if (audio.duration && !isNaN(audio.duration) && isFinite(audio.duration)) {
+        setAudioDuration(audio.duration);
+      }
+    };
+
+    audio.onloadedmetadata = updateAudioDuration;
+    audio.ondurationchange = updateAudioDuration;
+
     // Fallback on error -> start peaceful synthesized acoustic chimes
     audio.onerror = () => {
       console.warn("External audio source blocked or unavailable, switching to synth chimes fallback.");
@@ -239,6 +255,16 @@ export default function App() {
   // Update track source when index changes
   useEffect(() => {
     if (audioRef.current) {
+      setAudioCurrentTime(0);
+      if (currentTrack?.duration) {
+        const parts = currentTrack.duration.split(':');
+        if (parts.length === 2) {
+          const parsed = parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+          if (!isNaN(parsed) && parsed > 0) {
+            setAudioDuration(parsed);
+          }
+        }
+      }
       audioRef.current.src = currentTrack.audioUrl;
       if (isPlaying && !letterAudioRef.current) {
         audioRef.current.volume = getNormalizedVol(volume);
@@ -482,6 +508,15 @@ export default function App() {
     setCurrentTrackIndex((prev) => (prev - 1 + playlist.length) % playlist.length);
   };
 
+  const handleSeek = (targetSeconds) => {
+    if (audioRef.current) {
+      const maxDur = audioDuration || audioRef.current.duration || 0;
+      const clamped = Math.max(0, Math.min(maxDur > 0 ? maxDur : targetSeconds, targetSeconds));
+      audioRef.current.currentTime = clamped;
+      setAudioCurrentTime(clamped);
+    }
+  };
+
   // Welcome modal handlers
   const handleStartWithMusic = () => {
     try {
@@ -541,6 +576,9 @@ export default function App() {
         onPrevTrack={handlePrevTrack}
         volume={volume}
         onVolumeChange={handleVolumeChange}
+        currentTime={audioCurrentTime}
+        duration={audioDuration}
+        onSeek={handleSeek}
         polaroids={polaroids}
         letters={letters}
         onOpenLetter={handleOpenLetter}
