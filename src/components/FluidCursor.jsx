@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 /**
  * Analog Stationery Stardust Cursor Trail
@@ -31,14 +31,32 @@ function hexToRgba(hex, alpha) {
   return `rgba(${r}, ${g}, ${b}, ${Math.max(0, Math.min(1, alpha)).toFixed(3)})`;
 }
 
+function checkIsMobile() {
+  if (typeof window === 'undefined') return false;
+  const isSmallScreen = window.innerWidth < 640 || (window.matchMedia && window.matchMedia('(max-width: 639px)').matches);
+  const isTouchOnly = window.matchMedia && window.matchMedia('(pointer: coarse)').matches && !window.matchMedia('(any-pointer: fine)').matches;
+  return Boolean(isSmallScreen || isTouchOnly);
+}
+
 export default function FluidCursor({
   enabled = true,
   className = '',
 }) {
   const canvasRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(checkIsMobile);
 
   useEffect(() => {
-    if (!enabled) return;
+    const handleResize = () => {
+      setIsMobile(checkIsMobile());
+    };
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const isActive = enabled && !isMobile;
+
+  useEffect(() => {
+    if (!isActive) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -97,6 +115,7 @@ export default function FluidCursor({
     };
 
     const handlePointerMove = (e) => {
+      if (e.pointerType === 'touch') return;
       const x = e.clientX;
       const y = e.clientY;
 
@@ -268,9 +287,9 @@ export default function FluidCursor({
       }
       particles = [];
     };
-  }, [enabled]);
+  }, [isActive]);
 
-  if (!enabled) return null;
+  if (!isActive) return null;
 
   return (
     <canvas
