@@ -217,7 +217,7 @@ uhh halibutter. ssselangor. l-l-lapan belas`,
       id: "letter-kai",
       author: "Kai",
       relationship: "No. 1 supporter",
-      recipientNickname: "Monmon",
+      recipientNickname: "Monmon my fav person",
       envelopeColor: "bg-[#FFEE8C]", // Buttercup Glow
       sealColor: "#FFD6D6", // Soft Coral Blush
       sealIcon: "tent",

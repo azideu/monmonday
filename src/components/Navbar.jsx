@@ -1,5 +1,5 @@
 import React from 'react';
-import { Music, Image, Mail, Sparkles, Heart, Waves } from 'lucide-react';
+import { Music, Image, Mail, Sparkles, Heart, Cake } from 'lucide-react';
 
 export default function Navbar({
   celebrant,
@@ -71,7 +71,7 @@ export default function Navbar({
             className="p-2 sm:px-3 sm:py-1.5 rounded-lg hover:bg-skyMist/60 active:bg-skyMist/80 transition-colors flex items-center justify-center gap-1 min-h-[44px] min-w-[40px] sm:min-w-0 cursor-pointer"
             aria-label="Scroll to birthday cake and wish"
           >
-            <Sparkles className="w-4 h-4 sm:w-3.5 sm:h-3.5 text-slateAsh/80" />
+            <Cake className="w-4 h-4 sm:w-3.5 sm:h-3.5 text-slateAsh/80" />
             <span className="hidden md:inline">Wish</span>
           </button>
         </div>
@@ -83,7 +83,7 @@ export default function Navbar({
             onClick={onToggleFluid}
             title={isFluidEnabled ? "Disable magic stardust trail" : "Enable magic stardust trail"}
             aria-label="Toggle magic stardust cursor effect"
-            className={`flex items-center justify-center gap-1.5 text-xs font-semibold p-2 sm:px-3 sm:py-1.5 min-h-[44px] min-w-[40px] sm:min-w-0 rounded-xl transition-all shadow-paper-sm cursor-pointer ${
+            className={`hidden sm:flex items-center justify-center gap-1.5 text-xs font-semibold p-2 sm:px-3 sm:py-1.5 min-h-[44px] min-w-[40px] sm:min-w-0 rounded-xl transition-all shadow-paper-sm cursor-pointer ${
               isFluidEnabled
                 ? 'bg-skyMist text-slateAsh ring-1 ring-skyMist/80 border border-skyMist/90'
                 : 'bg-cloudWhite border border-slateAsh/15 text-slateAsh/60 hover:bg-skyMist/30'
