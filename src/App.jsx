@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import Navbar from './components/Navbar.jsx';
 import ScrapbookBoard from './components/ScrapbookBoard.jsx';
-import LetterModal from './components/LetterModal.jsx';
-import SecretLetterModal from './components/SecretLetterModal.jsx';
-import AudioWelcomeModal from './components/AudioWelcomeModal.jsx';
 import FluidCursor from './components/FluidCursor.jsx';
 import { birthdayConfig } from './data/content.js';
+
+const LetterModal = lazy(() => import('./components/LetterModal.jsx'));
+const SecretLetterModal = lazy(() => import('./components/SecretLetterModal.jsx'));
+const AudioWelcomeModal = lazy(() => import('./components/AudioWelcomeModal.jsx'));
 
 export default function App() {
   const { celebrant, playlist, letters, polaroids, celebration, sideMargins } = birthdayConfig;
@@ -581,56 +582,59 @@ export default function App() {
         unlockedLetterIds={unlockedLetterIds}
       />
 
-      {/* Secret Letter Password Unlock Modal */}
-      <SecretLetterModal
-        letter={secretUnlockLetter}
-        isOpen={Boolean(secretUnlockLetter)}
-        onClose={() => setSecretUnlockLetter(null)}
-        onUnlock={handleUnlockSuccess}
-      />
+      {/* Modals wrapped in Suspense for optimal code-splitting */}
+      <Suspense fallback={null}>
+        {/* Secret Letter Password Unlock Modal */}
+        <SecretLetterModal
+          letter={secretUnlockLetter}
+          isOpen={Boolean(secretUnlockLetter)}
+          onClose={() => setSecretUnlockLetter(null)}
+          onUnlock={handleUnlockSuccess}
+        />
 
-      {/* Letter Unfold Modal */}
-      <LetterModal
-        letter={activeLetter}
-        isOpen={Boolean(activeLetter)}
-        onClose={() => setActiveLetter(null)}
-        celebrantName={celebrant.name}
-        isLetterAudioPlaying={isLetterAudioPlaying}
-        hasPrev={currentLetterIndex > 0}
-        hasNext={currentLetterIndex >= 0 && currentLetterIndex < letters.length - 1}
-        onPrevLetter={handlePrevLetter}
-        onNextLetter={handleNextLetter}
-        letterIndex={currentLetterIndex}
-        totalLetters={letters.length}
-        onToggleLetterAudio={() => {
-          if (!letterAudioRef.current) return;
-          clearLetterFade();
-          if (isLetterAudioPlaying) {
-            const curVol = letterAudioRef.current.volume;
-            letterFadeIntervalRef.current = fadeAudio(letterAudioRef.current, curVol, 0, 400, () => {
-              if (letterAudioRef.current) {
-                letterAudioRef.current.pause();
-                letterAudioRef.current.volume = getNormalizedVol(volume);
-              }
-              setIsLetterAudioPlaying(false);
-            });
-          } else {
-            letterAudioRef.current.volume = 0;
-            letterAudioRef.current.play().then(() => {
-              setIsLetterAudioPlaying(true);
-              letterFadeIntervalRef.current = fadeAudio(letterAudioRef.current, 0, getNormalizedVol(volume), 500);
-            }).catch(console.warn);
-          }
-        }}
-      />
+        {/* Letter Unfold Modal */}
+        <LetterModal
+          letter={activeLetter}
+          isOpen={Boolean(activeLetter)}
+          onClose={() => setActiveLetter(null)}
+          celebrantName={celebrant.name}
+          isLetterAudioPlaying={isLetterAudioPlaying}
+          hasPrev={currentLetterIndex > 0}
+          hasNext={currentLetterIndex >= 0 && currentLetterIndex < letters.length - 1}
+          onPrevLetter={handlePrevLetter}
+          onNextLetter={handleNextLetter}
+          letterIndex={currentLetterIndex}
+          totalLetters={letters.length}
+          onToggleLetterAudio={() => {
+            if (!letterAudioRef.current) return;
+            clearLetterFade();
+            if (isLetterAudioPlaying) {
+              const curVol = letterAudioRef.current.volume;
+              letterFadeIntervalRef.current = fadeAudio(letterAudioRef.current, curVol, 0, 400, () => {
+                if (letterAudioRef.current) {
+                  letterAudioRef.current.pause();
+                  letterAudioRef.current.volume = getNormalizedVol(volume);
+                }
+                setIsLetterAudioPlaying(false);
+              });
+            } else {
+              letterAudioRef.current.volume = 0;
+              letterAudioRef.current.play().then(() => {
+                setIsLetterAudioPlaying(true);
+                letterFadeIntervalRef.current = fadeAudio(letterAudioRef.current, 0, getNormalizedVol(volume), 500);
+              }).catch(console.warn);
+            }
+          }}
+        />
 
-      {/* Audio Autoplay primer modal */}
-      <AudioWelcomeModal
-        isOpen={showWelcomeModal}
-        celebrantName={celebrant.name}
-        onStartWithMusic={handleStartWithMusic}
-        onExploreSilently={handleExploreSilently}
-      />
+        {/* Audio Autoplay primer modal */}
+        <AudioWelcomeModal
+          isOpen={showWelcomeModal}
+          celebrantName={celebrant.name}
+          onStartWithMusic={handleStartWithMusic}
+          onExploreSilently={handleExploreSilently}
+        />
+      </Suspense>
 
     </div>
   );

@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Play, Pause, SkipForward, SkipBack, Volume2, VolumeX, Disc, Activity, Download, Check, Loader2, Music } from 'lucide-react';
-import JSZip from 'jszip';
 import { playDeckClick } from '../utils/soundEffects.js';
 
 export default function CassettePlayer({
@@ -181,6 +180,7 @@ export default function CassettePlayer({
     setDownloadProgress('Preparing...');
 
     try {
+      const { default: JSZip } = await import('jszip');
       const zip = new JSZip();
 
       // Resolve URL relative to the current page base (works with Vite base './')

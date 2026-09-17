@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import CassettePlayer from './CassettePlayer.jsx';
 import PolaroidCard from './PolaroidCard.jsx';
 import LetterEnvelope from './LetterEnvelope.jsx';
 import BirthdayCake from './BirthdayCake.jsx';
 import ScrapbookDecoMargin from './ScrapbookDecoMargin.jsx';
 import MobileKeepsakesTray from './MobileKeepsakesTray.jsx';
-import MomentLightboxModal from './MomentLightboxModal.jsx';
 import { Heart } from 'lucide-react';
 import { useReveal } from '../hooks/useReveal.js';
+
+const MomentLightboxModal = lazy(() => import('./MomentLightboxModal.jsx'));
 
 /**
  * Split a string into <span> elements for the inkDrop word-by-word entrance.
@@ -246,18 +247,20 @@ export default function ScrapbookBoard({
 
       </main>
 
-      {/* Lightbox Modal for Full Image Expansion */}
-      <MomentLightboxModal
-        moment={expandedMomentIndex !== null ? polaroids[expandedMomentIndex] : null}
-        isOpen={expandedMomentIndex !== null}
-        onClose={handleCloseLightbox}
-        onPrev={handlePrevMoment}
-        onNext={handleNextMoment}
-        currentIndex={expandedMomentIndex ?? 0}
-        totalCount={polaroids.length}
-        hasPrev={expandedMomentIndex !== null && expandedMomentIndex > 0}
-        hasNext={expandedMomentIndex !== null && expandedMomentIndex < polaroids.length - 1}
-      />
+      {/* Lightbox Modal for Full Image Expansion (Code-split) */}
+      <Suspense fallback={null}>
+        <MomentLightboxModal
+          moment={expandedMomentIndex !== null ? polaroids[expandedMomentIndex] : null}
+          isOpen={expandedMomentIndex !== null}
+          onClose={handleCloseLightbox}
+          onPrev={handlePrevMoment}
+          onNext={handleNextMoment}
+          currentIndex={expandedMomentIndex ?? 0}
+          totalCount={polaroids.length}
+          hasPrev={expandedMomentIndex !== null && expandedMomentIndex > 0}
+          hasNext={expandedMomentIndex !== null && expandedMomentIndex < polaroids.length - 1}
+        />
+      </Suspense>
     </div>
   );
 }
