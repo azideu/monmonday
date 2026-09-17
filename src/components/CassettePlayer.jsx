@@ -5,6 +5,7 @@ import { playDeckClick } from '../utils/soundEffects.js';
 
 export default function CassettePlayer({
   playlist = [],
+  letters = [],
   currentTrackIndex = 0,
   isPlaying = false,
   onTogglePlay,
@@ -83,34 +84,59 @@ export default function CassettePlayer({
         return new URL(url, document.baseURI || window.location.href).href;
       };
 
-      // Prepare track list to download
-      const tracksToZip = [];
+      // Prepare full track list to download (including akari's electric guitar 1 envelope recording)
+      const allTracks = [];
 
       if (Array.isArray(playlist) && playlist.length > 0) {
-        playlist.forEach((track, index) => {
-          const num = String(index + 1).padStart(2, '0');
-          const safeTitle = (track.title || `Track ${index + 1}`).replace(/[/\\?%*:|"<>]/g, '-');
-          const safeArtist = (track.artist || 'Artist').replace(/[/\\?%*:|"<>]/g, '-');
-          tracksToZip.push({
-            filename: `${num} - ${safeArtist} - ${safeTitle}.mp3`,
-            url: track.audioUrl,
-            title: track.title,
-            artist: track.artist,
-          });
+        playlist.forEach((track) => {
+          // Place Electric Guitar 1 right before Electric Guitar 2 so they are ordered chronologically
+          if (track.audioUrl?.includes('akaribdayguitar2') || track.title?.includes('Electric Guitar 2')) {
+            allTracks.push({
+              title: "Happy Birthday! (But Electric Guitar 1)",
+              artist: "akari",
+              audioUrl: "./music/akaribdayguitar.mp3",
+            });
+          }
+          allTracks.push(track);
         });
       }
 
-      // Also include bonus guitar track (take 2) if present in /music/
-      const bonusUrl = './music/akaribdayguitar2.mp3';
-      tracksToZip.push({
-        filename: `${String(tracksToZip.length + 1).padStart(2, '0')} - akari - Happy Birthday! (Guitar Acoustic - Take 2).mp3`,
-        url: bonusUrl,
-        title: 'Happy Birthday! (Guitar Acoustic - Take 2)',
-        artist: 'akari',
-        isBonus: true,
+      // Also ensure any other audio from letters is included if not already present
+      if (Array.isArray(letters)) {
+        letters.forEach((letter) => {
+          const letterAudio = letter.audioUrl || letter.audio;
+          if (letterAudio && !allTracks.some((t) => t.audioUrl === letterAudio)) {
+            allTracks.push({
+              title: letter.audioTitle || `${letter.author}'s Audio`,
+              artist: letter.author || 'Friend',
+              audioUrl: letterAudio,
+            });
+          }
+        });
+      }
+
+      // Fallback: ensure Electric Guitar 1 is present
+      if (!allTracks.some((t) => t.audioUrl?.includes('akaribdayguitar.mp3'))) {
+        allTracks.splice(1, 0, {
+          title: "Happy Birthday! (But Electric Guitar 1)",
+          artist: "akari",
+          audioUrl: "./music/akaribdayguitar.mp3",
+        });
+      }
+
+      const tracksToZip = allTracks.map((track, index) => {
+        const num = String(index + 1).padStart(2, '0');
+        const safeTitle = (track.title || `Track ${index + 1}`).replace(/[/\\?%*:|"<>]/g, '-');
+        const safeArtist = (track.artist || 'Artist').replace(/[/\\?%*:|"<>]/g, '-');
+        return {
+          filename: `${num} - ${safeArtist} - ${safeTitle}.mp3`,
+          url: track.audioUrl,
+          title: track.title,
+          artist: track.artist,
+        };
       });
 
-      let fetchedSuccess = 0;
+      const successfulTracks = [];
       for (let i = 0; i < tracksToZip.length; i++) {
         const item = tracksToZip[i];
         setDownloadProgress(`Zipping track ${i + 1}/${tracksToZip.length}...`);
@@ -119,34 +145,32 @@ export default function CassettePlayer({
           if (res.ok) {
             const blob = await res.blob();
             zip.file(item.filename, blob);
-            fetchedSuccess++;
-          } else if (!item.isBonus) {
+            successfulTracks.push(item);
+          } else {
             console.warn(`Could not load audio track: ${item.url}`);
           }
         } catch (err) {
-          if (!item.isBonus) {
-            console.warn(`Error fetching ${item.filename}:`, err);
-          }
+          console.warn(`Error fetching ${item.filename}:`, err);
         }
       }
 
-      if (fetchedSuccess === 0) {
+      if (successfulTracks.length === 0) {
         throw new Error('No audio tracks could be retrieved.');
       }
 
       // Add a sweet tracklist / birthday message note
       const tracklistNote = [
         "=========================================",
-        "   MON'S BDAY PLAYLIST - ACOUSTIC TAPES  ",
+        "           MON'S BDAY PLAYLIST           ",
         "=========================================",
         "",
-        "Happy 22nd Birthday, Mon! 🎂✨",
-        "From all your favorite people and furry friends.",
+        "Happy 22nd Birthday, Monmon!",
+        "From your monmonlings.",
         "",
         "TRACKLIST:",
-        ...tracksToZip.slice(0, fetchedSuccess).map((t, idx) => `  ${String(idx + 1).padStart(2, '0')}. ${t.artist} - ${t.title}`),
+        ...successfulTracks.map((t, idx) => `  ${String(idx + 1).padStart(2, '0')}. ${t.artist} - ${t.title}`),
         "",
-        "Enjoy the tunes and have the wonderful birthday you deserve! 💖"
+        "Enjoy the tunes and have the wonderful birthday you deserve! 🩵"
       ].join('\n');
 
       zip.file('liner-notes.txt', tracklistNote);

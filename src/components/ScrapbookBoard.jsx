@@ -123,11 +123,12 @@ export default function ScrapbookBoard({
               Birthday mixtape
             </h2>
             <p className="text-xs sm:text-sm text-slateAsh/60 mt-1 font-sans">
-              Curated acoustic tunes and serenades recorded for your day.
+              Curated birthday tunes and serenades recorded for your day.
             </p>
           </div>
           <CassettePlayer
             playlist={playlist}
+            letters={letters}
             currentTrackIndex={currentTrackIndex}
             isPlaying={isPlaying}
             onTogglePlay={onTogglePlay}

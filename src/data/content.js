@@ -17,7 +17,7 @@ export const birthdayConfig = {
     },
     {
       id: "track-2",
-      title: "Happy Birthday! (But Guitar)",
+      title: "Happy Birthday! (But Electric Guitar 2)",
       artist: "akari",
       duration: "1:02",
       audioUrl: "./music/akaribdayguitar2.mp3",
@@ -36,6 +36,20 @@ export const birthdayConfig = {
       duration: "0:42",
       audioUrl: "./music/alinkalimba.mp3",
     },
+    {
+      id: "track-5",
+      title: "Terukir Di Bintang by Yuna",
+      artist: "Marci",
+      duration: "3:03",
+      audioUrl: "./music/Yuna - Terukir Di Bintang.mp3",
+    },
+    {
+      id: "track-6",
+      title: "SHOUT OUT by ENHYPEN",
+      artist: "Opanchu",
+      duration: "3:50",
+      audioUrl: "./music/ENHYPEN - SHOUT OUT.mp3",
+    },
   ],
 
   // Letters from friends
@@ -43,20 +57,19 @@ export const birthdayConfig = {
     {
       id: "letter-akari",
       author: "akari",
-      relationship: "dearest bestie",
-      recipientNickname: "ati <3",
+      relationship: "devoted little akari",
+      recipientNickname: "ati",
       envelopeColor: "bg-[#D4F1FF]", // Sky Mist
       sealColor: "#FFD6D6", // Soft Coral Blush
-      sealIcon: "flower",
-      stampText: "AIR MAIL",
+      sealIcon: "heart",
       date: "Sep 18, 2026",
       type: "handwritten",
       password: "monkari",
-      passwordHint: "Our duo nickname combination!",
+      passwordHint: "our nickname combination!",
       handwrittenImageUrl: "./photos/akaridearestati.png",
       scanUrl: "./photos/akaridearestati.png",
       audioUrl: "./music/akaribdayguitar.mp3",
-      audioTitle: "akari's Birthday Song",
+      audioTitle: "akari's Birthday Song (Electric Guitar 1)",
     },
     {
       id: "letter-alin",
@@ -66,7 +79,6 @@ export const birthdayConfig = {
       envelopeColor: "bg-[#FFEE8C]", // Buttercup Glow
       sealColor: "#C8F7DC", // Pastel Mint
       sealIcon: "sparkles",
-      stampText: "SPECIAL",
       date: "Sep 18, 2026",
       type: "typed",
       audioUrl: "./music/alinkalimba.mp3",
@@ -88,7 +100,6 @@ Alin`,
       envelopeColor: "bg-[#C8F7DC]", // Pastel Mint
       sealColor: "#E5DBFF", // Pale Lilac
       sealIcon: "coffee",
-      stampText: "PRIORITY",
       date: "Sep 17, 2026",
       type: "typed",
       content: `Yo Mon!
@@ -108,7 +119,6 @@ Fiyoll`,
       envelopeColor: "bg-[#FFD6D6]", // Soft Coral Blush
       sealColor: "#FFEE8C", // Buttercup Glow
       sealIcon: "tent",
-      stampText: "EXPRESS",
       date: "Sep 17, 2026",
       type: "typed",
       content: `Hey Monmon,
@@ -123,22 +133,25 @@ Kai`,
     {
       id: "letter-kiwan",
       author: "Kiwan",
-      relationship: "Study & Tea Mate",
-      recipientNickname: "Kyu",
+      relationship: "Tsundere Fan",
+      recipientNickname: "Monmon",
       envelopeColor: "bg-[#E5DBFF]", // Pale Lilac
       sealColor: "#D4F1FF", // Sky Mist
       sealIcon: "leaf",
-      stampText: "FIRST CLASS",
       date: "Sep 17, 2026",
       type: "typed",
-      content: `Happy birthday Kyu!
+      content: `tap tap
 
-Missing our corner table study afternoons where we basically just drank roasted barley tea and typed in companionable silence for three hours. It's rare to find someone you can just sit quietly with without it feeling awkward.
+yo is this thing on?
+I've been asked to write some nice words for some "birthday" or something. kinda don't want to but here I go. /s
 
-I hope your birthday gives you some actual breathing room and quiet joy. Let's grab boba next week!
+Pibeday Mon-za, anime enjoyer, Nanami lover, oppa-denier, yuri fancier, sleepwalking everyday-er, and last but not least, kobo aficionado. 
 
-Warmly,
-Kiwan`,
+I hate words of affirmation so this is going against every cell in body. However, I believe you should know that the residents of Monmonlings cherish you in indescribable ways. Yes, even me. Shocking.
+
+Cheers to more whimsical and energetic streams from you -- a 174cm, aussie-born gal who's turning 70 this year.
+
+(not even paid for ts btw)`,
     },
     {
       id: "letter-kucing-kelabu",
@@ -148,7 +161,6 @@ Kiwan`,
       envelopeColor: "bg-[#D4F1FF]", // Sky Mist
       sealColor: "#FFD6D6", // Soft Coral Blush
       sealIcon: "heart",
-      stampText: "MEOW MAIL",
       date: "Sep 18, 2026",
       type: "typed",
       audioUrl: "./music/kucingbdayguitar.mp3",
@@ -170,7 +182,6 @@ Kucing Kelabu`,
       envelopeColor: "bg-[#FFEE8C]", // Buttercup Glow
       sealColor: "#C8F7DC", // Pastel Mint
       sealIcon: "cake",
-      stampText: "SPECIAL",
       date: "Sep 16, 2026",
       type: "typed",
       content: `HAPPY BIRTHDAY MONKYU!!
@@ -190,7 +201,6 @@ Marci`,
       envelopeColor: "bg-[#C8F7DC]", // Pastel Mint
       sealColor: "#FFD6D6", // Soft Coral Blush
       sealIcon: "gift",
-      stampText: "PARCEL",
       date: "Sep 16, 2026",
       type: "typed",
       content: `Happy birthday Monmonkyu!
@@ -210,7 +220,6 @@ Meguri`,
       envelopeColor: "bg-[#FFD6D6]", // Soft Coral Blush
       sealColor: "#E5DBFF", // Pale Lilac
       sealIcon: "camera",
-      stampText: "LOVE",
       date: "Sep 18, 2026",
       type: "typed",
       content: `MONMON!! HAPPY 22ND BIRTHDAY!!
@@ -229,7 +238,6 @@ Opanchu`,
       envelopeColor: "bg-[#E5DBFF]", // Pale Lilac
       sealColor: "#FFEE8C", // Buttercup Glow
       sealIcon: "mail",
-      stampText: "AIR MAIL",
       date: "Sep 18, 2026",
       type: "typed",
       content: `Happy birthday Mon!
@@ -380,7 +388,7 @@ Zai`,
       },
       {
         type: "music-badge",
-        track: "Now Playing: Acoustic Jam",
+        track: "Now Playing: Electric Jam",
         artist: "Bedroom guitar tapes",
         rotation: "-3.5deg",
       },

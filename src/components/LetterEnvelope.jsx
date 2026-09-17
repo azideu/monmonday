@@ -170,10 +170,7 @@ export default function LetterEnvelope({ letter, onOpenLetter, index, defaultRec
         </div>
 
         {/* Vintage Airmail Postage Stamp */}
-        <div className="absolute top-3 right-3 z-20 w-12 h-14 bg-white rounded border border-dashed border-slateAsh/40 p-1 flex flex-col items-center justify-between shadow-paper-sm">
-          <span className="text-xs scale-75 origin-top font-mono font-bold tracking-tighter text-slateAsh/60 inline-block">
-            {letter.stampText || "POST"}
-          </span>
+        <div className="absolute top-3 right-3 z-20 w-12 h-14 bg-white rounded border border-dashed border-slateAsh/40 p-1 flex flex-col items-center justify-center gap-1.5 shadow-paper-sm">
           <Mail className="w-4 h-4 text-slateAsh/70" strokeWidth={1.75} />
           <span className="text-xs scale-75 origin-bottom font-mono text-slateAsh/60 inline-block">2026</span>
           {/* Cancellation stamp wavy lines */}
