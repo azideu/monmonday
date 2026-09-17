@@ -130,7 +130,7 @@ export default function ScrapbookBoard({
         >
           <div className="text-center mb-8">
             <h2 className="text-2xl sm:text-3xl font-bold text-slateAsh tracking-tight font-serifDisplay">
-              Favorite memories
+              Favourite memories
             </h2>
             <p className="text-xs sm:text-sm text-slateAsh/60 mt-1 font-sans">
               Click any photo to expand full view, or click the caption to flip and read the note.

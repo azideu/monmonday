@@ -85,6 +85,62 @@ export const birthdayConfig = {
       duration: "1:32",
       audioUrl: "./music/Dan Dan Don Don.mp3",
     },
+    {
+      id: "track-13",
+      title: "Switch It Up by Kobo Kanaeru",
+      artist: "Meguri",
+      duration: "2:46",
+      audioUrl: "./music/Switch It Up.mp3",
+    },
+    {
+      id: "track-14",
+      title: "Wanita Terbahagia by Bunga Citra Lestari",
+      artist: "Alin",
+      duration: "3:33",
+      audioUrl: "./music/Wanita Terbahagia.mp3",
+    },
+    {
+      id: "track-15",
+      title: "Sempurna by Andra And The Backbone",
+      artist: "Kucing Kelabu",
+      duration: "4:25",
+      audioUrl: "./music/Sempurna.mp3",
+    },
+    {
+      id: "track-16",
+      title: "Ma chérie by MALICE MIZER",
+      artist: "Fiyoll",
+      duration: "5:24",
+      audioUrl: "./music/ma cherie.mp3",
+    },
+    {
+      id: "track-17",
+      title: "Replay by Shinee",
+      artist: "akari",
+      duration: "3:33",
+      audioUrl: "./music/Replay.mp3",
+    },
+    {
+      id: "track-18",
+      title: "Darah Muda by Bunkface",
+      artist: "Alin",
+      duration: "3:47",
+      audioUrl: "./music/Darah Muda.mp3",
+    },
+    {
+      id: "track-19",
+      title: "You by Fujii Kaze",
+      artist: "akari",
+      duration: "4:41",
+      audioUrl: "./music/You.mp3",
+    },
+    {
+      id: "track-20",
+      title: "Time Of Our Life by Day6",
+      artist: "Opanchu & akari",
+      duration: "3:25",
+      audioUrl: "./music/Time Of Our Life.mp3",
+    },
   ],
 
   // Letters from friends (sorted alphabetically)
@@ -172,7 +228,7 @@ Your only S(catboy)`,
     {
       id: "letter-gyro",
       author: "Gyro",
-      relationship: "Friend",
+      relationship: "Zeppeli",
       recipientNickname: "Monmon",
       envelopeColor: "bg-[#FFD6D6]", // Soft Coral Blush
       sealColor: "#D4F1FF", // Sky Mist
@@ -180,7 +236,14 @@ Your only S(catboy)`,
       date: "Sep 18, 2026",
       type: "typed",
       illustration: "star",
-      content: "",
+      content: `Mon!!! Happy birthday! 🎉 Ya Allah, tau-tau dh hari lahir 😭
+Just wanna say, you're one of the best friends I've met online. Not only a friend, but you almost feel like a sister that I never had. I've also met a lot of great people in this community and made a lot of new friends (the Monmonlings 🫶🏻). 
+
+It's great knowing you, and I'm glad I became one of your (Monmonlings ✌🏻🙏🏻). 
+
+Your content always entertains me and makes my weekends more alive.I wish you all the best, and I hope you continue doing what you love. Thanks, Mon, for making my weekends alive even though jarang join live lately 😮‍💨😭.
+
+Peace out ✌🏻`,
     },
     {
       id: "letter-halibutter",
