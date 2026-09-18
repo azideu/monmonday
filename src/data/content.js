@@ -574,7 +574,7 @@ Happy 22nd birthday, MonMon!!! 🎂🎉 I’m not the best with words, so please
     {
       id: "photo-5",
       imageUrl: "./photos/monmonochestra.jpg",
-      caption: "Monmon at the Orchestral Concert",
+      caption: "Mon at the Orchestral Concert",
       date: "August 2026",
       location: "Petronas Philharmonic Hall",
       tapeColor: "bg-[#E5DBFF]/80", // Pale Lilac
@@ -586,7 +586,7 @@ Happy 22nd birthday, MonMon!!! 🎂🎉 I’m not the best with words, so please
     {
       id: "photo-6",
       imageUrl: "./photos/monmonkoboramen.jpg",
-      caption: "Monmon with Kobo eating noodles",
+      caption: "Mon with Kobo eating noodles",
       date: "July 2026",
       location: "Somewhere in Malaysia idk",
       tapeColor: "bg-[#D4F1FF]/80", // Sky Mist
