@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useRef, useMemo, lazy, Suspense } from 'react';
 import Navbar from './components/Navbar.jsx';
 import ScrapbookBoard from './components/ScrapbookBoard.jsx';
 import FluidCursor from './components/FluidCursor.jsx';
+import AnimatedIntroOverlay from './components/AnimatedIntroOverlay.jsx';
+import { useAssetPreloader } from './hooks/useAssetPreloader.js';
 import { birthdayConfig } from './data/content.js';
 
 const LetterModal = lazy(() => import('./components/LetterModal.jsx'));
@@ -10,6 +12,42 @@ const AudioWelcomeModal = lazy(() => import('./components/AudioWelcomeModal.jsx'
 
 export default function App() {
   const { celebrant, playlist, letters, polaroids, celebration, sideMargins } = birthdayConfig;
+
+  // Preload critical images (polaroids, side stickers, letter scans) before unboxing
+  const criticalImageUrls = useMemo(() => {
+    const urls = [];
+    if (polaroids) {
+      polaroids.forEach((p) => {
+        if (p.imageUrl) urls.push(p.imageUrl);
+      });
+    }
+    if (sideMargins?.left) {
+      sideMargins.left.forEach((item) => {
+        if (item.imageUrl) urls.push(item.imageUrl);
+      });
+    }
+    if (sideMargins?.right) {
+      sideMargins.right.forEach((item) => {
+        if (item.imageUrl) urls.push(item.imageUrl);
+      });
+    }
+    if (letters) {
+      letters.forEach((l) => {
+        if (l.imageUrl) urls.push(l.imageUrl);
+        if (l.handwrittenImageUrl) urls.push(l.handwrittenImageUrl);
+        if (l.scanUrl) urls.push(l.scanUrl);
+      });
+    }
+    return urls;
+  }, [polaroids, sideMargins, letters]);
+
+  const { progress, isReady, statusText } = useAssetPreloader(criticalImageUrls, {
+    minDuration: 1200,
+    maxDuration: 3500,
+  });
+
+  // Controls full-screen intro gift unboxing
+  const [isIntroDismissed, setIsIntroDismissed] = useState(false);
 
   // Fluid Cursor State (defaults to true)
   const [isFluidEnabled, setIsFluidEnabled] = useState(true);
@@ -25,13 +63,7 @@ export default function App() {
       return 0.7;
     }
   });
-  const [showWelcomeModal, setShowWelcomeModal] = useState(() => {
-    try {
-      return localStorage.getItem('mon_welcomed') !== 'true';
-    } catch {
-      return true;
-    }
-  });
+  const [showWelcomeModal, setShowWelcomeModal] = useState(false);
 
   // Active modal for letter reading & tracking read letters
   const [activeLetter, setActiveLetter] = useState(null);
@@ -518,6 +550,27 @@ export default function App() {
     }
   };
 
+  // Intro unwrap handler
+  const handleUnwrapIntro = (withMusic) => {
+    setIsIntroDismissed(true);
+    try {
+      localStorage.setItem('mon_welcomed', 'true');
+    } catch {}
+    if (withMusic) {
+      if (audioRef.current && !isPlaying) {
+        audioRef.current.play().then(() => {
+          setIsPlaying(true);
+        }).catch(() => {
+          setIsPlaying(true);
+          startSynthChimes();
+        });
+      } else if (!isPlaying) {
+        setIsPlaying(true);
+        startSynthChimes();
+      }
+    }
+  };
+
   // Welcome modal handlers
   const handleStartWithMusic = () => {
     try {
@@ -544,6 +597,17 @@ export default function App() {
   return (
     <div className="min-h-screen bg-scrapbook-pattern relative text-slateAsh selection:bg-buttercup selection:text-slateAsh">
       
+      {/* Animated Keepsake Intro Overlay to conceal loading */}
+      {!isIntroDismissed && (
+        <AnimatedIntroOverlay
+          celebrantName={celebrant.name}
+          progress={progress}
+          isReady={isReady}
+          statusText={statusText}
+          onUnwrap={handleUnwrapIntro}
+        />
+      )}
+
       {/* Analog Stationery Stardust Cursor Trail */}
       <FluidCursor enabled={isFluidEnabled} />
 
