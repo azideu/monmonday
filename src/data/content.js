@@ -200,6 +200,47 @@ Sending virtual warm hugs to you,
 alin.`,
     },
     {
+      id: "letter-choco",
+      author: "choco",
+      relationship: "leopard girl",
+      recipientNickname: " My Azzahra",
+      envelopeColor: "bg-[#FFD6D6]", // Soft Coral Blush
+      sealColor: "#D4F1FF", // Sky Mist
+      sealIcon: "sparkles",
+      date: "Sep 18, 2026",
+      type: "typed",
+      illustration: "sparkles",
+      imageUrl: "./photos/chocomon.jpg",
+      imageCaption: "A little collection of us, with hopefully many more to come. (p/s: I have no idea where our maktab graduation photo is 😭)",
+      content: `To: my Azzahra
+From: you know who
+
+Almost 10 years of knowing you… honestly, I don’t even know where all that time went and where to start.
+
+It’s crazy to think that we’ve known each other for almost a decade. We’ve literally grown up together and gone through so many different phases of life. We’ve had our good times, our stupid moments, our little to big fights, and even a time when we almost completely cut ties with each other.
+
+Despite everything, we always managed to keep going and we still chose to stay. We kept choosing each other and somehow we’re still here. Still us.
+
+And honestly, that makes our friendship even more special to me. It was never about everything being perfect. We both have our own friends, our own lives and our own circles now, but I love that at the end of the day, we somehow always found our way back to each other. And I really hope we continue doing that, no matter where life takes us, no matter who else comes and goes, there’s always that comfort of knowing we can count on each other.
+
+You’ve been there through so many versions of me, from the girl you first met in Form 1 to the person I am today. You’ve witnessed so many of my highs, lows, random phases, achievements and questionable decisions (only God knows what you’ve had to put up with HAHA)
+
+I’ll always remember you being there for my white coat ceremony. It might have seemed like just one day, but it was such a meaningful moment in my life. And I’ll never forget how you celebrated my first 10KM and my first marathon HAHAHA. Those moment meant more than you probably realised. There are still so many memories I could name hoho.
+
+I also really hope that one day, you’ll find a good man who loves you genuinely and unconditionally. Someone who loves you the way I do. Someone who cares for you the way i do. Someone who would rush to you when something wrong, the way i do. Because if there ever comes a time when I’m no longer around, I want to know that you have someone beside you who will love you deeply and make sure you’re never alone.
+
+I know life is different now. We’re both busy (especially me) and we don’t talk or video call often like we used to back in maktab. Even when life gets hectic and we go through our own things, you’ll always have my support. And even if one day i can't be there for you, I’ll still be cheering for you in every way I can. 
+
+I don’t know what the next 10 years will look like, but I hope I’ll still be there to celebrate your milestones, and you’ll still be there to celebrate mine.
+
+Happy birthday, Azzahra. I hope this year brings you so much happiness, love, success and all the things you’ve been wishing for.
+
+Thank you for staying, through every version of us.
+
+your choco,
+Ressa`,
+    },
+    {
       id: "letter-fiyoll",
       author: "Fiyoll",
       relationship: "Scatboy",
